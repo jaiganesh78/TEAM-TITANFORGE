@@ -90,3 +90,86 @@ body {
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
+
+/* Light Theme Defect Color Overrides & Professional Adjustments */
+.light {
+  /* Background overrides */
+  .bg-slate-900,
+  .bg-slate-950,
+  .bg-slate-900\/50,
+  .bg-slate-950\/40,
+  .bg-slate-950\/60,
+  .bg-slate-950\/30,
+  .bg-slate-900\/40,
+  .bg-slate-900\/60,
+  .bg-slate-800\/80 {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .bg-slate-950,
+  .bg-slate-950\/40,
+  .bg-slate-950\/60,
+  .bg-slate-950\/30 {
+    background-color: hsl(var(--secondary)) !important;
+  }
+
+  .bg-slate-800 {
+    background-color: hsl(var(--secondary)) !important;
+  }
+
+  .bg-slate-800\/50 {
+    background-color: hsl(var(--secondary) / 0.5) !important;
+  }
+
+  /* Text color overrides */
+  .text-white,
+  .text-slate-100,
+  .text-slate-200,
+  .text-slate-300,
+  .text-zinc-100,
+  .text-zinc-200 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .text-slate-400,
+  .text-slate-500,
+  .text-zinc-400 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Border color overrides */
+  .border-slate-800,
+  .border-slate-700,
+  .border-border\/80,
+  .border-border\/50,
+  .border-border\/40,
+  .border-border\/30,
+  .border-slate-600 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Inputs, select, and textarea overrides */
+  input, select, textarea {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: hsl(var(--muted-foreground)) !important;
+    opacity: 0.7;
+  }
+
+  /* Chart tooltips and popovers */
+  .recharts-default-tooltip {
+    background-color: hsl(var(--card)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .recharts-tooltip-item {
+    color: hsl(var(--foreground)) !important;
+  }
+}
+
