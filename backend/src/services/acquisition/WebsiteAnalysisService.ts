@@ -1,20 +1,20 @@
 import { prisma } from '../../database/prisma';
 import { AppError } from '../../middleware/errorMiddleware';
 import { WebsiteAnalysisStatus, JobStatus, SourceType, ExtractionStatus } from '@prisma/client';
+import { jobQueue } from '../jobs/JobQueue';
+import { eventBroker } from '../events/EventBroker';
 
 export class WebsiteAnalysisService {
   /**
-   * Enqueues a new website crawl and initializes analysis records.
+   * Enqueues a new website crawl in the background job queue.
    */
   static async queueAnalysis(businessId: string, url: string): Promise<any> {
-    // 1. Simple URL validation
     try {
       new URL(url);
     } catch {
       throw new AppError('Invalid website URL configuration.', 400, 'VALIDATION_ERROR');
     }
 
-    // 2. Resolve Website record
     let website = await prisma.website.findFirst({
       where: { businessId, url }
     });
@@ -25,7 +25,6 @@ export class WebsiteAnalysisService {
       });
     }
 
-    // 3. Create WebsiteAnalysisRun job
     const run = await prisma.websiteAnalysisRun.create({
       data: {
         websiteId: website.id,
@@ -33,7 +32,6 @@ export class WebsiteAnalysisService {
       }
     });
 
-    // 4. Create mock crawled pages
     await prisma.websitePage.createMany({
       data: [
         { analysisRunId: run.id, url: `${url}/`, status: JobStatus.QUEUED },
@@ -42,8 +40,12 @@ export class WebsiteAnalysisService {
       ]
     });
 
-    // Trigger asynchronous mock execution pipeline in the background
-    this.runMockCrawl(run.id, businessId, url).catch(console.error);
+    // Enqueue the background job using our decoupled JobQueue
+    await jobQueue.enqueue('WEBSITE_CRAWL', {
+      runId: run.id,
+      businessId,
+      url
+    });
 
     return run;
   }
@@ -51,17 +53,14 @@ export class WebsiteAnalysisService {
   /**
    * Simulates async background crawling and mock extraction.
    */
-  private static async runMockCrawl(runId: string, businessId: string, url: string) {
-    // Wait to simulate crawler execution
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  static async runMockCrawl(runId: string, businessId: string, url: string) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-    // Update status to RUNNING
     await prisma.websiteAnalysisRun.update({
       where: { id: runId },
       data: { status: WebsiteAnalysisStatus.RUNNING }
     });
 
-    // Update pages status
     const pages = await prisma.websitePage.findMany({ where: { analysisRunId: runId } });
     for (const p of pages) {
       await prisma.websitePage.update({
@@ -70,7 +69,6 @@ export class WebsiteAnalysisService {
       });
     }
 
-    // Generate mock Extracted Candidates mapping to Digital Twin schema paths
     const domain = new URL(url).hostname.replace('www.', '').split('.')[0];
     const cleanName = domain.charAt(0).toUpperCase() + domain.slice(1);
 
@@ -98,10 +96,18 @@ export class WebsiteAnalysisService {
       });
     }
 
-    // Complete the website analysis job status
     await prisma.websiteAnalysisRun.update({
       where: { id: runId },
       data: { status: WebsiteAnalysisStatus.COMPLETED, completedAt: new Date() }
     });
+
+    // Publish event upon crawl completion to decouple notification/subscribers
+    console.log(`[WebsiteAnalysisService] Publishing WebsiteIndexed event for run: ${runId}`);
+    await eventBroker.publish('WebsiteIndexed', { businessId, url, runId });
   }
 }
+
+// Register Job Queue worker
+jobQueue.registerWorker('WEBSITE_CRAWL', async (payload: { runId: string; businessId: string; url: string }) => {
+  await WebsiteAnalysisService.runMockCrawl(payload.runId, payload.businessId, payload.url);
+});

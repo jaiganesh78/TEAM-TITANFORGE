@@ -4,19 +4,19 @@ exports.WebsiteAnalysisService = void 0;
 const prisma_1 = require("../../database/prisma");
 const errorMiddleware_1 = require("../../middleware/errorMiddleware");
 const client_1 = require("@prisma/client");
+const JobQueue_1 = require("../jobs/JobQueue");
+const EventBroker_1 = require("../events/EventBroker");
 class WebsiteAnalysisService {
     /**
-     * Enqueues a new website crawl and initializes analysis records.
+     * Enqueues a new website crawl in the background job queue.
      */
     static async queueAnalysis(businessId, url) {
-        // 1. Simple URL validation
         try {
             new URL(url);
         }
         catch {
             throw new errorMiddleware_1.AppError('Invalid website URL configuration.', 400, 'VALIDATION_ERROR');
         }
-        // 2. Resolve Website record
         let website = await prisma_1.prisma.website.findFirst({
             where: { businessId, url }
         });
@@ -25,14 +25,12 @@ class WebsiteAnalysisService {
                 data: { businessId, url }
             });
         }
-        // 3. Create WebsiteAnalysisRun job
         const run = await prisma_1.prisma.websiteAnalysisRun.create({
             data: {
                 websiteId: website.id,
                 status: client_1.WebsiteAnalysisStatus.PENDING
             }
         });
-        // 4. Create mock crawled pages
         await prisma_1.prisma.websitePage.createMany({
             data: [
                 { analysisRunId: run.id, url: `${url}/`, status: client_1.JobStatus.QUEUED },
@@ -40,22 +38,23 @@ class WebsiteAnalysisService {
                 { analysisRunId: run.id, url: `${url}/pricing`, status: client_1.JobStatus.QUEUED }
             ]
         });
-        // Trigger asynchronous mock execution pipeline in the background
-        this.runMockCrawl(run.id, businessId, url).catch(console.error);
+        // Enqueue the background job using our decoupled JobQueue
+        await JobQueue_1.jobQueue.enqueue('WEBSITE_CRAWL', {
+            runId: run.id,
+            businessId,
+            url
+        });
         return run;
     }
     /**
      * Simulates async background crawling and mock extraction.
      */
     static async runMockCrawl(runId, businessId, url) {
-        // Wait to simulate crawler execution
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        // Update status to RUNNING
+        await new Promise((resolve) => setTimeout(resolve, 500));
         await prisma_1.prisma.websiteAnalysisRun.update({
             where: { id: runId },
             data: { status: client_1.WebsiteAnalysisStatus.RUNNING }
         });
-        // Update pages status
         const pages = await prisma_1.prisma.websitePage.findMany({ where: { analysisRunId: runId } });
         for (const p of pages) {
             await prisma_1.prisma.websitePage.update({
@@ -63,7 +62,6 @@ class WebsiteAnalysisService {
                 data: { status: client_1.JobStatus.COMPLETED, content: `Mock scraped content for page ${p.url}` }
             });
         }
-        // Generate mock Extracted Candidates mapping to Digital Twin schema paths
         const domain = new URL(url).hostname.replace('www.', '').split('.')[0];
         const cleanName = domain.charAt(0).toUpperCase() + domain.slice(1);
         const mockEntities = [
@@ -88,11 +86,17 @@ class WebsiteAnalysisService {
                 }
             });
         }
-        // Complete the website analysis job status
         await prisma_1.prisma.websiteAnalysisRun.update({
             where: { id: runId },
             data: { status: client_1.WebsiteAnalysisStatus.COMPLETED, completedAt: new Date() }
         });
+        // Publish event upon crawl completion to decouple notification/subscribers
+        console.log(`[WebsiteAnalysisService] Publishing WebsiteIndexed event for run: ${runId}`);
+        await EventBroker_1.eventBroker.publish('WebsiteIndexed', { businessId, url, runId });
     }
 }
 exports.WebsiteAnalysisService = WebsiteAnalysisService;
+// Register Job Queue worker
+JobQueue_1.jobQueue.registerWorker('WEBSITE_CRAWL', async (payload) => {
+    await WebsiteAnalysisService.runMockCrawl(payload.runId, payload.businessId, payload.url);
+});

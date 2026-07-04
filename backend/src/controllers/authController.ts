@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { authService } from '../services/authService';
-import { registerSchema, loginSchema, refreshSchema } from '../validators/authValidators';
+import { registerSchema, loginSchema } from '../validators/authValidators';
 import { AppError } from '../middleware/errorMiddleware';
 
 const COOKIE_OPTIONS = {
@@ -65,6 +65,82 @@ export class AuthController {
     }
   }
 
+  async loginWithGoogle(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { credential } = req.body;
+      if (!credential) {
+        throw new AppError('Google credential token is required', 400, 'VALIDATION_ERROR');
+      }
+
+      const result = await authService.loginWithGoogle(credential, req.ip, req.correlationId);
+      res.cookie('refreshToken', result.refreshToken, COOKIE_OPTIONS);
+      res.status(200).json({
+        success: true,
+        data: {
+          user: result.user,
+          accessToken: result.accessToken,
+        },
+        correlationId: req.correlationId,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token } = req.query;
+      if (!token || typeof token !== 'string') {
+        throw new AppError('Verification token is required', 400, 'VALIDATION_ERROR');
+      }
+
+      await authService.verifyEmail(token);
+      res.status(200).json({
+        success: true,
+        data: { message: 'Email verified successfully.' },
+        correlationId: req.correlationId,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        throw new AppError('Email is required', 400, 'VALIDATION_ERROR');
+      }
+
+      await authService.forgotPassword(email);
+      res.status(200).json({
+        success: true,
+        data: { message: 'If the email exists, a password reset link has been generated.' },
+        correlationId: req.correlationId,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token, password } = req.body;
+      if (!token || !password) {
+        throw new AppError('Token and password are required', 400, 'VALIDATION_ERROR');
+      }
+
+      await authService.resetPassword(token, password);
+      res.status(200).json({
+        success: true,
+        data: { message: 'Password reset successful.' },
+        correlationId: req.correlationId,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
@@ -73,6 +149,8 @@ export class AuthController {
       }
 
       const result = await authService.refresh(refreshToken, req.ip, req.correlationId);
+      // Rotation: set the rotated refresh token back in the HttpOnly cookie
+      res.cookie('refreshToken', result.refreshToken, COOKIE_OPTIONS);
       res.status(200).json({
         success: true,
         data: {

@@ -15,18 +15,23 @@ enum Role {
 }
 
 model User {
-  id             String         @id @default(uuid())
-  email          String         @unique
-  passwordHash   String
-  name           String
-  role           Role           @default(MEMBER)
-  organizationId String
-  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  sessions       Session[]
-  auditLogs      AuditLog[]
-  twinAuditLogs  TwinAuditLog[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id                   String         @id @default(uuid())
+  email                String         @unique
+  passwordHash         String
+  name                 String
+  role                 Role           @default(MEMBER)
+  organizationId       String
+  organization         Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sessions             Session[]
+  auditLogs            AuditLog[]
+  twinAuditLogs        TwinAuditLog[]
+  emailVerified        Boolean        @default(false)
+  verificationToken    String?
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+  onboardingCompleted  Boolean        @default(false)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 
   @@index([email])
   @@index([organizationId])
@@ -3925,6 +3930,55 @@ model ExecutiveRoadmap {
   createdAt         DateTime              @default(now())
 
   @@index([sessionId])
+  @@index([businessId])
+}
+
+model DiscoveryChatSession {
+  id                String             @id @default(uuid())
+  businessId        String             @unique
+  status            String             // IN_PROGRESS, COMPLETED
+  currentPhase      String             // IDENTITY, PRODUCTS, CUSTOMERS, etc.
+  currentDomain     String?
+  overallConfidence Float              @default(0.0)
+  startedAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  messages          DiscoveryMessage[]
+}
+
+model DiscoveryMessage {
+  id                String               @id @default(uuid())
+  sessionId         String
+  session           DiscoveryChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role              String               // assistant, user
+  content           String               @db.Text
+  questionId        String?
+  domain            String?
+  confidenceBefore  Float?
+  confidenceAfter   Float?
+  reasonForQuestion String?              @db.Text
+  createdAt         DateTime             @default(now())
+}
+
+model DiscoveryJob {
+  id          String   @id @default(uuid())
+  taskType    String   // WEBSITE_CRAWL, DOC_PARSING, ENGINE_RUN, etc.
+  payload     String   @db.Text // JSON
+  status      String   // PENDING, PROCESSING, COMPLETED, FAILED
+  error       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AIMemory {
+  id          String   @id @default(uuid())
+  businessId  String
+  layer       String   // CONVERSATION, WORKING, BUSINESS, DECISION, LONG_TERM
+  key         String
+  value       String   @db.Text // JSON or plain text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([businessId, layer, key])
   @@index([businessId])
 }
 

@@ -32,7 +32,8 @@ import {
   Zap,
   ShoppingCart,
   BarChart2,
-  Heart
+  Heart,
+  Lock
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -93,12 +94,61 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [user, setUser] = useState({ name: 'Jai Ganesh', email: 'jai@titanforge.com', role: 'OWNER' });
+  const [user, setUser] = useState({ name: 'TitanForge User', email: '', role: 'OWNER' });
   const [workspaces, setWorkspaces] = useState([
     { id: 'w1', name: 'TitanForge Core', role: 'Owner' },
     { id: 'w2', name: 'Apex Growth Lab', role: 'Admin' }
   ]);
   const [activeWorkspace, setActiveWorkspace] = useState(workspaces[0]);
+  const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
+
+  // Load real user from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const parsed = JSON.parse(storedUser);
+          setUser({ name: parsed.name || 'TitanForge User', email: parsed.email || '', role: parsed.role || 'OWNER' });
+        } catch {}
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Skip status check if we are on onboarding pages to prevent infinite redirect loops
+    if (pathname.startsWith('/onboarding')) return;
+
+    fetch('/api/discovery/chat/session')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setOnboardingCompleted(data.data.onboardingCompleted);
+        }
+      })
+      .catch(err => console.error('Error fetching onboarding status:', err));
+  }, [pathname]);
+
+  // Route lock block middleware
+  useEffect(() => {
+    if (onboardingCompleted === false) {
+      const lockedRoutes = [
+        '/strategy',
+        '/marketing',
+        '/leads',
+        '/sales',
+        '/analytics',
+        '/customer-success',
+        '/business/executive-dashboard',
+        '/business/analytics',
+        '/business/timeline',
+        '/ai-workspace'
+      ];
+      if (lockedRoutes.some(route => pathname.startsWith(route))) {
+        router.push('/dashboard');
+      }
+    }
+  }, [pathname, onboardingCompleted]);
 
   // Handle default submenus based on route
   useEffect(() => {
@@ -124,8 +174,14 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
   };
 
   const handleLogout = async () => {
-    // Mock logout, clear storage
-    router.push('/login');
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+    } catch {}
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
+    }
+    router.push('/');
   };
 
   // Build breadcrumbs
@@ -260,19 +316,37 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden pl-6 pr-2 space-y-0.5"
                     >
-                      {item.subItems?.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.href}
-                          className={`block p-1.5 rounded text-[11px] transition-colors ${
-                            pathname === sub.href
-                              ? 'text-white font-semibold'
-                              : 'text-muted-foreground hover:text-foreground'
-                          }`}
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
+                      {item.subItems?.map((sub) => {
+                        const isLocked = onboardingCompleted === false && [
+                          '/strategy',
+                          '/marketing',
+                          '/leads',
+                          '/sales',
+                          '/analytics',
+                          '/customer-success',
+                          '/business/executive-dashboard',
+                          '/business/analytics',
+                          '/business/timeline',
+                          '/ai-workspace'
+                        ].some(path => sub.href.startsWith(path));
+
+                        return (
+                          <Link
+                            key={sub.name}
+                            href={isLocked ? '#' : sub.href}
+                            className={`block p-1.5 rounded text-[11px] transition-colors ${
+                              pathname === sub.href
+                                ? 'text-white font-semibold'
+                                : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <span>{sub.name}</span>
+                              {isLocked && <Lock className="h-3 w-3 text-muted-foreground/60 shrink-0 ml-1.5" />}
+                            </div>
+                          </Link>
+                        );
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -516,18 +590,36 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
                                 exit={{ height: 0, opacity: 0 }}
                                 className="pl-6 space-y-0.5 overflow-hidden"
                               >
-                                {item.subItems?.map((sub) => (
-                                  <Link
-                                    key={sub.name}
-                                    href={sub.href}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className={`block p-2 rounded text-[11px] transition-colors ${
-                                      pathname === sub.href ? 'text-white font-semibold' : 'text-muted-foreground hover:text-foreground'
-                                    }`}
-                                  >
-                                    {sub.name}
-                                  </Link>
-                                ))}
+                                {item.subItems?.map((sub) => {
+                                  const isLocked = onboardingCompleted === false && [
+                                    '/strategy',
+                                    '/marketing',
+                                    '/leads',
+                                    '/sales',
+                                    '/analytics',
+                                    '/customer-success',
+                                    '/business/executive-dashboard',
+                                    '/business/analytics',
+                                    '/business/timeline',
+                                    '/ai-workspace'
+                                  ].some(path => sub.href.startsWith(path));
+
+                                  return (
+                                    <Link
+                                      key={sub.name}
+                                      href={isLocked ? '#' : sub.href}
+                                      onClick={() => !isLocked && setMobileMenuOpen(false)}
+                                      className={`block p-2 rounded text-[11px] transition-colors ${
+                                        pathname === sub.href ? 'text-white font-semibold' : 'text-muted-foreground hover:text-foreground'
+                                      }`}
+                                    >
+                                      <div className="flex items-center justify-between w-full">
+                                        <span>{sub.name}</span>
+                                        {isLocked && <Lock className="h-3 w-3 text-muted-foreground/60 shrink-0 ml-1.5" />}
+                                      </div>
+                                    </Link>
+                                  );
+                                })}
                               </motion.div>
                             )}
                           </AnimatePresence>

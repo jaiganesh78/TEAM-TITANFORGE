@@ -1,6 +1,8 @@
 import { prisma } from '../../database/prisma';
 import crypto from 'crypto';
 import { DocumentCategory, DocumentStatus } from '@prisma/client';
+import { jobQueue } from '../jobs/JobQueue';
+import { eventBroker } from '../events/EventBroker';
 
 export class DocumentUploadService {
   /**
@@ -13,18 +15,15 @@ export class DocumentUploadService {
     category: DocumentCategory,
     uploadedBy: string
   ): Promise<any> {
-    // 1. Calculate SHA-256 hash
     const hash = crypto.createHash('sha256').update(fileContent).digest('hex');
 
-    // 2. Check if this document hash is already uploaded
     const existingHash = await prisma.uploadedDocument.findFirst({
       where: { businessId, hash }
     });
     if (existingHash) {
-      return existingHash; // Return existing instance to avoid duplicate processing
+      return existingHash;
     }
 
-    // 3. Version history check for matching filenames
     const sameName = await prisma.uploadedDocument.findMany({
       where: { businessId, fileName },
       orderBy: { version: 'desc' }
@@ -32,7 +31,6 @@ export class DocumentUploadService {
 
     const version = sameName.length > 0 ? sameName[0].version + 1 : 1;
 
-    // 4. Create document record
     const doc = await prisma.uploadedDocument.create({
       data: {
         businessId,
@@ -48,22 +46,24 @@ export class DocumentUploadService {
       }
     });
 
-    // Run background parsing process
-    this.runMockParser(doc.id, businessId, fileContent).catch(console.error);
+    // Enqueue the background job using our decoupled JobQueue
+    await jobQueue.enqueue('DOC_PARSING', {
+      documentId: doc.id,
+      businessId,
+      fileContent
+    });
 
     return doc;
   }
 
-  private static async runMockParser(documentId: string, businessId: string, fileContent: string) {
-    // Simulate processing delays
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  static async runMockParser(documentId: string, businessId: string, fileContent: string) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     await prisma.uploadedDocument.update({
       where: { id: documentId },
       data: { status: DocumentStatus.PROCESSING }
     });
 
-    // Store raw parsed text extract
     await prisma.documentExtraction.create({
       data: {
         documentId,
@@ -72,7 +72,6 @@ export class DocumentUploadService {
       }
     });
 
-    // Create mock candidates based on document keywords
     const mockCandidates = [];
     if (fileContent.toLowerCase().includes('margin') || fileContent.toLowerCase().includes('finance')) {
       mockCandidates.push({ fieldPath: 'operationsProfile.infraCost', value: '45000', confidence: 0.95 });
@@ -82,7 +81,6 @@ export class DocumentUploadService {
       mockCandidates.push({ fieldPath: 'salesProfile.conversionRate', value: '4.2', confidence: 0.90 });
     }
 
-    // Fallback default candidates
     if (mockCandidates.length === 0) {
       mockCandidates.push({ fieldPath: 'operationsProfile.bottlenecks', value: 'Supply logistics latency', confidence: 0.80 });
     }
@@ -106,5 +104,14 @@ export class DocumentUploadService {
       where: { id: documentId },
       data: { status: DocumentStatus.COMPLETED }
     });
+
+    // Publish event upon document parsing completion to decouple subscribers
+    console.log(`[DocumentUploadService] Publishing DocumentProcessed event for doc: ${documentId}`);
+    await eventBroker.publish('DocumentProcessed', { businessId, documentId });
   }
 }
+
+// Register Job Queue worker
+jobQueue.registerWorker('DOC_PARSING', async (payload: { documentId: string; businessId: string; fileContent: string }) => {
+  await DocumentUploadService.runMockParser(payload.documentId, payload.businessId, payload.fileContent);
+});

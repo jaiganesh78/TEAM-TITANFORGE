@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DiscoveryFlowEngine = void 0;
+exports.DiscoveryExplainer = exports.DiscoveryFlowEngine = void 0;
 const QuestionLibrary_1 = require("./QuestionLibrary");
 const KnowledgePackManager_1 = require("./KnowledgePackManager");
 class DiscoveryFlowEngine {
@@ -55,3 +55,47 @@ class DiscoveryFlowEngine {
     }
 }
 exports.DiscoveryFlowEngine = DiscoveryFlowEngine;
+class DiscoveryExplainer {
+    /**
+     * Computes the next discovery questions with full explanatory context.
+     * Questions already answered are excluded. Questions extracted from
+     * website/document data are flagged as pre-filled.
+     */
+    static computeNextQuestions(ctx, limit = 10) {
+        const activeQuestions = DiscoveryFlowEngine.getActiveQuestions(ctx.sectorSlug, ctx.businessStage ?? 'GROWTH', Object.fromEntries(ctx.answeredQuestionIds.map(id => [id, true])));
+        // Filter out already answered
+        const pending = activeQuestions.filter(q => !ctx.answeredQuestionIds.includes(q.id));
+        // Sort by discoveryPriority desc
+        const sorted = pending.sort((a, b) => (b.discoveryPriority ?? this.priorityToNumber(b.priority)) -
+            (a.discoveryPriority ?? this.priorityToNumber(a.priority)));
+        return sorted.slice(0, limit).map(q => ({
+            question: q,
+            whyItMatters: q.whyItMatters ?? `This question helps the AI understand your ${q.category} strategy.`,
+            whichEngineNeedsIt: q.relatedEngine ?? this.inferEngine(q),
+            whichKpiDependsOnIt: q.relatedKpiSlug ? [q.relatedKpiSlug] : [],
+            expectedConfidenceImprovement: q.confidenceImpact ?? 0.1,
+            businessImpact: q.businessImpact ?? `Improves ${q.growthDomain ?? q.category} analysis quality.`,
+            discoveryPriority: q.discoveryPriority ?? this.priorityToNumber(q.priority),
+            alreadyExtracted: false,
+            extractionSource: undefined
+        }));
+    }
+    static priorityToNumber(priority) {
+        const map = { CRITICAL: 90, HIGH: 70, MEDIUM: 50, LOW: 30 };
+        return map[priority] ?? 50;
+    }
+    static inferEngine(q) {
+        const categoryMap = {
+            marketing: 'marketing-engine',
+            sales: 'sales-engine',
+            finance: 'analytics-engine',
+            operations: 'analytics-engine',
+            technology: 'strategy-engine',
+            identity: 'strategy-engine',
+            customers: 'lead-generation-engine',
+            'customer-success': 'customer-success-engine'
+        };
+        return categoryMap[q.category] ?? 'strategy-engine';
+    }
+}
+exports.DiscoveryExplainer = DiscoveryExplainer;
