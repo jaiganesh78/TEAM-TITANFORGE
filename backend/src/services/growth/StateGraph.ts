@@ -35,6 +35,19 @@ export interface GraphState {
   executiveScores?: any;
   marketingRecommendations?: any[];
 
+  // Lead outputs
+  icpAnalysis?: any;
+  leadSources?: any;
+  acquisitionPlan?: any;
+  qualificationRules?: any;
+  scoringModel?: any;
+  segmentation?: any;
+  nurtureJourneys?: any;
+  forecasts?: any;
+  leadPlaybooks?: any[];
+  leadRecommendations?: any[];
+  leads?: any[];
+
   // Reflection loop track
   reflectionAttempts: number;
   confidenceScore: number;
@@ -47,7 +60,7 @@ export interface GraphState {
 export type NodeFunction = (state: GraphState) => Promise<Partial<GraphState>>;
 
 export class StateGraph {
-  public engine: 'strategy' | 'marketing' = 'strategy';
+  public engine: 'strategy' | 'marketing' | 'lead' = 'strategy';
   private nodes: Map<string, NodeFunction> = new Map();
   private order: string[] = [];
 
@@ -69,7 +82,15 @@ export class StateGraph {
     const startTime = new Date();
 
     // Create overall execution log
-    const execLog = this.engine === 'marketing'
+    const execLog = this.engine === 'lead'
+      ? await prisma.leadGraphExecutionLog.create({
+          data: {
+            sessionId: state.sessionId,
+            status: 'IN_PROGRESS',
+            nodeTraces: '[]'
+          }
+        })
+      : this.engine === 'marketing'
       ? await prisma.marketingGraphExecutionLog.create({
           data: {
             sessionId: state.sessionId,
@@ -130,7 +151,20 @@ export class StateGraph {
         state.logs.push(`Node [${nodeName}] completed in ${durationMs}ms`);
 
         // Record Node Output in DB for observability
-        if (this.engine === 'marketing') {
+        if (this.engine === 'lead') {
+          await prisma.leadGraphNodeOutput.create({
+            data: {
+              sessionId: state.sessionId,
+              nodeName,
+              inputSize,
+              outputSize,
+              durationMs,
+              attempts,
+              payload: JSON.stringify(outputState),
+              reflectionRuns: nodeName === 'ReflectionGraph' ? state.reflectionAttempts : 0
+            }
+          });
+        } else if (this.engine === 'marketing') {
           await prisma.marketingGraphNodeOutput.create({
             data: {
               sessionId: state.sessionId,
@@ -173,7 +207,17 @@ export class StateGraph {
       state.logs.push(`StateGraph completed in ${totalDuration}ms`);
 
       // Update execution log
-      if (this.engine === 'marketing') {
+      if (this.engine === 'lead') {
+        await prisma.leadGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'SUCCESS',
+            finishedAt: endTime,
+            totalDurationMs: totalDuration,
+            nodeTraces: JSON.stringify(traces)
+          }
+        });
+      } else if (this.engine === 'marketing') {
         await prisma.marketingGraphExecutionLog.update({
           where: { id: execLog.id },
           data: {
@@ -200,7 +244,18 @@ export class StateGraph {
       const totalDuration = endTime.getTime() - startTime.getTime();
       state.logs.push(`StateGraph failed: ${err.message}`);
 
-      if (this.engine === 'marketing') {
+      if (this.engine === 'lead') {
+        await prisma.leadGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'FAILED',
+            finishedAt: endTime,
+            totalDurationMs: totalDuration,
+            failureReason: err.message,
+            nodeTraces: JSON.stringify(traces)
+          }
+        });
+      } else if (this.engine === 'marketing') {
         await prisma.marketingGraphExecutionLog.update({
           where: { id: execLog.id },
           data: {

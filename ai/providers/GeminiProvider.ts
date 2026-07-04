@@ -101,8 +101,16 @@ export class GeminiProvider implements LLMProvider {
       const userPrompt = request.userPrompt.toLowerCase();
       const taskPart = userPrompt.includes('task:') ? userPrompt.split('task:')[1] : userPrompt;
 
+      // Lead Engine Recommendations Interceptor
+      if (userPrompt.includes('nextbestaction') || userPrompt.includes('closeprob') || userPrompt.includes('closing probabilities')) {
+        if (userPrompt.includes('original json zod contract') || userPrompt.includes('improve the recommendation')) {
+          mockText = JSON.stringify(this.getMockLeadRecommendations().recommendations[0]);
+        } else {
+          mockText = JSON.stringify(this.getMockLeadRecommendations());
+        }
+      }
       // Marketing Engine Mocks (Checked by precise lowercase root JSON keys in double quotes)
-      if (userPrompt.includes('"campaigns":') || userPrompt.includes('"campaignname":')) {
+      else if (userPrompt.includes('"campaigns":') || userPrompt.includes('"campaignname":')) {
         if (userPrompt.includes('original json zod contract') || userPrompt.includes('improve the campaign')) {
           mockText = JSON.stringify(this.getMockCampaigns().campaigns[0]);
         } else {
@@ -134,6 +142,28 @@ export class GeminiProvider implements LLMProvider {
         mockText = JSON.stringify(this.getMockCustomerJourney());
       } else if (userPrompt.includes('"primaryaudience":') || userPrompt.includes('"buyingmotivations":')) {
         mockText = JSON.stringify(this.getMockAudience());
+      }
+      // Lead Engine Mocks
+      else if (userPrompt.includes('buyingintent') && userPrompt.includes('expectedltv')) {
+        if (userPrompt.includes('leads') || userPrompt.includes('target lead companies')) {
+          mockText = JSON.stringify(this.getMockLeadProfiles());
+        } else {
+          mockText = JSON.stringify(this.getMockIcp());
+        }
+      } else if (userPrompt.includes('sourcename') && userPrompt.includes('difficulty')) {
+        mockText = JSON.stringify(this.getMockLeadSources());
+      } else if (userPrompt.includes('fitscore') && userPrompt.includes('timingscore')) {
+        mockText = JSON.stringify(this.getMockLeadQualification());
+      } else if (userPrompt.includes('qualityscore') && userPrompt.includes('prioritytier')) {
+        mockText = JSON.stringify(this.getMockLeadScoring());
+      } else if (userPrompt.includes('expecteddealsize') && userPrompt.includes('leadscount')) {
+        mockText = JSON.stringify(this.getMockLeadSegmentation());
+      } else if (userPrompt.includes('journeytype') && userPrompt.includes('touchpoints')) {
+        mockText = JSON.stringify(this.getMockLeadNurture());
+      } else if (userPrompt.includes('playrules') || userPrompt.includes('triggercondition')) {
+        mockText = JSON.stringify(this.getMockLeadPlaybooks());
+      } else if (userPrompt.includes('expectedleads') && userPrompt.includes('sqlcount')) {
+        mockText = JSON.stringify(this.getMockLeadForecast());
       }
       // Strategy Engine Mocks
       else if (userPrompt.includes('swot') || userPrompt.includes('strengths')) {
@@ -521,6 +551,160 @@ export class GeminiProvider implements LLMProvider {
           confidence: 90.0,
           dependencies: ['Update mid-market pricing configurations'],
           alternativeApproaches: ['Increase direct outbound cold calling lists']
+        }
+      ]
+    };
+  }
+
+  private getMockIcp() {
+    return {
+      industry: 'Software',
+      companySize: '50-200',
+      revenueRange: '$5M-$20M',
+      decisionMakers: ['VP of Sales', 'CEO'],
+      painPoints: ['Low sales velocity', 'High CAC'],
+      techStack: ['Salesforce', 'Hubspot'],
+      buyingIntent: 'HIGH',
+      budgetLevel: 15000,
+      growthStage: 'Scaleup',
+      expectedLtv: 50000,
+      expectedCac: 12000,
+      confidence: 90,
+      evidence: 'Historical sales data shows SaaS companies convert at 4%'
+    };
+  }
+
+  private getMockLeadSources() {
+    return {
+      sources: [
+        {
+          sourceName: 'LinkedIn Outbound',
+          rank: 1,
+          expectedRoi: '3.5x',
+          difficulty: 'MEDIUM',
+          requiredBudget: 2000,
+          expectedLeads: 50,
+          confidence: 88,
+          evidence: 'High active buyer intent on LinkedIn Sales Navigator'
+        }
+      ]
+    };
+  }
+
+  private getMockLeadProfiles() {
+    return {
+      leads: [
+        {
+          companyName: 'Acme Corp Solutions',
+          industry: 'Software',
+          companySize: '120 employees',
+          revenueRange: '$12M',
+          decisionMakers: ['Jane Doe (VP Sales)'],
+          painPoints: ['Manual outbound processes'],
+          techStack: ['Salesforce', 'Marketo'],
+          buyingIntent: 'HIGH',
+          budgetLevel: 25000,
+          growthStage: 'Series B',
+          expectedLtv: 60000,
+          expectedCac: 15000,
+          confidence: 92,
+          evidence: 'Visits to pricing page detected via reverse IP'
+        }
+      ]
+    };
+  }
+
+  private getMockLeadQualification() {
+    return {
+      fitScore: 85,
+      intentScore: 90,
+      budgetScore: 75,
+      authorityScore: 80,
+      needScore: 95,
+      timingScore: 88,
+      overallQualification: 86
+    };
+  }
+
+  private getMockLeadScoring() {
+    return {
+      qualityScore: 88,
+      valueScore: 82,
+      conversionProbability: 75,
+      revenuePotential: 45000,
+      riskScore: 20,
+      urgencyScore: 85,
+      priorityTier: 'Tier 1',
+      explainability: 'Matched high intent signals, appropriate size and budget scope.'
+    };
+  }
+
+  private getMockLeadSegmentation() {
+    return {
+      segments: [
+        {
+          segmentName: 'Enterprise SaaS Software',
+          industry: 'Software',
+          companySize: '100-500',
+          expectedDealSize: 50000,
+          leadsCount: 12
+        }
+      ]
+    };
+  }
+
+  private getMockLeadNurture() {
+    return {
+      journeys: [
+        {
+          journeyType: 'Warm',
+          touchpoints: ['LinkedIn connection request', 'Direct value email', '15-min discovery call'],
+          messages: ['Hello from growth team', 'Here is a free marketing gap audit'],
+          waitingPeriods: ['2 days', '5 days'],
+          successKpis: ['Open rate > 40%', 'Reply rate > 12%']
+        }
+      ]
+    };
+  }
+
+  private getMockLeadRecommendations() {
+    return {
+      recommendations: [
+        {
+          title: 'Launch Hyper-Targeted LinkedIn Sequence to B2B SaaS Scaleups',
+          nextBestAction: 'Send automated connection note with the ROI case study.',
+          expectedCloseProb: 75,
+          expectedTimeline: '30 days',
+          riskFactors: ['Decision maker changes role'],
+          dependencies: ['Approve brand value deck'],
+          alternativeActions: ['Execute cold email nurture sequence']
+        }
+      ]
+    };
+  }
+
+  private getMockLeadForecast() {
+    return {
+      expectedLeads: 120,
+      qualifiedLeads: 45,
+      sqlCount: 20,
+      conversionRate: 16.5,
+      revenue: 90000,
+      pipelineValue: 240000,
+      confidenceMin: 78000,
+      confidenceMax: 110000
+    };
+  }
+
+  private getMockLeadPlaybooks() {
+    return {
+      playbooks: [
+        {
+          name: 'The VP Sales Outbound Playbook',
+          playRules: 'Triggered when VP Sales has buying intent score > 80.',
+          targetAudience: 'VP Sales in Enterprise Tech',
+          triggerCondition: '3 page views on documentation/pricing',
+          recommendedSteps: ['Send LinkedIn DM', 'Follow up via Email after 3 days']
         }
       ]
     };

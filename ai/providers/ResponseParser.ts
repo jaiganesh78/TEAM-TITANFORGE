@@ -348,3 +348,142 @@ export const MarketingRecommendationsSchema = z.object({
   recommendations: z.array(MarketingRecommendationDetailSchema)
 });
 
+// ==========================================
+// LEAD ENGINE SCHEMAS — SPRINT 9
+// ==========================================
+
+export const IdealCustomerProfileSchema = z.object({
+  industry: z.string(),
+  companySize: z.string(),
+  revenueRange: z.string(),
+  decisionMakers: z.array(z.string()),
+  painPoints: z.array(z.string()),
+  techStack: z.array(z.string()),
+  buyingIntent: z.string(),
+  budgetLevel: z.number(),
+  growthStage: z.string(),
+  expectedLtv: z.number(),
+  expectedCac: z.number(),
+  confidence: z.number().min(0).max(100),
+  evidence: z.string()
+});
+
+export const LeadProfileSchema = z.object({
+  companyName: z.string(),
+  industry: z.string(),
+  companySize: z.string(),
+  revenueRange: z.string(),
+  decisionMakers: z.array(z.string()),
+  painPoints: z.array(z.string()),
+  techStack: z.array(z.string()),
+  buyingIntent: z.string(),
+  budgetLevel: z.number(),
+  growthStage: z.string(),
+  expectedLtv: z.number(),
+  expectedCac: z.number(),
+  confidence: z.number().min(0).max(100),
+  evidence: z.string()
+});
+
+export const LeadProfilesSchema = z.object({
+  leads: z.array(LeadProfileSchema)
+});
+
+export const LeadSourceDetailSchema = z.object({
+  sourceName: z.string(),
+  rank: z.number(),
+  expectedRoi: z.string(),
+  difficulty: z.string(),
+  requiredBudget: z.number(),
+  expectedLeads: z.number(),
+  confidence: z.number().min(0).max(100),
+  evidence: z.string()
+});
+
+export const LeadSourcesSchema = z.object({
+  sources: z.array(LeadSourceDetailSchema)
+});
+
+export const LeadQualificationSchema = z.object({
+  fitScore: z.number().min(0).max(100),
+  intentScore: z.number().min(0).max(100),
+  budgetScore: z.number().min(0).max(100),
+  authorityScore: z.number().min(0).max(100),
+  needScore: z.number().min(0).max(100),
+  timingScore: z.number().min(0).max(100),
+  overallQualification: z.number().min(0).max(100)
+});
+
+export const LeadScoringSchema = z.object({
+  qualityScore: z.number().min(0).max(100),
+  valueScore: z.number().min(0).max(100),
+  conversionProbability: z.number().min(0).max(100),
+  revenuePotential: z.number(),
+  riskScore: z.number().min(0).max(100),
+  urgencyScore: z.number().min(0).max(100),
+  priorityTier: z.enum(['Tier 1', 'Tier 2', 'Tier 3']),
+  explainability: z.string()
+});
+
+export const LeadSegmentDetailSchema = z.object({
+  segmentName: z.string(),
+  industry: z.string(),
+  companySize: z.string(),
+  expectedDealSize: z.number(),
+  leadsCount: z.number()
+});
+
+export const LeadSegmentationSchema = z.object({
+  segments: z.array(LeadSegmentDetailSchema)
+});
+
+export const LeadJourneyDetailSchema = z.object({
+  journeyType: z.enum(['Cold', 'Warm', 'Hot', 'Enterprise', 'SMB']),
+  touchpoints: z.array(z.string()),
+  messages: z.array(z.string()),
+  waitingPeriods: z.array(z.string()),
+  successKpis: z.array(z.string())
+});
+
+export const LeadNurturingSchema = z.object({
+  journeys: z.array(LeadJourneyDetailSchema)
+});
+
+export const LeadRecommendationDetailSchema = z.object({
+  title: z.string(),
+  nextBestAction: z.string(),
+  expectedCloseProb: z.number().min(0).max(100),
+  expectedTimeline: z.string(),
+  riskFactors: z.array(z.string()),
+  dependencies: z.array(z.string()),
+  alternativeActions: z.array(z.string())
+});
+
+export const LeadRecommendationsSchema = z.object({
+  recommendations: z.array(LeadRecommendationDetailSchema)
+});
+
+export const LeadForecastSchema = z.object({
+  expectedLeads: z.number(),
+  qualifiedLeads: z.number(),
+  sqlCount: z.number(),
+  conversionRate: z.number(),
+  revenue: z.number(),
+  pipelineValue: z.number(),
+  confidenceMin: z.number(),
+  confidenceMax: z.number()
+});
+
+export const LeadPlaybookDetailSchema = z.object({
+  name: z.string(),
+  playRules: z.string(),
+  targetAudience: z.string(),
+  triggerCondition: z.string(),
+  recommendedSteps: z.array(z.string())
+});
+
+export const LeadPlaybooksSchema = z.object({
+  playbooks: z.array(LeadPlaybookDetailSchema)
+});
+
+

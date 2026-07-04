@@ -163,6 +163,24 @@ model Business {
   marketingMemories        MarketingMemory[]
   campaignEvidences        CampaignEvidence[]
 
+  // Lead Engine Layer
+  leadSessions             LeadSession[]
+  leadProfiles             LeadProfile[]
+  leadSources              LeadSource[]
+  leadScores               LeadScore[]
+  leadJourneys             LeadJourney[]
+  leadRecommendations      LeadRecommendation[]
+  leadForecasts            LeadForecast[]
+  leadPlaybooks            LeadPlaybook[]
+  leadMemories             LeadMemory[]
+  leadFeedbacks            LeadFeedback[]
+  leadExecutionPlans       LeadExecutionPlan[]
+  leadEvidences            LeadEvidence[]
+  leadHistories            LeadHistory[]
+  revenuePipelines         RevenuePipeline[]
+  revenuePipelineStages    RevenuePipelineStage[]
+  revenuePipelineHistories RevenuePipelineHistory[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -825,6 +843,7 @@ model ContextSnapshot {
   
   strategySessions   StrategySession[]
   marketingSessions  MarketingSession[]
+  leadSessions       LeadSession[]
 
   @@index([businessId])
 }
@@ -1434,6 +1453,399 @@ model MarketingGraphNodeOutput {
   reflectionRuns Int             @default(0)
   createdAt      DateTime        @default(now())
 }
+
+// ==========================================
+// REVENUE OPERATING LAYER & LEAD ENGINE — SPRINT 9
+// ==========================================
+
+model RevenuePipeline {
+  id         String                 @id @default(uuid())
+  businessId String
+  business   Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name       String
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
+  stages     RevenuePipelineStage[]
+  leads      LeadProfile[]
+  histories  RevenuePipelineHistory[]
+
+  @@index([businessId])
+}
+
+model RevenuePipelineStage {
+  id                  String                 @id @default(uuid())
+  pipelineId          String
+  pipeline            RevenuePipeline        @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  stageName           String                 // Prospect, Engaged, MQL, SQL, Discovery, Proposal, Negotiation, Closed Won, Customer Success
+  entryCriteria       String                 @db.Text
+  exitCriteria        String                 @db.Text
+  probability         Float
+  averageTimeDays     Int
+  bottlenecks         String                 @db.Text
+  risks               String                 @db.Text
+  requiredDocuments   String                 @db.Text // JSON string list
+  requiredActivities  String                 @db.Text // JSON string list
+  responsibleEngine   String                 // marketing-engine, lead-engine, sales-engine
+  recommendedActions  String                 @db.Text // JSON string list
+  leads               LeadProfile[]
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
+  @@index([pipelineId])
+  @@index([businessId])
+}
+
+model RevenuePipelineHistory {
+  id            String                 @id @default(uuid())
+  pipelineId    String
+  pipeline      RevenuePipeline        @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId        String
+  lead          LeadProfile            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  fromStage     String
+  toStage       String
+  movedAt       DateTime               @default(now())
+  durationDays  Int?
+
+  @@index([pipelineId])
+  @@index([businessId])
+  @@index([leadId])
+}
+
+model LeadSession {
+  id                  String                   @id @default(uuid())
+  businessId          String
+  business            Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status              SessionStatus            @default(IN_PROGRESS)
+  contextSnapshotId   String?
+  contextSnapshot     ContextSnapshot?         @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion      Int                      @default(1)
+  promptVersion       String                   @default("1.0.0")
+  modelVersion        String                   @default("gemini-2.5-pro")
+
+  // Subgraph Outputs (serialized JSON)
+  icpAnalysis         String?                  @db.Text
+  leadSources         String?                  @db.Text
+  acquisitionPlan     String?                  @db.Text
+  qualificationRules  String?                  @db.Text
+  scoringModel        String?                  @db.Text
+  segmentation        String?                  @db.Text
+  nurtureJourneys     String?                  @db.Text
+  forecasts           String?                  @db.Text
+  executiveScores     String?                  @db.Text
+
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+
+  leads               LeadProfile[]
+  leadSourcesList     LeadSource[]
+  leadScores          LeadScore[]
+  leadJourneys        LeadJourney[]
+  recommendations     LeadRecommendation[]
+  forecastsList       LeadForecast[]
+  playbooks           LeadPlaybook[]
+  feedbacks           LeadFeedback[]
+  executionPlans      LeadExecutionPlan[]
+  evidences           LeadEvidence[]
+  histories           LeadHistory[]
+  executionLogs       LeadGraphExecutionLog[]
+  nodeOutputs         LeadGraphNodeOutput[]
+
+  @@index([businessId])
+}
+
+model LeadProfile {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  pipelineId          String
+  pipeline            RevenuePipeline        @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  stageId             String
+  stage               RevenuePipelineStage   @relation(fields: [stageId], references: [id], onDelete: Cascade)
+
+  companyName         String
+  industry            String
+  companySize         String
+  revenueRange        String
+  decisionMakers      String                 @db.Text // JSON string list
+  painPoints          String                 @db.Text // JSON string list
+  techStack           String                 @db.Text // JSON string list
+  buyingIntent        String                 // HIGH, MEDIUM, LOW
+  budgetLevel         Float
+  growthStage         String
+  expectedLtv         Float
+  expectedCac         Float
+  confidence          Float
+  evidence            String                 @db.Text
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
+  scores              LeadScore[]
+  journeys            LeadJourney[]
+  recommendations     LeadRecommendation[]
+  pipelineHistories   RevenuePipelineHistory[]
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([pipelineId])
+  @@index([stageId])
+}
+
+model LeadSource {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sourceName          String                 // LinkedIn, Google Search, Referrals, etc.
+  rank                Int
+  expectedRoi         String
+  difficulty          String
+  requiredBudget      Float
+  expectedLeads       Int
+  confidence          Float
+  evidence            String                 @db.Text
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model LeadScore {
+  id                    String                 @id @default(uuid())
+  sessionId             String
+  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId                String
+  lead                  LeadProfile            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  fitScore              Float
+  intentScore           Float
+  budgetScore           Float
+  authorityScore        Float
+  needScore             Float
+  timingScore           Float
+  overallQualification  Float
+
+  qualityScore          Float
+  valueScore            Float
+  conversionProbability Float
+  revenuePotential      Float
+  riskScore             Float
+  urgencyScore          Float
+  priorityTier          String                 // Tier 1, Tier 2, Tier 3
+
+  explainability        String                 @db.Text // JSON text
+  createdAt             DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([leadId])
+}
+
+model LeadJourney {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId              String?
+  lead                LeadProfile?           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  journeyType         String                 // Cold, Warm, Hot, Enterprise, SMB
+  touchpoints         String                 @db.Text // JSON list of touchpoints
+  messages            String                 @db.Text // JSON list of messages
+  waitingPeriods      String                 @db.Text // JSON list of waiting periods
+  successKpis         String                 @db.Text // JSON list of KPIs
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([leadId])
+}
+
+model LeadRecommendation {
+  id                    String                 @id @default(uuid())
+  sessionId             String
+  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId                String?
+  lead                  LeadProfile?           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  title                 String
+  nextBestAction        String                 @db.Text
+  expectedCloseProb     Float
+  expectedTimeline      String
+  riskFactors           String                 @db.Text // JSON string list
+  dependencies          String                 @db.Text // JSON string list
+  alternativeActions    String                 @db.Text // JSON string list
+  status                String                 @default("PENDING") // PENDING, APPROVED, REJECTED
+  
+  feedbacks             LeadFeedback[]
+  executionPlans        LeadExecutionPlan[]
+  evidences             LeadEvidence[]
+  createdAt             DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([leadId])
+}
+
+model LeadForecast {
+  id                    String                 @id @default(uuid())
+  sessionId             String
+  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  expectedLeads         Int
+  qualifiedLeads        Int
+  sqlCount              Int
+  conversionRate        Float
+  revenue               Float
+  pipelineValue         Float
+  confidenceMin         Float
+  confidenceMax         Float
+  createdAt             DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model LeadPlaybook {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name                String
+  playRules           String                 @db.Text // JSON rules
+  targetAudience      String
+  triggerCondition    String
+  recommendedSteps    String                 @db.Text // JSON steps
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model LeadMemory {
+  id                  String                 @id @default(uuid())
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  acceptedStrategies  String                 @db.Text // JSON list
+  rejectedStrategies  String                 @db.Text // JSON list
+  performanceLogs     String                 @db.Text // JSON performance metrics
+  createdAt           DateTime               @default(now())
+
+  @@index([businessId])
+}
+
+model LeadFeedback {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId    String
+  recommendation      LeadRecommendation     @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  action              String                 // ACCEPT, REJECT, REGENERATE
+  feedbackText        String?                @db.Text
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([recommendationId])
+  @@index([businessId])
+}
+
+model LeadExecutionPlan {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId    String
+  recommendation      LeadRecommendation     @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  steps               String                 @db.Text // JSON tasks list
+  status              String                 @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
+  @@index([sessionId])
+  @@index([recommendationId])
+  @@index([businessId])
+}
+
+model LeadEvidence {
+  id                    String                 @id @default(uuid())
+  sessionId             String
+  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId      String?
+  recommendation        LeadRecommendation?    @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  factPath              String
+  factValue             String
+  confidence            Float
+  createdAt             DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model LeadHistory {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId              String
+  oldStage            String
+  newStage            String
+  updatedBy           String                 // user or engine name
+  updatedAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model LeadGraphExecutionLog {
+  id               String          @id @default(uuid())
+  sessionId        String
+  session          LeadSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt        DateTime        @default(now())
+  finishedAt       DateTime?
+  totalDurationMs  Int             @default(0)
+  status           String          // SUCCESS | FAILED
+  failureReason    String?         @db.Text
+  nodeTraces       String?         @db.Text // JSON string
+  createdAt        DateTime        @default(now())
+
+  @@index([sessionId])
+}
+
+model LeadGraphNodeOutput {
+  id             String          @id @default(uuid())
+  sessionId      String
+  session        LeadSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  nodeName       String
+  inputSize      Int
+  outputSize     Int
+  durationMs     Int
+  attempts       Int             @default(1)
+  payload        String          @db.Text // JSON output
+  reflectionRuns Int             @default(0)
+  createdAt      DateTime        @default(now())
+
+  @@index([sessionId])
+}
+
 
 
 

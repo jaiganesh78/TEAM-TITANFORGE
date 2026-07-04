@@ -8,6 +8,7 @@ import knowledgeRoutes from './knowledgeRoutes';
 import growthRoutes from './growthRoutes';
 import strategyRoutes from './strategyRoutes';
 import marketingRoutes from './marketingRoutes';
+import { leadRouter } from './leadRoutes';
 
 const router = Router();
 
@@ -20,6 +21,7 @@ router.use('/knowledge', knowledgeRoutes);
 router.use('/growth', growthRoutes);
 router.use('/strategy', strategyRoutes);
 router.use('/marketing', marketingRoutes);
+router.use('/lead', leadRouter);
 
 
 
