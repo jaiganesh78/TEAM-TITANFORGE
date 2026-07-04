@@ -48,10 +48,88 @@ export interface GraphState {
   leadRecommendations?: any[];
   leads?: any[];
 
+  // Sales outputs
+  opportunityAnalysis?: any;
+  dealQualification?: any;
+  buyingCommittee?: any;
+  negotiationStrategy?: any;
+  objectionHandling?: any;
+  proposalStrategy?: any;
+  dealRisk?: any;
+  revenueOptimization?: any;
+  salesForecast?: any;
+  nextBestAction?: any;
+  salesPlaybooks?: any[];
+  salesRecommendations?: any[];
+
+  // Revenue Intelligence Snapshot / Version tracking
+  revenueSnapshotId?: string;
+  revenueAssetVersion?: number;
+  pipelineVersion?: number;
+  forecastVersion?: number;
+  dealTwinVersion?: number;
+
+  // Analytics outputs
+  businessHealthScore?: any;
+  growthScore?: any;
+  revenueHealth?: any;
+  trendAnalysis?: any;
+  forecastAnalysis?: any;
+  businessBenchmark?: any;
+  competitiveAnalysis?: any;
+  marketReadiness?: any;
+  riskAnalysis?: any;
+  portfolioAnalysis?: any;
+  executiveInsight?: any;
+  analyticsRecommendations?: any[];
+  prediction?: any;
+  snapshotComparison?: any;
+
+  // Analytics Snapshots & Version trackers
+  analyticsSnapshotId?: string;
+  analyticsAssetVersion?: number;
+
+  // Customer Success outputs
+  customerHealth?: any;
+  customerSuccessJourney?: any;
+  customerLifecycle?: any;
+  customerAdoption?: any;
+  supportIntelligence?: any;
+  customerSentiment?: any;
+  renewalForecast?: any;
+  renewalPlan?: any;
+  expansionOpportunity?: any;
+  retentionStrategy?: any;
+  churnRisk?: any;
+  customerRecommendations?: any[];
+  customerValueRealization?: any;
+  customer360Timeline?: any[];
+  executiveAccountSummary?: any;
+  successPlaybooks?: any;
+  customerAdvocacy?: any;
+  customerPortfolioIntelligence?: any;
+
+  // Customer Success Snapshots & Version trackers
+  customerSuccessSnapshotId?: string;
+  customerSuccessAssetVersion?: number;
+
   // Reflection loop track
   reflectionAttempts: number;
   confidenceScore: number;
   reflectionCritique?: string;
+
+  // Executive Board outputs
+  executiveBrief?: any;
+  executiveReports?: any[];
+  executiveAlerts?: any[];
+  executiveDecisions?: any[];
+  executiveRecommendations?: any[];
+  executiveConsensus?: any[];
+  executiveConflicts?: any[];
+  executiveOperatingPlan?: any;
+  executiveRoadmap?: any[];
+  executiveKPITree?: any;
+  decisionSimulations?: any;
 
   // Metadata / Logs
   logs: string[];
@@ -60,7 +138,7 @@ export interface GraphState {
 export type NodeFunction = (state: GraphState) => Promise<Partial<GraphState>>;
 
 export class StateGraph {
-  public engine: 'strategy' | 'marketing' | 'lead' = 'strategy';
+  public engine: 'strategy' | 'marketing' | 'lead' | 'sales' | 'analytics' | 'customer-success' | 'executive-board' = 'strategy';
   private nodes: Map<string, NodeFunction> = new Map();
   private order: string[] = [];
 
@@ -90,12 +168,46 @@ export class StateGraph {
             nodeTraces: '[]'
           }
         })
+      : this.engine === 'sales'
+      ? await prisma.salesGraphExecutionLog.create({
+          data: {
+            sessionId: state.sessionId,
+            status: 'IN_PROGRESS',
+            nodeTraces: '[]'
+          }
+        })
       : this.engine === 'marketing'
       ? await prisma.marketingGraphExecutionLog.create({
           data: {
             sessionId: state.sessionId,
             status: 'IN_PROGRESS',
             nodeTraces: '[]'
+          }
+        })
+      : this.engine === 'analytics'
+      ? await prisma.analyticsGraphExecutionLog.create({
+          data: {
+            sessionId: state.sessionId,
+            status: 'IN_PROGRESS',
+            nodeTraces: '[]'
+          }
+        })
+      : this.engine === 'customer-success'
+      ? await prisma.customerSuccessGraphExecutionLog.create({
+          data: {
+            sessionId: state.sessionId,
+            graphType: 'master',
+            status: 'IN_PROGRESS',
+            durationMs: 0
+          }
+        })
+      : this.engine === 'executive-board'
+      ? await prisma.executiveBoardExecutionLog.create({
+          data: {
+            sessionId: state.sessionId,
+            graphType: 'master',
+            status: 'RUNNING',
+            durationMs: 0
           }
         })
       : await prisma.graphExecutionLog.create({
@@ -164,6 +276,19 @@ export class StateGraph {
               reflectionRuns: nodeName === 'ReflectionGraph' ? state.reflectionAttempts : 0
             }
           });
+        } else if (this.engine === 'sales') {
+          await prisma.salesGraphNodeOutput.create({
+            data: {
+              sessionId: state.sessionId,
+              nodeName,
+              inputSize,
+              outputSize,
+              durationMs,
+              attempts,
+              payload: JSON.stringify(outputState),
+              reflectionRuns: nodeName === 'ReflectionGraph' ? state.reflectionAttempts : 0
+            }
+          });
         } else if (this.engine === 'marketing') {
           await prisma.marketingGraphNodeOutput.create({
             data: {
@@ -175,6 +300,43 @@ export class StateGraph {
               attempts,
               payload: JSON.stringify(outputState),
               reflectionRuns: nodeName === 'ReflectionGraph' ? state.reflectionAttempts : 0
+            }
+          });
+        } else if (this.engine === 'analytics') {
+          await prisma.analyticsGraphNodeOutput.create({
+            data: {
+              sessionId: state.sessionId,
+              nodeName,
+              inputSize,
+              outputSize,
+              durationMs,
+              attempts,
+              payload: JSON.stringify(outputState),
+              reflectionRuns: nodeName === 'ReflectionGraph' ? state.reflectionAttempts : 0
+            }
+          });
+        } else if (this.engine === 'customer-success') {
+          await prisma.customerSuccessGraphNodeOutput.create({
+            data: {
+              sessionId: state.sessionId,
+              nodeName,
+              inputSize,
+              outputSize,
+              durationMs,
+              attempts,
+              payload: JSON.stringify(outputState),
+              reflectionRuns: nodeName === 'ReflectionGraph' ? state.reflectionAttempts : 0
+            }
+          });
+        } else if (this.engine === 'executive-board') {
+          await prisma.executiveBoardNodeOutput.create({
+            data: {
+              sessionId: state.sessionId,
+              nodeName,
+              inputSize,
+              outputSize,
+              durationMs,
+              payload: JSON.stringify(outputState)
             }
           });
         } else {
@@ -217,6 +379,21 @@ export class StateGraph {
             nodeTraces: JSON.stringify(traces)
           }
         });
+      } else if (this.engine === 'sales') {
+        await prisma.salesGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'SUCCESS',
+            finishedAt: endTime,
+            totalDurationMs: totalDuration,
+            nodeTraces: JSON.stringify(traces),
+            revenueSnapshotId: state.revenueSnapshotId || null,
+            revenueAssetVersion: state.revenueAssetVersion || null,
+            pipelineVersion: state.pipelineVersion || null,
+            forecastVersion: state.forecastVersion || null,
+            dealTwinVersion: state.dealTwinVersion || null
+          }
+        });
       } else if (this.engine === 'marketing') {
         await prisma.marketingGraphExecutionLog.update({
           where: { id: execLog.id },
@@ -225,6 +402,34 @@ export class StateGraph {
             finishedAt: endTime,
             totalDurationMs: totalDuration,
             nodeTraces: JSON.stringify(traces)
+          }
+        });
+      } else if (this.engine === 'analytics') {
+        await prisma.analyticsGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'SUCCESS',
+            finishedAt: endTime,
+            totalDurationMs: totalDuration,
+            nodeTraces: JSON.stringify(traces),
+            analyticsSnapshotId: state.analyticsSnapshotId || null,
+            analyticsAssetVersion: state.analyticsAssetVersion || null
+          }
+        });
+      } else if (this.engine === 'customer-success') {
+        await prisma.customerSuccessGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'SUCCESS',
+            durationMs: totalDuration
+          }
+        });
+      } else if (this.engine === 'executive-board') {
+        await prisma.executiveBoardExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'COMPLETED',
+            durationMs: totalDuration
           }
         });
       } else {
@@ -255,6 +460,22 @@ export class StateGraph {
             nodeTraces: JSON.stringify(traces)
           }
         });
+      } else if (this.engine === 'sales') {
+        await prisma.salesGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'FAILED',
+            finishedAt: endTime,
+            totalDurationMs: totalDuration,
+            failureReason: err.message,
+            nodeTraces: JSON.stringify(traces),
+            revenueSnapshotId: state.revenueSnapshotId || null,
+            revenueAssetVersion: state.revenueAssetVersion || null,
+            pipelineVersion: state.pipelineVersion || null,
+            forecastVersion: state.forecastVersion || null,
+            dealTwinVersion: state.dealTwinVersion || null
+          }
+        });
       } else if (this.engine === 'marketing') {
         await prisma.marketingGraphExecutionLog.update({
           where: { id: execLog.id },
@@ -264,6 +485,37 @@ export class StateGraph {
             totalDurationMs: totalDuration,
             failureReason: err.message,
             nodeTraces: JSON.stringify(traces)
+          }
+        });
+      } else if (this.engine === 'analytics') {
+        await prisma.analyticsGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'FAILED',
+            finishedAt: endTime,
+            totalDurationMs: totalDuration,
+            failureReason: err.message,
+            nodeTraces: JSON.stringify(traces),
+            analyticsSnapshotId: state.analyticsSnapshotId || null,
+            analyticsAssetVersion: state.analyticsAssetVersion || null
+          }
+        });
+      } else if (this.engine === 'customer-success') {
+        await prisma.customerSuccessGraphExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'FAILED',
+            error: err.message,
+            durationMs: totalDuration
+          }
+        });
+      } else if (this.engine === 'executive-board') {
+        await prisma.executiveBoardExecutionLog.update({
+          where: { id: execLog.id },
+          data: {
+            status: 'FAILED',
+            error: err.message,
+            durationMs: totalDuration
           }
         });
       } else {

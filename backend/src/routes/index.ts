@@ -9,6 +9,10 @@ import growthRoutes from './growthRoutes';
 import strategyRoutes from './strategyRoutes';
 import marketingRoutes from './marketingRoutes';
 import { leadRouter } from './leadRoutes';
+import { salesRouter } from './salesRoutes';
+import analyticsRouter from './analyticsRoutes';
+import { customerSuccessRouter } from './customerSuccessRoutes';
+import { executiveBoardRouter } from './executiveBoardRoutes';
 
 const router = Router();
 
@@ -22,6 +26,10 @@ router.use('/growth', growthRoutes);
 router.use('/strategy', strategyRoutes);
 router.use('/marketing', marketingRoutes);
 router.use('/lead', leadRouter);
+router.use('/sales', salesRouter);
+router.use('/analytics', analyticsRouter);
+router.use('/customer-success', customerSuccessRouter);
+router.use('/executive-board', executiveBoardRouter);
 
 
 

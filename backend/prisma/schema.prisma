@@ -107,40 +107,40 @@ model Business {
   discoveryProgress     DiscoveryProgress?
 
   // 1-to-many Relations
-  revenueProfiles   RevenueProfile[]
-  products          ProductPortfolio[]
-  services          ServicePortfolio[]
-  customerSegments  CustomerSegment[]
-  customerPersonas  CustomerPersona[]
-  employees         EmployeeProfile[]
-  vendors           VendorProfile[]
-  partners          PartnerProfile[]
-  competitors       CompetitorProfile[]
-  goals             BusinessGoal[]
-  constraints       BusinessConstraint[]
-  risks             BusinessRisk[]
-  kpis              BusinessKPI[]
-  documents         BusinessDocumentReference[]
-  websites          WebsiteReference[]
-  twinAuditLogs     TwinAuditLog[]
-  answerMetadata    AnswerMetadata[]
-  websiteAnalyses     Website[]
-  uploadedDocuments   UploadedDocument[]
-  extractedCandidates ExtractedCandidate[]
-  knowledgeEntities   KnowledgeEntity[]
-  businessEvidences   BusinessEvidence[]
-  reviewActions       ReviewAction[]
-  extractionJobs      ExtractionJob[]
-  knowledgeChunks       KnowledgeChunk[]
-  knowledgeCollections  KnowledgeCollection[]
-  knowledgeStatistics   KnowledgeStatistics?
-  knowledgeVersions     KnowledgeVersion[]
-  contextSnapshots      ContextSnapshot[]
+  revenueProfiles      RevenueProfile[]
+  products             ProductPortfolio[]
+  services             ServicePortfolio[]
+  customerSegments     CustomerSegment[]
+  customerPersonas     CustomerPersona[]
+  employees            EmployeeProfile[]
+  vendors              VendorProfile[]
+  partners             PartnerProfile[]
+  competitors          CompetitorProfile[]
+  goals                BusinessGoal[]
+  constraints          BusinessConstraint[]
+  risks                BusinessRisk[]
+  kpis                 BusinessKPI[]
+  documents            BusinessDocumentReference[]
+  websites             WebsiteReference[]
+  twinAuditLogs        TwinAuditLog[]
+  answerMetadata       AnswerMetadata[]
+  websiteAnalyses      Website[]
+  uploadedDocuments    UploadedDocument[]
+  extractedCandidates  ExtractedCandidate[]
+  knowledgeEntities    KnowledgeEntity[]
+  businessEvidences    BusinessEvidence[]
+  reviewActions        ReviewAction[]
+  extractionJobs       ExtractionJob[]
+  knowledgeChunks      KnowledgeChunk[]
+  knowledgeCollections KnowledgeCollection[]
+  knowledgeStatistics  KnowledgeStatistics?
+  knowledgeVersions    KnowledgeVersion[]
+  contextSnapshots     ContextSnapshot[]
 
   // Growth Digital Twin Layer
-  growthDomainStates    GrowthDomainState[]
-  growthTwinSummary     GrowthTwinSummary?
-  aiOperatingContext    AIOperatingContext?
+  growthDomainStates GrowthDomainState[]
+  growthTwinSummary  GrowthTwinSummary?
+  aiOperatingContext AIOperatingContext?
 
   // Strategy Engine Layer
   strategySessions        StrategySession[]
@@ -181,8 +181,88 @@ model Business {
   revenuePipelineStages    RevenuePipelineStage[]
   revenuePipelineHistories RevenuePipelineHistory[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // Sales Engine Layer & Revenue Intelligence
+  salesSessions                SalesSession[]
+  salesOpportunities           SalesOpportunity[]
+  dealHealths                  DealHealth[]
+  salesForecasts               SalesForecast[]
+  negotiationPlans             NegotiationPlan[]
+  salesRecommendations         SalesRecommendation[]
+  salesPlaybooks               SalesPlaybook[]
+  salesMemories                SalesMemory[]
+  salesFeedbacks               SalesFeedback[]
+  salesHistories               SalesHistory[]
+  salesExecutionPlans          SalesExecutionPlan[]
+  salesEvidences               SalesEvidence[]
+  revenueIntelligenceSnapshots RevenueIntelligenceSnapshot[]
+  revenueAssets                RevenueAsset[]
+  revenueMemories              RevenueMemory?
+
+  // Analytics Engine & Business Evolution
+  analyticsSessions        AnalyticsSession[]
+  analyticsDashboards      AnalyticsDashboard[]
+  businessHealthScores     BusinessHealthScore[]
+  growthScores             GrowthScore[]
+  revenueHealths           RevenueHealth[]
+  marketReadinesss         MarketReadiness[]
+  competitivePositions     CompetitivePosition[]
+  forecastSnapshots        ForecastSnapshot[]
+  forecastHistories        ForecastHistory[]
+  analyticsRisks           AnalyticsRisk[]
+  businessOpportunities    BusinessOpportunity[]
+  analyticsRecommendations AnalyticsRecommendation[]
+  analyticsMemories        AnalyticsMemory[]
+  analyticsFeedbacks       AnalyticsFeedback[]
+  analyticsHistories       AnalyticsHistory[]
+  analyticsExecutionPlans  AnalyticsExecutionPlan[]
+  analyticsEvidences       AnalyticsEvidence[]
+
+  analyticsAssets     AnalyticsAsset[]
+  businessBenchmarks  BusinessBenchmark[]
+  trendAnalyses       TrendAnalysis[]
+  businessAlerts      BusinessAlert[]
+  executiveInsights   ExecutiveInsight[]
+  kpiHistories        KPIHistory[]
+  predictionHistories PredictionHistory[]
+
+  businessEvolutionSnapshots BusinessEvolutionSnapshot[]
+  snapshotComparisons        SnapshotComparison[]
+  aiImpactAnalyses           AIImpactAnalysis[]
+  decisionIntelligences      DecisionIntelligence[]
+  forecastAccuracies         ForecastAccuracy[]
+
+  // Customer Success Engine & Value Realization — Sprint 12
+  customerSuccessSessions   CustomerSuccessSession[]
+  customerDigitalTwins      CustomerDigitalTwin[]
+  customerHealths           CustomerHealth[]
+  customerJourneys          CustomerJourney[]
+  customerLifecycles        CustomerLifecycle[]
+  customerTouchpoints       CustomerTouchpoint[]
+  customerSentiments        CustomerSentiment[]
+  customerFeedbacks         CustomerFeedback[]
+  customerSupportCases      CustomerSupportCase[]
+  supportKnowledges         SupportKnowledge[]
+  renewalForecasts          RenewalForecast[]
+  renewalPlans              RenewalPlan[]
+  expansionOpportunities    ExpansionOpportunity[]
+  crossSellOpportunities    CrossSellOpportunity[]
+  upsellOpportunities       UpsellOpportunity[]
+  churnRisks                ChurnRisk[]
+  retentionStrategies       RetentionStrategy[]
+  customerRecommendations   CustomerRecommendation[]
+  customerMemories          CustomerMemory[]
+  customerEvidences         CustomerEvidence[]
+  customerHistories         CustomerHistory[]
+  customerSuccessAssets     CustomerSuccessAsset[]
+  customerBenchmarks        CustomerBenchmark[]
+  customerSuccessScores     CustomerSuccessScore[]
+  customerSuccessSnapshots  CustomerSuccessSnapshot[]
+  customerValueRealizations CustomerValueRealization[]
+  customerAdvocacies        CustomerAdvocacy[]
+
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  CustomerExecutionPlan CustomerExecutionPlan[]
 
   @@index([organizationId])
   @@index([status])
@@ -352,7 +432,7 @@ model PartnerProfile {
   business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   partnerName     String
   partnershipType String?
-  dependencyLevel String?  // LOW, MEDIUM, HIGH
+  dependencyLevel String? // LOW, MEDIUM, HIGH
 }
 
 model CompetitorProfile {
@@ -390,8 +470,8 @@ model BusinessRisk {
   business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   title       String
   description String?  @db.Text
-  likelihood  String?  // LOW, MEDIUM, HIGH
-  impact      String?  // LOW, MEDIUM, HIGH
+  likelihood  String? // LOW, MEDIUM, HIGH
+  impact      String? // LOW, MEDIUM, HIGH
   mitigation  String?  @db.Text
 }
 
@@ -417,13 +497,13 @@ model BusinessDocumentReference {
 }
 
 model WebsiteReference {
-  id         String    @id @default(uuid())
-  businessId String
-  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  url        String
-  title      String?
-  description String?  @db.Text
-  crawledAt  DateTime?
+  id          String    @id @default(uuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  url         String
+  title       String?
+  description String?   @db.Text
+  crawledAt   DateTime?
 }
 
 model DiscoveryProgress {
@@ -434,23 +514,23 @@ model DiscoveryProgress {
 
   // Status for each of the 18 modules: DRAFT, IN_PROGRESS, COMPLETED
   identityStatus     String @default("DRAFT")
-  modelStatus         String @default("DRAFT")
-  productsStatus      String @default("DRAFT")
-  customersStatus     String @default("DRAFT")
-  marketingStatus     String @default("DRAFT")
-  salesStatus         String @default("DRAFT")
-  operationsStatus    String @default("DRAFT")
-  financeStatus       String @default("DRAFT")
-  technologyStatus    String @default("DRAFT")
-  organizationStatus  String @default("DRAFT")
-  partnersStatus      String @default("DRAFT")
-  competitorsStatus   String @default("DRAFT")
-  goalsStatus         String @default("DRAFT")
-  constraintsStatus   String @default("DRAFT")
-  risksStatus         String @default("DRAFT")
-  kpisStatus          String @default("DRAFT")
-  documentsStatus     String @default("DRAFT")
-  websiteStatus       String @default("DRAFT")
+  modelStatus        String @default("DRAFT")
+  productsStatus     String @default("DRAFT")
+  customersStatus    String @default("DRAFT")
+  marketingStatus    String @default("DRAFT")
+  salesStatus        String @default("DRAFT")
+  operationsStatus   String @default("DRAFT")
+  financeStatus      String @default("DRAFT")
+  technologyStatus   String @default("DRAFT")
+  organizationStatus String @default("DRAFT")
+  partnersStatus     String @default("DRAFT")
+  competitorsStatus  String @default("DRAFT")
+  goalsStatus        String @default("DRAFT")
+  constraintsStatus  String @default("DRAFT")
+  risksStatus        String @default("DRAFT")
+  kpisStatus         String @default("DRAFT")
+  documentsStatus    String @default("DRAFT")
+  websiteStatus      String @default("DRAFT")
 }
 
 model TwinAuditLog {
@@ -460,7 +540,7 @@ model TwinAuditLog {
   businessId    String
   business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   section       String
-  operation     String   // CREATE, UPDATE, DELETE
+  operation     String // CREATE, UPDATE, DELETE
   previousValue String?  @db.Text
   newValue      String?  @db.Text
   timestamp     DateTime @default(now())
@@ -473,24 +553,23 @@ model AnswerMetadata {
   id         String   @id @default(uuid())
   businessId String
   business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  fieldPath  String   // e.g. "marketingProfile.adSpend"
-  status     String   // KNOWN, ESTIMATED, UNKNOWN
-  source     String   // USER, WEBSITE, DOCUMENT, AI
+  fieldPath  String // e.g. "marketingProfile.adSpend"
+  status     String // KNOWN, ESTIMATED, UNKNOWN
+  source     String // USER, WEBSITE, DOCUMENT, AI
   updatedAt  DateTime @updatedAt
 
   @@unique([businessId, fieldPath])
   @@index([businessId])
 }
 
-
 model Website {
-  id              String               @id @default(uuid())
-  businessId      String
-  business        Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  url             String
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
-  analysisRuns    WebsiteAnalysisRun[]
+  id           String               @id @default(uuid())
+  businessId   String
+  business     Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  url          String
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  analysisRuns WebsiteAnalysisRun[]
 
   @@index([businessId])
 }
@@ -507,91 +586,91 @@ model WebsiteAnalysisRun {
 }
 
 model WebsitePage {
-  id                String             @id @default(uuid())
-  analysisRunId     String
-  analysisRun       WebsiteAnalysisRun @relation(fields: [analysisRunId], references: [id], onDelete: Cascade)
-  url               String
-  status            JobStatus          @default(QUEUED)
-  content           String?            @db.Text
-  createdAt         DateTime           @default(now())
-  chunkIds          String[]
-  embeddingIds      String[]
-  vectorReferences  String[]
-  knowledgeChunks   KnowledgeChunk[]
+  id               String             @id @default(uuid())
+  analysisRunId    String
+  analysisRun      WebsiteAnalysisRun @relation(fields: [analysisRunId], references: [id], onDelete: Cascade)
+  url              String
+  status           JobStatus          @default(QUEUED)
+  content          String?            @db.Text
+  createdAt        DateTime           @default(now())
+  chunkIds         String[]
+  embeddingIds     String[]
+  vectorReferences String[]
+  knowledgeChunks  KnowledgeChunk[]
 }
 
 model UploadedDocument {
-  id                String               @id @default(uuid())
-  businessId        String
-  business          Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  fileName          String
-  filePath          String
-  fileSize          Int
-  mimeType          String
-  category          DocumentCategory     @default(OTHER)
-  version           Int                  @default(1)
-  uploadedBy        String
-  hash              String
-  status            DocumentStatus       @default(PENDING)
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @updatedAt
-  extractions       DocumentExtraction[]
-  knowledgeChunks   KnowledgeChunk[]
+  id              String               @id @default(uuid())
+  businessId      String
+  business        Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fileName        String
+  filePath        String
+  fileSize        Int
+  mimeType        String
+  category        DocumentCategory     @default(OTHER)
+  version         Int                  @default(1)
+  uploadedBy      String
+  hash            String
+  status          DocumentStatus       @default(PENDING)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  extractions     DocumentExtraction[]
+  knowledgeChunks KnowledgeChunk[]
 
   @@index([businessId])
 }
 
 model DocumentExtraction {
-  id                String           @id @default(uuid())
-  documentId        String
-  document          UploadedDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  rawContent        String           @db.Text
-  status            JobStatus        @default(QUEUED)
-  createdAt         DateTime         @default(now())
-  chunkIds          String[]
-  embeddingIds      String[]
-  vectorReferences  String[]
+  id               String           @id @default(uuid())
+  documentId       String
+  document         UploadedDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  rawContent       String           @db.Text
+  status           JobStatus        @default(QUEUED)
+  createdAt        DateTime         @default(now())
+  chunkIds         String[]
+  embeddingIds     String[]
+  vectorReferences String[]
 }
 
 model ExtractedCandidate {
-  id                String           @id @default(uuid())
-  businessId        String
-  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  fieldPath         String
-  value             String
-  normalizedValue   String?
-  confidence        Float
-  sourceType        SourceType
-  sourceId          String
-  status            ExtractionStatus @default(PENDING_REVIEW)
-  extractionMethod  String
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  knowledgeChunks   KnowledgeChunk[]
+  id               String           @id @default(uuid())
+  businessId       String
+  business         Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fieldPath        String
+  value            String
+  normalizedValue  String?
+  confidence       Float
+  sourceType       SourceType
+  sourceId         String
+  status           ExtractionStatus @default(PENDING_REVIEW)
+  extractionMethod String
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  knowledgeChunks  KnowledgeChunk[]
 
   @@index([businessId])
   @@index([status])
 }
 
 model KnowledgeEntity {
-  id                String       @id @default(uuid())
-  businessId        String
-  business          Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  entityType        String
-  fieldPath         String
-  value             String
-  normalizedValue   String?
-  confidence        Float
-  sourceType        SourceType
-  sourceId          String
-  evidenceId        String?
-  extractionMethod  String
-  reviewStatus      ReviewStatus @default(PENDING)
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  chunkIds          String[]
-  embeddingIds      String[]
-  vectorReferences  String[]
+  id               String       @id @default(uuid())
+  businessId       String
+  business         Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  entityType       String
+  fieldPath        String
+  value            String
+  normalizedValue  String?
+  confidence       Float
+  sourceType       SourceType
+  sourceId         String
+  evidenceId       String?
+  extractionMethod String
+  reviewStatus     ReviewStatus @default(PENDING)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  chunkIds         String[]
+  embeddingIds     String[]
+  vectorReferences String[]
 
   @@index([businessId])
 }
@@ -617,14 +696,14 @@ model BusinessEvidence {
 }
 
 model ReviewAction {
-  id          String   @id @default(uuid())
-  businessId  String
-  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  candidateId String
-  action      String   // ACCEPT, REJECT, MERGE
-  userId      String
-  notes       String?
-  createdAt   DateTime @default(now())
+  id              String           @id @default(uuid())
+  businessId      String
+  business        Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  candidateId     String
+  action          String // ACCEPT, REJECT, MERGE
+  userId          String
+  notes           String?
+  createdAt       DateTime         @default(now())
   knowledgeChunks KnowledgeChunk[]
 
   @@index([businessId])
@@ -700,69 +779,69 @@ enum DocumentCategory {
 }
 
 model KnowledgeChunk {
-  id                   String               @id @default(uuid())
-  businessId           String
-  business             Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  source               String               // URL, filename, or "digital_twin"
-  sourceType           SourceType
-  section              String?
-  pageNumber           Int?
-  tokenCount           Int
-  content              String               @db.Text
-  version              Int                  @default(1)
-  status               ChunkStatus          @default(ACTIVE)
-  diffInfo             String?              @db.Text
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
+  id         String      @id @default(uuid())
+  businessId String
+  business   Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  source     String // URL, filename, or "digital_twin"
+  sourceType SourceType
+  section    String?
+  pageNumber Int?
+  tokenCount Int
+  content    String      @db.Text
+  version    Int         @default(1)
+  status     ChunkStatus @default(ACTIVE)
+  diffInfo   String?     @db.Text
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   // Immutable Lineage Tracking
   websitePageId        String?
-  websitePage          WebsitePage?         @relation(fields: [websitePageId], references: [id], onDelete: Cascade)
+  websitePage          WebsitePage?        @relation(fields: [websitePageId], references: [id], onDelete: Cascade)
   uploadedDocumentId   String?
-  uploadedDocument     UploadedDocument?    @relation(fields: [uploadedDocumentId], references: [id], onDelete: Cascade)
+  uploadedDocument     UploadedDocument?   @relation(fields: [uploadedDocumentId], references: [id], onDelete: Cascade)
   extractedCandidateId String?
-  extractedCandidate   ExtractedCandidate?  @relation(fields: [extractedCandidateId], references: [id], onDelete: Cascade)
+  extractedCandidate   ExtractedCandidate? @relation(fields: [extractedCandidateId], references: [id], onDelete: Cascade)
   reviewActionId       String?
-  reviewAction         ReviewAction?        @relation(fields: [reviewActionId], references: [id], onDelete: Cascade)
-  fieldPath            String?              // Twin field reference
-  recommendationId     String?              // Future recommendation reference
+  reviewAction         ReviewAction?       @relation(fields: [reviewActionId], references: [id], onDelete: Cascade)
+  fieldPath            String? // Twin field reference
+  recommendationId     String? // Future recommendation reference
 
   // Version tracking & historical retrieval
-  previousChunkId      String?
-  previousChunk        KnowledgeChunk?      @relation("ChunkHistory", fields: [previousChunkId], references: [id], onDelete: SetNull)
-  nextChunks           KnowledgeChunk[]     @relation("ChunkHistory")
+  previousChunkId String?
+  previousChunk   KnowledgeChunk?  @relation("ChunkHistory", fields: [previousChunkId], references: [id], onDelete: SetNull)
+  nextChunks      KnowledgeChunk[] @relation("ChunkHistory")
 
   // Knowledge Graph Readiness (Schema support only, no implementation)
-  parentChunkId        String?
-  parentChunk          KnowledgeChunk?      @relation("ChunkHierarchy", fields: [parentChunkId], references: [id], onDelete: SetNull)
-  childChunks          KnowledgeChunk[]     @relation("ChunkHierarchy")
+  parentChunkId          String?
+  parentChunk            KnowledgeChunk?  @relation("ChunkHierarchy", fields: [parentChunkId], references: [id], onDelete: SetNull)
+  childChunks            KnowledgeChunk[] @relation("ChunkHierarchy")
   relatedBusinessDomains String[]
   referencedEntities     String[]
 
   // Growth Twin Tagging (Sprint 6)
-  growthDomain          String?   // GrowthDomain enum value
-  businessEngine        String?   // Engine ID e.g. 'marketing-engine'
-  businessFunction      String?   // e.g. 'marketing-operations'
-  lifecycleStage        String?   // BusinessStage value
-  decisionType          String?   // 'STRATEGIC' | 'TACTICAL' | 'OPERATIONAL'
-  chunkPriority         String?   // 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'
-  businessObjective     String?   // Free-text objective this supports
-  relatedKpiSlugs       String[]  // KPI IDs this chunk informs
-  futureDebateTopic     String?   // Future Debate Engine categorization
-  futureRecommCategory  String?   // Future recommendation bucket
+  growthDomain         String? // GrowthDomain enum value
+  businessEngine       String? // Engine ID e.g. 'marketing-engine'
+  businessFunction     String? // e.g. 'marketing-operations'
+  lifecycleStage       String? // BusinessStage value
+  decisionType         String? // 'STRATEGIC' | 'TACTICAL' | 'OPERATIONAL'
+  chunkPriority        String? // 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'
+  businessObjective    String? // Free-text objective this supports
+  relatedKpiSlugs      String[] // KPI IDs this chunk informs
+  futureDebateTopic    String? // Future Debate Engine categorization
+  futureRecommCategory String? // Future recommendation bucket
 
-  metadata             KnowledgeMetadata[]
-  embeddingRefs        EmbeddingReference[]
+  metadata      KnowledgeMetadata[]
+  embeddingRefs EmbeddingReference[]
 
   @@index([businessId])
 }
 
 model KnowledgeMetadata {
-  id             String         @id @default(uuid())
-  chunkId        String
-  chunk          KnowledgeChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
-  key            String
-  value          String
+  id      String         @id @default(uuid())
+  chunkId String
+  chunk   KnowledgeChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  key     String
+  value   String
 
   @@unique([chunkId, key])
 }
@@ -782,14 +861,14 @@ model EmbeddingReference {
 }
 
 model KnowledgeCollection {
-  id             String     @id @default(uuid())
-  businessId     String
-  business       Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  name           String     // Business Core, Website, Financial, Marketing, Sales, Operations, etc.
-  description    String?
-  sourceType     SourceType
-  status         String     // ACTIVE, ARCHIVED
-  createdAt      DateTime   @default(now())
+  id          String     @id @default(uuid())
+  businessId  String
+  business    Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String // Business Core, Website, Financial, Marketing, Sales, Operations, etc.
+  description String?
+  sourceType  SourceType
+  status      String // ACTIVE, ARCHIVED
+  createdAt   DateTime   @default(now())
 
   @@index([businessId])
 }
@@ -815,14 +894,14 @@ model KnowledgeStatistics {
 }
 
 model KnowledgeVersion {
-  id             String   @id @default(uuid())
-  businessId     String
-  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  entityType     String   // e.g. "DOCUMENT", "WEBSITE"
-  entityId       String   // e.g. Document ID or Website ID
-  versionNumber  Int
-  hash           String
-  createdAt      DateTime @default(now())
+  id            String   @id @default(uuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  entityType    String // e.g. "DOCUMENT", "WEBSITE"
+  entityId      String // e.g. Document ID or Website ID
+  versionNumber Int
+  hash          String
+  createdAt     DateTime @default(now())
 
   @@index([businessId])
 }
@@ -837,13 +916,15 @@ model ContextSnapshot {
   knowledgeVersion   Int
   sourcesUsed        String[] // List of source IDs
   confidenceSummary  Float
-  topic              String   // e.g. "Marketing"
+  topic              String // e.g. "Marketing"
   payload            String   @db.Text // Structured JSON snapshot payload
   createdAt          DateTime @default(now())
-  
-  strategySessions   StrategySession[]
-  marketingSessions  MarketingSession[]
-  leadSessions       LeadSession[]
+
+  strategySessions  StrategySession[]
+  marketingSessions MarketingSession[]
+  leadSessions      LeadSession[]
+  salesSessions     SalesSession[]
+  analyticsSessions AnalyticsSession[]
 
   @@index([businessId])
 }
@@ -899,58 +980,58 @@ enum BusinessModelType {
 }
 
 model GrowthDomainState {
-  id                     String       @id @default(uuid())
-  businessId             String
-  business               Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  domain                 GrowthDomain
-  currentState           String?      @db.Text  // JSON
-  desiredState           String?      @db.Text  // JSON
-  gap                    String?      @db.Text  // JSON computed gap
-  gapSeverity            String       @default("NONE") // NONE | LOW | MEDIUM | HIGH | CRITICAL
-  priority               Int          @default(50)     // 1-100
-  confidence             Float        @default(0.0)    // 0-100
-  evidenceIds            String[]
-  knowledgeSources       String[]
-  dependencies           String[]     // other GrowthDomain slugs
-  futureAIRecommendations String?     @db.Text
-  lastUpdated            DateTime     @default(now())
-  version                Int          @default(1)
-  createdAt              DateTime     @default(now())
-  updatedAt              DateTime     @updatedAt
-  history                GrowthDomainHistory[]
+  id                      String                @id @default(uuid())
+  businessId              String
+  business                Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  domain                  GrowthDomain
+  currentState            String?               @db.Text // JSON
+  desiredState            String?               @db.Text // JSON
+  gap                     String?               @db.Text // JSON computed gap
+  gapSeverity             String                @default("NONE") // NONE | LOW | MEDIUM | HIGH | CRITICAL
+  priority                Int                   @default(50) // 1-100
+  confidence              Float                 @default(0.0) // 0-100
+  evidenceIds             String[]
+  knowledgeSources        String[]
+  dependencies            String[] // other GrowthDomain slugs
+  futureAIRecommendations String?               @db.Text
+  lastUpdated             DateTime              @default(now())
+  version                 Int                   @default(1)
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  history                 GrowthDomainHistory[]
 
   @@unique([businessId, domain])
   @@index([businessId])
 }
 
 model GrowthDomainHistory {
-  id            String           @id @default(uuid())
+  id            String            @id @default(uuid())
   domainStateId String
   domainState   GrowthDomainState @relation(fields: [domainStateId], references: [id], onDelete: Cascade)
   businessId    String
   domain        GrowthDomain
-  snapshot      String           @db.Text // Full JSON snapshot
+  snapshot      String            @db.Text // Full JSON snapshot
   version       Int
-  changedBy     String           // USER | WEBSITE_SYNC | DOCUMENT_SYNC | AI
-  createdAt     DateTime         @default(now())
+  changedBy     String // USER | WEBSITE_SYNC | DOCUMENT_SYNC | AI
+  createdAt     DateTime          @default(now())
 
   @@index([businessId])
   @@index([domainStateId])
 }
 
 model GrowthTwinSummary {
-  id                String           @id @default(uuid())
-  businessId        String           @unique
-  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  overallConfidence Float            @default(0.0)
-  coveredDomains    Int              @default(0)
-  totalDomains      Int              @default(17)
+  id                String            @id @default(uuid())
+  businessId        String            @unique
+  business          Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  overallConfidence Float             @default(0.0)
+  coveredDomains    Int               @default(0)
+  totalDomains      Int               @default(17)
   highGapDomains    String[]
-  lastSyncedAt      DateTime         @default(now())
-  sectorSlug        String?          // references SectorConfig.slug
-  businessStage     BusinessStage    @default(EARLY_STAGE)
+  lastSyncedAt      DateTime          @default(now())
+  sectorSlug        String? // references SectorConfig.slug
+  businessStage     BusinessStage     @default(EARLY_STAGE)
   businessModelType BusinessModelType @default(B2B)
-  updatedAt         DateTime         @updatedAt
+  updatedAt         DateTime          @updatedAt
 }
 
 model AIOperatingContext {
@@ -971,35 +1052,35 @@ model AIOperatingContext {
 }
 
 model SectorConfig {
-  id                        String   @id @default(uuid())
-  slug                      String   @unique
-  displayName               String
-  description               String   @db.Text
-  businessTerminology       String   @db.Text // JSON
-  kpiSlugs                  String[]
-  requiredDiscoveryDomains  String[]
-  marketingChannels         String[]
-  leadGenerationChannels    String[]
-  salesProcessSteps         String[]
-  customerSuccessMetrics    String[]
-  competitiveDimensions     String[]
-  questionPriorities        String   @db.Text // JSON: {questionId -> priority}
-  growthConstraints         String[]
-  businessLifecycle         String   @db.Text // JSON
-  customerJourney           String   @db.Text // JSON
-  marketingFunnel           String   @db.Text // JSON
-  salesFunnel               String   @db.Text // JSON
-  commonPainPoints          String[]
-  buyingBehaviour           String   @db.Text // JSON
-  commonRisks               String[]
-  typicalKpis               String[]
-  typicalCompetitors        String   @db.Text // JSON
-  growthBottlenecks         String[]
-  typicalAIOpportunities    String[]
-  futureAIPromptTemplates   String   @db.Text // JSON: {engineId -> template}
-  isActive                  Boolean  @default(true)
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt
+  id                       String   @id @default(uuid())
+  slug                     String   @unique
+  displayName              String
+  description              String   @db.Text
+  businessTerminology      String   @db.Text // JSON
+  kpiSlugs                 String[]
+  requiredDiscoveryDomains String[]
+  marketingChannels        String[]
+  leadGenerationChannels   String[]
+  salesProcessSteps        String[]
+  customerSuccessMetrics   String[]
+  competitiveDimensions    String[]
+  questionPriorities       String   @db.Text // JSON: {questionId -> priority}
+  growthConstraints        String[]
+  businessLifecycle        String   @db.Text // JSON
+  customerJourney          String   @db.Text // JSON
+  marketingFunnel          String   @db.Text // JSON
+  salesFunnel              String   @db.Text // JSON
+  commonPainPoints         String[]
+  buyingBehaviour          String   @db.Text // JSON
+  commonRisks              String[]
+  typicalKpis              String[]
+  typicalCompetitors       String   @db.Text // JSON
+  growthBottlenecks        String[]
+  typicalAIOpportunities   String[]
+  futureAIPromptTemplates  String   @db.Text // JSON: {engineId -> template}
+  isActive                 Boolean  @default(true)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 }
 
 // ==========================================
@@ -1020,78 +1101,78 @@ enum RecommendationStatus {
 }
 
 model StrategySession {
-  id                   String                   @id @default(uuid())
-  businessId           String
-  business             Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  status               SessionStatus            @default(IN_PROGRESS)
-  contextSnapshotId    String?
-  contextSnapshot      ContextSnapshot?         @relation(fields: [contextSnapshotId], references: [id])
-  contextVersion       Int                      @default(1)
-  promptVersion        String                   @default("1.0.0")
-  modelVersion         String                   @default("gemini-2.5-pro")
-  
+  id                String           @id @default(uuid())
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status            SessionStatus    @default(IN_PROGRESS)
+  contextSnapshotId String?
+  contextSnapshot   ContextSnapshot? @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion    Int              @default(1)
+  promptVersion     String           @default("1.0.0")
+  modelVersion      String           @default("gemini-2.5-pro")
+
   // Structured Subgraph Outputs
-  marketResearch       String?                  @db.Text // JSON
-  swot                 String?                  @db.Text // JSON
-  competitorAnalysis   String?                  @db.Text // JSON
-  positioning          String?                  @db.Text // JSON
-  pricing              String?                  @db.Text // JSON
-  opportunities        String?                  @db.Text // JSON
-  strategicAssets      String?                  @db.Text // JSON list of assets
-  
-  createdAt            DateTime                 @default(now())
-  updatedAt            DateTime                 @updatedAt
-  
+  marketResearch     String? @db.Text // JSON
+  swot               String? @db.Text // JSON
+  competitorAnalysis String? @db.Text // JSON
+  positioning        String? @db.Text // JSON
+  pricing            String? @db.Text // JSON
+  opportunities      String? @db.Text // JSON
+  strategicAssets    String? @db.Text // JSON list of assets
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  recommendations      StrategyRecommendation[]
-  executionLogs        GraphExecutionLog[]
-  nodeOutputs          GraphNodeOutput[]
-  feedback             StrategyFeedback[]
-  history              StrategyHistory[]
-  evidence             StrategyEvidence[]
-  executionPlans       StrategyExecutionPlan[]
+  recommendations StrategyRecommendation[]
+  executionLogs   GraphExecutionLog[]
+  nodeOutputs     GraphNodeOutput[]
+  feedback        StrategyFeedback[]
+  history         StrategyHistory[]
+  evidence        StrategyEvidence[]
+  executionPlans  StrategyExecutionPlan[]
 
   @@index([businessId])
 }
 
 model StrategyRecommendation {
-  id                    String                  @id @default(uuid())
+  id                    String               @id @default(uuid())
   sessionId             String
-  session               StrategySession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session               StrategySession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   businessId            String
-  business              Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  business              Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
   title                 String
-  problem               String                  @db.Text
-  businessContext       String                  @db.Text
-  reasoning             String                  @db.Text
-  expectedKpiImpact     String                  @db.Text // JSON
+  problem               String               @db.Text
+  businessContext       String               @db.Text
+  reasoning             String               @db.Text
+  expectedKpiImpact     String               @db.Text // JSON
   affectedKpis          String[]
   requiredData          String[]
   dependencies          String[]
-  priority              String                  // CRITICAL | HIGH | MEDIUM | LOW
+  priority              String // CRITICAL | HIGH | MEDIUM | LOW
   confidence            Float
   estimatedTimeline     String
   expectedROI           String
-  businessRisks         String                  @db.Text // JSON
-  alternativeStrategies String                  @db.Text // JSON
-  status                RecommendationStatus    @default(PENDING)
-  
-  // Explainability
-  knowledgeSources      String[]
-  businessFactsUsed     String[]
-  growthDomainsUsed     String[]
-  reasoningSummary      String                  @db.Text
-  assumptions           String[]
-  constraints           String[]
-  whySelected           String                  @db.Text
-  whyAlternativesRejected String                @db.Text
+  businessRisks         String               @db.Text // JSON
+  alternativeStrategies String               @db.Text // JSON
+  status                RecommendationStatus @default(PENDING)
 
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
-  evidence              StrategyEvidence[]
-  feedback              StrategyFeedback[]
-  history               StrategyHistory[]
-  executionPlans        StrategyExecutionPlan[]
+  // Explainability
+  knowledgeSources        String[]
+  businessFactsUsed       String[]
+  growthDomainsUsed       String[]
+  reasoningSummary        String   @db.Text
+  assumptions             String[]
+  constraints             String[]
+  whySelected             String   @db.Text
+  whyAlternativesRejected String   @db.Text
+
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  evidence       StrategyEvidence[]
+  feedback       StrategyFeedback[]
+  history        StrategyHistory[]
+  executionPlans StrategyExecutionPlan[]
 
   @@index([businessId])
   @@index([sessionId])
@@ -1123,7 +1204,7 @@ model StrategyFeedback {
   recommendation   StrategyRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
   businessId       String
   business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  action           String                  // ACCEPT | REJECT | REGENERATE | FEEDBACK
+  action           String // ACCEPT | REJECT | REGENERATE | FEEDBACK
   feedbackText     String?                 @db.Text
   editedGoals      String?                 @db.Text // JSON array
   createdAt        DateTime                @default(now())
@@ -1141,7 +1222,7 @@ model StrategyHistory {
   business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
   snapshot         String                  @db.Text // JSON
   version          Int
-  changedBy        String                  // AI | USER
+  changedBy        String // AI | USER
   createdAt        DateTime                @default(now())
 
   @@index([businessId])
@@ -1165,23 +1246,23 @@ model StrategyExecutionPlan {
 }
 
 model GraphExecutionLog {
-  id               String          @id @default(uuid())
-  sessionId        String
-  session          StrategySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  startedAt        DateTime        @default(now())
-  finishedAt       DateTime?
-  totalDurationMs  Int             @default(0)
-  status           String          // SUCCESS | FAILED
-  failureReason    String?         @db.Text
-  nodeTraces       String?         @db.Text // JSON string
-  createdAt        DateTime        @default(now())
+  id              String          @id @default(uuid())
+  sessionId       String
+  session         StrategySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt       DateTime        @default(now())
+  finishedAt      DateTime?
+  totalDurationMs Int             @default(0)
+  status          String // SUCCESS | FAILED
+  failureReason   String?         @db.Text
+  nodeTraces      String?         @db.Text // JSON string
+  createdAt       DateTime        @default(now())
 }
 
 model GraphNodeOutput {
   id             String          @id @default(uuid())
   sessionId      String
   session        StrategySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  nodeName       String          // e.g. "ContextGraph"
+  nodeName       String // e.g. "ContextGraph"
   inputSize      Int
   outputSize     Int
   durationMs     Int
@@ -1196,88 +1277,88 @@ model GraphNodeOutput {
 // ==========================================
 
 model MarketingSession {
-  id                   String                   @id @default(uuid())
-  businessId           String
-  business             Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  status               SessionStatus            @default(IN_PROGRESS)
-  contextSnapshotId    String?
-  contextSnapshot      ContextSnapshot?         @relation(fields: [contextSnapshotId], references: [id])
-  contextVersion       Int                      @default(1)
-  promptVersion        String                   @default("1.0.0")
-  modelVersion         String                   @default("gemini-2.5-pro")
+  id                String           @id @default(uuid())
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status            SessionStatus    @default(IN_PROGRESS)
+  contextSnapshotId String?
+  contextSnapshot   ContextSnapshot? @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion    Int              @default(1)
+  promptVersion     String           @default("1.0.0")
+  modelVersion      String           @default("gemini-2.5-pro")
 
   // Subgraph Outputs (serialized JSON)
-  audienceAnalysis     String?                  @db.Text
-  customerJourney      String?                  @db.Text
-  funnelAnalysis       String?                  @db.Text
-  creativeStrategy     String?                  @db.Text
-  channelReadiness     String?                  @db.Text
-  budgetOptimizer      String?                  @db.Text
-  experimentPortfolio  String?                  @db.Text
-  contentPlan          String?                  @db.Text
-  calendar             String?                  @db.Text
-  executiveScores      String?                  @db.Text
+  audienceAnalysis    String? @db.Text
+  customerJourney     String? @db.Text
+  funnelAnalysis      String? @db.Text
+  creativeStrategy    String? @db.Text
+  channelReadiness    String? @db.Text
+  budgetOptimizer     String? @db.Text
+  experimentPortfolio String? @db.Text
+  contentPlan         String? @db.Text
+  calendar            String? @db.Text
+  executiveScores     String? @db.Text
 
-  createdAt            DateTime                 @default(now())
-  updatedAt            DateTime                 @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  campaigns            MarketingCampaign[]
-  recommendations      MarketingRecommendation[]
-  budgets              MarketingBudget[]
-  calendars            MarketingCalendar[]
-  contentPlans         MarketingContentPlan[]
-  feedbacks            MarketingFeedback[]
-  histories            MarketingHistory[]
-  executionPlans       MarketingExecutionPlan[]
-  evidences            CampaignEvidence[]
-  executionLogs        MarketingGraphExecutionLog[]
-  nodeOutputs          MarketingGraphNodeOutput[]
+  campaigns       MarketingCampaign[]
+  recommendations MarketingRecommendation[]
+  budgets         MarketingBudget[]
+  calendars       MarketingCalendar[]
+  contentPlans    MarketingContentPlan[]
+  feedbacks       MarketingFeedback[]
+  histories       MarketingHistory[]
+  executionPlans  MarketingExecutionPlan[]
+  evidences       CampaignEvidence[]
+  executionLogs   MarketingGraphExecutionLog[]
+  nodeOutputs     MarketingGraphNodeOutput[]
 
   @@index([businessId])
 }
 
 model MarketingCampaign {
-  id                String            @id @default(uuid())
-  sessionId         String
-  session           MarketingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId        String
-  business          Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  name              String
-  objective         String
-  targetAudience    String            @db.Text
-  channel           String
-  coreMessage       String            @db.Text
-  offer             String            @db.Text
-  callToAction      String
-  expectedKpis      String            @db.Text // JSON list or object
-  duration          String
-  estimatedBudget   Float
-  expectedROI       String
-  dependencies      String[]
-  priority          String
-  journeyStage      String
-  funnelStage       String
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  id              String           @id @default(uuid())
+  sessionId       String
+  session         MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId      String
+  business        Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name            String
+  objective       String
+  targetAudience  String           @db.Text
+  channel         String
+  coreMessage     String           @db.Text
+  offer           String           @db.Text
+  callToAction    String
+  expectedKpis    String           @db.Text // JSON list or object
+  duration        String
+  estimatedBudget Float
+  expectedROI     String
+  dependencies    String[]
+  priority        String
+  journeyStage    String
+  funnelStage     String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 
-  feedback          MarketingFeedback[]
-  history           MarketingHistory[]
-  executionPlans    MarketingExecutionPlan[]
-  evidence          CampaignEvidence[]
+  feedback       MarketingFeedback[]
+  history        MarketingHistory[]
+  executionPlans MarketingExecutionPlan[]
+  evidence       CampaignEvidence[]
 
   @@index([businessId])
 }
 
 model MarketingRecommendation {
-  id                    String             @id @default(uuid())
+  id                    String               @id @default(uuid())
   sessionId             String
-  session               MarketingSession   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session               MarketingSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   businessId            String
-  business              Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  business              Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
   title                 String
-  problem               String             @db.Text
-  opportunity           String             @db.Text
-  evidence              String             @db.Text
+  problem               String               @db.Text
+  opportunity           String               @db.Text
+  evidence              String               @db.Text
   affectedKpis          String[]
   expectedROI           Float
   expectedLeads         Int
@@ -1288,29 +1369,29 @@ model MarketingRecommendation {
   dependencies          String[]
   alternativeApproaches String[]
   status                RecommendationStatus @default(PENDING)
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
 
-  feedback              MarketingFeedback[]
-  history               MarketingHistory[]
-  executionPlans        MarketingExecutionPlan[]
-  campaignEvidences     CampaignEvidence[]
+  feedback          MarketingFeedback[]
+  history           MarketingHistory[]
+  executionPlans    MarketingExecutionPlan[]
+  campaignEvidences CampaignEvidence[]
 
   @@index([businessId])
 }
 
 model MarketingBudget {
-  id                String            @id @default(uuid())
+  id                String           @id @default(uuid())
   sessionId         String
-  session           MarketingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session           MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   businessId        String
-  business          Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
   category          String
   minAmount         Float
   recommendedAmount Float
   aggressiveAmount  Float
-  reasoning         String            @db.Text
-  createdAt         DateTime          @default(now())
+  reasoning         String           @db.Text
+  createdAt         DateTime         @default(now())
 
   @@index([businessId])
 }
@@ -1321,7 +1402,7 @@ model MarketingCalendar {
   session      MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   businessId   String
   business     Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  timeFrame    String           // WEEKLY | MONTHLY | QUARTERLY
+  timeFrame    String // WEEKLY | MONTHLY | QUARTERLY
   label        String
   activities   String           @db.Text // JSON string list
   dependencies String[]
@@ -1354,7 +1435,7 @@ model MarketingFeedback {
   recommendation   MarketingRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
   businessId       String
   business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  action           String                   // ACCEPT | REJECT | REGENERATE
+  action           String // ACCEPT | REJECT | REGENERATE
   feedbackText     String?                  @db.Text
   createdAt        DateTime                 @default(now())
 
@@ -1373,7 +1454,7 @@ model MarketingHistory {
   business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
   snapshot         String                   @db.Text // JSON string
   version          Int
-  changedBy        String                   // AI | USER
+  changedBy        String // AI | USER
   createdAt        DateTime                 @default(now())
 
   @@index([businessId])
@@ -1428,30 +1509,30 @@ model CampaignEvidence {
 }
 
 model MarketingGraphExecutionLog {
-  id               String          @id @default(uuid())
-  sessionId        String
-  session          MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  startedAt        DateTime        @default(now())
-  finishedAt       DateTime?
-  totalDurationMs  Int             @default(0)
-  status           String          // SUCCESS | FAILED
-  failureReason    String?         @db.Text
-  nodeTraces       String?         @db.Text // JSON string
-  createdAt        DateTime        @default(now())
+  id              String           @id @default(uuid())
+  sessionId       String
+  session         MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt       DateTime         @default(now())
+  finishedAt      DateTime?
+  totalDurationMs Int              @default(0)
+  status          String // SUCCESS | FAILED
+  failureReason   String?          @db.Text
+  nodeTraces      String?          @db.Text // JSON string
+  createdAt       DateTime         @default(now())
 }
 
 model MarketingGraphNodeOutput {
-  id             String          @id @default(uuid())
+  id             String           @id @default(uuid())
   sessionId      String
   session        MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  nodeName       String          // e.g. "ContextGraph"
+  nodeName       String // e.g. "ContextGraph"
   inputSize      Int
   outputSize     Int
   durationMs     Int
-  attempts       Int             @default(1)
-  payload        String          @db.Text // JSON output
-  reflectionRuns Int             @default(0)
-  createdAt      DateTime        @default(now())
+  attempts       Int              @default(1)
+  payload        String           @db.Text // JSON output
+  reflectionRuns Int              @default(0)
+  createdAt      DateTime         @default(now())
 }
 
 // ==========================================
@@ -1459,12 +1540,12 @@ model MarketingGraphNodeOutput {
 // ==========================================
 
 model RevenuePipeline {
-  id         String                 @id @default(uuid())
+  id         String                   @id @default(uuid())
   businessId String
-  business   Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  business   Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
   name       String
-  createdAt  DateTime               @default(now())
-  updatedAt  DateTime               @updatedAt
+  createdAt  DateTime                 @default(now())
+  updatedAt  DateTime                 @updatedAt
   stages     RevenuePipelineStage[]
   leads      LeadProfile[]
   histories  RevenuePipelineHistory[]
@@ -1473,42 +1554,42 @@ model RevenuePipeline {
 }
 
 model RevenuePipelineStage {
-  id                  String                 @id @default(uuid())
-  pipelineId          String
-  pipeline            RevenuePipeline        @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  stageName           String                 // Prospect, Engaged, MQL, SQL, Discovery, Proposal, Negotiation, Closed Won, Customer Success
-  entryCriteria       String                 @db.Text
-  exitCriteria        String                 @db.Text
-  probability         Float
-  averageTimeDays     Int
-  bottlenecks         String                 @db.Text
-  risks               String                 @db.Text
-  requiredDocuments   String                 @db.Text // JSON string list
-  requiredActivities  String                 @db.Text // JSON string list
-  responsibleEngine   String                 // marketing-engine, lead-engine, sales-engine
-  recommendedActions  String                 @db.Text // JSON string list
-  leads               LeadProfile[]
-  createdAt           DateTime               @default(now())
-  updatedAt           DateTime               @updatedAt
+  id                 String          @id @default(uuid())
+  pipelineId         String
+  pipeline           RevenuePipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  businessId         String
+  business           Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  stageName          String // Prospect, Engaged, MQL, SQL, Discovery, Proposal, Negotiation, Closed Won, Customer Success
+  entryCriteria      String          @db.Text
+  exitCriteria       String          @db.Text
+  probability        Float
+  averageTimeDays    Int
+  bottlenecks        String          @db.Text
+  risks              String          @db.Text
+  requiredDocuments  String          @db.Text // JSON string list
+  requiredActivities String          @db.Text // JSON string list
+  responsibleEngine  String // marketing-engine, lead-engine, sales-engine
+  recommendedActions String          @db.Text // JSON string list
+  leads              LeadProfile[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
 
   @@index([pipelineId])
   @@index([businessId])
 }
 
 model RevenuePipelineHistory {
-  id            String                 @id @default(uuid())
-  pipelineId    String
-  pipeline      RevenuePipeline        @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
-  businessId    String
-  business      Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  leadId        String
-  lead          LeadProfile            @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  fromStage     String
-  toStage       String
-  movedAt       DateTime               @default(now())
-  durationDays  Int?
+  id           String          @id @default(uuid())
+  pipelineId   String
+  pipeline     RevenuePipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId       String
+  lead         LeadProfile     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  fromStage    String
+  toStage      String
+  movedAt      DateTime        @default(now())
+  durationDays Int?
 
   @@index([pipelineId])
   @@index([businessId])
@@ -1516,79 +1597,80 @@ model RevenuePipelineHistory {
 }
 
 model LeadSession {
-  id                  String                   @id @default(uuid())
-  businessId          String
-  business            Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  status              SessionStatus            @default(IN_PROGRESS)
-  contextSnapshotId   String?
-  contextSnapshot     ContextSnapshot?         @relation(fields: [contextSnapshotId], references: [id])
-  contextVersion      Int                      @default(1)
-  promptVersion       String                   @default("1.0.0")
-  modelVersion        String                   @default("gemini-2.5-pro")
+  id                String           @id @default(uuid())
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status            SessionStatus    @default(IN_PROGRESS)
+  contextSnapshotId String?
+  contextSnapshot   ContextSnapshot? @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion    Int              @default(1)
+  promptVersion     String           @default("1.0.0")
+  modelVersion      String           @default("gemini-2.5-pro")
 
   // Subgraph Outputs (serialized JSON)
-  icpAnalysis         String?                  @db.Text
-  leadSources         String?                  @db.Text
-  acquisitionPlan     String?                  @db.Text
-  qualificationRules  String?                  @db.Text
-  scoringModel        String?                  @db.Text
-  segmentation        String?                  @db.Text
-  nurtureJourneys     String?                  @db.Text
-  forecasts           String?                  @db.Text
-  executiveScores     String?                  @db.Text
+  icpAnalysis        String? @db.Text
+  leadSources        String? @db.Text
+  acquisitionPlan    String? @db.Text
+  qualificationRules String? @db.Text
+  scoringModel       String? @db.Text
+  segmentation       String? @db.Text
+  nurtureJourneys    String? @db.Text
+  forecasts          String? @db.Text
+  executiveScores    String? @db.Text
 
-  createdAt           DateTime                 @default(now())
-  updatedAt           DateTime                 @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  leads               LeadProfile[]
-  leadSourcesList     LeadSource[]
-  leadScores          LeadScore[]
-  leadJourneys        LeadJourney[]
-  recommendations     LeadRecommendation[]
-  forecastsList       LeadForecast[]
-  playbooks           LeadPlaybook[]
-  feedbacks           LeadFeedback[]
-  executionPlans      LeadExecutionPlan[]
-  evidences           LeadEvidence[]
-  histories           LeadHistory[]
-  executionLogs       LeadGraphExecutionLog[]
-  nodeOutputs         LeadGraphNodeOutput[]
+  leads           LeadProfile[]
+  leadSourcesList LeadSource[]
+  leadScores      LeadScore[]
+  leadJourneys    LeadJourney[]
+  recommendations LeadRecommendation[]
+  forecastsList   LeadForecast[]
+  playbooks       LeadPlaybook[]
+  feedbacks       LeadFeedback[]
+  executionPlans  LeadExecutionPlan[]
+  evidences       LeadEvidence[]
+  histories       LeadHistory[]
+  executionLogs   LeadGraphExecutionLog[]
+  nodeOutputs     LeadGraphNodeOutput[]
 
   @@index([businessId])
 }
 
 model LeadProfile {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  pipelineId          String
-  pipeline            RevenuePipeline        @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
-  stageId             String
-  stage               RevenuePipelineStage   @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  id         String               @id @default(uuid())
+  sessionId  String
+  session    LeadSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  pipelineId String
+  pipeline   RevenuePipeline      @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  stageId    String
+  stage      RevenuePipelineStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
 
-  companyName         String
-  industry            String
-  companySize         String
-  revenueRange        String
-  decisionMakers      String                 @db.Text // JSON string list
-  painPoints          String                 @db.Text // JSON string list
-  techStack           String                 @db.Text // JSON string list
-  buyingIntent        String                 // HIGH, MEDIUM, LOW
-  budgetLevel         Float
-  growthStage         String
-  expectedLtv         Float
-  expectedCac         Float
-  confidence          Float
-  evidence            String                 @db.Text
-  createdAt           DateTime               @default(now())
-  updatedAt           DateTime               @updatedAt
+  companyName    String
+  industry       String
+  companySize    String
+  revenueRange   String
+  decisionMakers String   @db.Text // JSON string list
+  painPoints     String   @db.Text // JSON string list
+  techStack      String   @db.Text // JSON string list
+  buyingIntent   String // HIGH, MEDIUM, LOW
+  budgetLevel    Float
+  growthStage    String
+  expectedLtv    Float
+  expectedCac    Float
+  confidence     Float
+  evidence       String   @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   scores              LeadScore[]
   journeys            LeadJourney[]
   recommendations     LeadRecommendation[]
   pipelineHistories   RevenuePipelineHistory[]
+  CustomerDigitalTwin CustomerDigitalTwin[]
 
   @@index([sessionId])
   @@index([businessId])
@@ -1597,41 +1679,41 @@ model LeadProfile {
 }
 
 model LeadSource {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  sourceName          String                 // LinkedIn, Google Search, Referrals, etc.
-  rank                Int
-  expectedRoi         String
-  difficulty          String
-  requiredBudget      Float
-  expectedLeads       Int
-  confidence          Float
-  evidence            String                 @db.Text
-  createdAt           DateTime               @default(now())
+  id             String      @id @default(uuid())
+  sessionId      String
+  session        LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sourceName     String // LinkedIn, Google Search, Referrals, etc.
+  rank           Int
+  expectedRoi    String
+  difficulty     String
+  requiredBudget Float
+  expectedLeads  Int
+  confidence     Float
+  evidence       String      @db.Text
+  createdAt      DateTime    @default(now())
 
   @@index([sessionId])
   @@index([businessId])
 }
 
 model LeadScore {
-  id                    String                 @id @default(uuid())
-  sessionId             String
-  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId            String
-  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  leadId                String
-  lead                  LeadProfile            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  id         String      @id @default(uuid())
+  sessionId  String
+  session    LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId     String
+  lead       LeadProfile @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  fitScore              Float
-  intentScore           Float
-  budgetScore           Float
-  authorityScore        Float
-  needScore             Float
-  timingScore           Float
-  overallQualification  Float
+  fitScore             Float
+  intentScore          Float
+  budgetScore          Float
+  authorityScore       Float
+  needScore            Float
+  timingScore          Float
+  overallQualification Float
 
   qualityScore          Float
   valueScore            Float
@@ -1639,10 +1721,10 @@ model LeadScore {
   revenuePotential      Float
   riskScore             Float
   urgencyScore          Float
-  priorityTier          String                 // Tier 1, Tier 2, Tier 3
+  priorityTier          String // Tier 1, Tier 2, Tier 3
 
-  explainability        String                 @db.Text // JSON text
-  createdAt             DateTime               @default(now())
+  explainability String   @db.Text // JSON text
+  createdAt      DateTime @default(now())
 
   @@index([sessionId])
   @@index([businessId])
@@ -1650,19 +1732,19 @@ model LeadScore {
 }
 
 model LeadJourney {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  leadId              String?
-  lead                LeadProfile?           @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  journeyType         String                 // Cold, Warm, Hot, Enterprise, SMB
-  touchpoints         String                 @db.Text // JSON list of touchpoints
-  messages            String                 @db.Text // JSON list of messages
-  waitingPeriods      String                 @db.Text // JSON list of waiting periods
-  successKpis         String                 @db.Text // JSON list of KPIs
-  createdAt           DateTime               @default(now())
+  id             String       @id @default(uuid())
+  sessionId      String
+  session        LeadSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId         String?
+  lead           LeadProfile? @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  journeyType    String // Cold, Warm, Hot, Enterprise, SMB
+  touchpoints    String       @db.Text // JSON list of touchpoints
+  messages       String       @db.Text // JSON list of messages
+  waitingPeriods String       @db.Text // JSON list of waiting periods
+  successKpis    String       @db.Text // JSON list of KPIs
+  createdAt      DateTime     @default(now())
 
   @@index([sessionId])
   @@index([businessId])
@@ -1670,27 +1752,27 @@ model LeadJourney {
 }
 
 model LeadRecommendation {
-  id                    String                 @id @default(uuid())
-  sessionId             String
-  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId            String
-  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  leadId                String?
-  lead                  LeadProfile?           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  id         String       @id @default(uuid())
+  sessionId  String
+  session    LeadSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId     String?
+  lead       LeadProfile? @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  title                 String
-  nextBestAction        String                 @db.Text
-  expectedCloseProb     Float
-  expectedTimeline      String
-  riskFactors           String                 @db.Text // JSON string list
-  dependencies          String                 @db.Text // JSON string list
-  alternativeActions    String                 @db.Text // JSON string list
-  status                String                 @default("PENDING") // PENDING, APPROVED, REJECTED
-  
-  feedbacks             LeadFeedback[]
-  executionPlans        LeadExecutionPlan[]
-  evidences             LeadEvidence[]
-  createdAt             DateTime               @default(now())
+  title              String
+  nextBestAction     String @db.Text
+  expectedCloseProb  Float
+  expectedTimeline   String
+  riskFactors        String @db.Text // JSON string list
+  dependencies       String @db.Text // JSON string list
+  alternativeActions String @db.Text // JSON string list
+  status             String @default("PENDING") // PENDING, APPROVED, REJECTED
+
+  feedbacks      LeadFeedback[]
+  executionPlans LeadExecutionPlan[]
+  evidences      LeadEvidence[]
+  createdAt      DateTime            @default(now())
 
   @@index([sessionId])
   @@index([businessId])
@@ -1698,66 +1780,66 @@ model LeadRecommendation {
 }
 
 model LeadForecast {
-  id                    String                 @id @default(uuid())
-  sessionId             String
-  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId            String
-  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  id         String      @id @default(uuid())
+  sessionId  String
+  session    LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
-  expectedLeads         Int
-  qualifiedLeads        Int
-  sqlCount              Int
-  conversionRate        Float
-  revenue               Float
-  pipelineValue         Float
-  confidenceMin         Float
-  confidenceMax         Float
-  createdAt             DateTime               @default(now())
+  expectedLeads  Int
+  qualifiedLeads Int
+  sqlCount       Int
+  conversionRate Float
+  revenue        Float
+  pipelineValue  Float
+  confidenceMin  Float
+  confidenceMax  Float
+  createdAt      DateTime @default(now())
 
   @@index([sessionId])
   @@index([businessId])
 }
 
 model LeadPlaybook {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  name                String
-  playRules           String                 @db.Text // JSON rules
-  targetAudience      String
-  triggerCondition    String
-  recommendedSteps    String                 @db.Text // JSON steps
-  createdAt           DateTime               @default(now())
+  id               String      @id @default(uuid())
+  sessionId        String
+  session          LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name             String
+  playRules        String      @db.Text // JSON rules
+  targetAudience   String
+  triggerCondition String
+  recommendedSteps String      @db.Text // JSON steps
+  createdAt        DateTime    @default(now())
 
   @@index([sessionId])
   @@index([businessId])
 }
 
 model LeadMemory {
-  id                  String                 @id @default(uuid())
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  acceptedStrategies  String                 @db.Text // JSON list
-  rejectedStrategies  String                 @db.Text // JSON list
-  performanceLogs     String                 @db.Text // JSON performance metrics
-  createdAt           DateTime               @default(now())
+  id                 String   @id @default(uuid())
+  businessId         String
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  acceptedStrategies String   @db.Text // JSON list
+  rejectedStrategies String   @db.Text // JSON list
+  performanceLogs    String   @db.Text // JSON performance metrics
+  createdAt          DateTime @default(now())
 
   @@index([businessId])
 }
 
 model LeadFeedback {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  recommendationId    String
-  recommendation      LeadRecommendation     @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  action              String                 // ACCEPT, REJECT, REGENERATE
-  feedbackText        String?                @db.Text
-  createdAt           DateTime               @default(now())
+  id               String             @id @default(uuid())
+  sessionId        String
+  session          LeadSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   LeadRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  action           String // ACCEPT, REJECT, REGENERATE
+  feedbackText     String?            @db.Text
+  createdAt        DateTime           @default(now())
 
   @@index([sessionId])
   @@index([recommendationId])
@@ -1765,17 +1847,17 @@ model LeadFeedback {
 }
 
 model LeadExecutionPlan {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  recommendationId    String
-  recommendation      LeadRecommendation     @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  steps               String                 @db.Text // JSON tasks list
-  status              String                 @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
-  createdAt           DateTime               @default(now())
-  updatedAt           DateTime               @updatedAt
+  id               String             @id @default(uuid())
+  sessionId        String
+  session          LeadSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   LeadRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  steps            String             @db.Text // JSON tasks list
+  status           String             @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   @@index([sessionId])
   @@index([recommendationId])
@@ -1783,70 +1865,2066 @@ model LeadExecutionPlan {
 }
 
 model LeadEvidence {
-  id                    String                 @id @default(uuid())
-  sessionId             String
-  session               LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  recommendationId      String?
-  recommendation        LeadRecommendation?    @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
-  businessId            String
-  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  factPath              String
-  factValue             String
-  confidence            Float
-  createdAt             DateTime               @default(now())
+  id               String              @id @default(uuid())
+  sessionId        String
+  session          LeadSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   LeadRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  factPath         String
+  factValue        String
+  confidence       Float
+  createdAt        DateTime            @default(now())
 
   @@index([sessionId])
   @@index([businessId])
 }
 
 model LeadHistory {
-  id                  String                 @id @default(uuid())
-  sessionId           String
-  session             LeadSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  businessId          String
-  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  leadId              String
-  oldStage            String
-  newStage            String
-  updatedBy           String                 // user or engine name
-  updatedAt           DateTime               @default(now())
+  id         String      @id @default(uuid())
+  sessionId  String
+  session    LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadId     String
+  oldStage   String
+  newStage   String
+  updatedBy  String // user or engine name
+  updatedAt  DateTime    @default(now())
 
   @@index([sessionId])
   @@index([businessId])
 }
 
 model LeadGraphExecutionLog {
-  id               String          @id @default(uuid())
-  sessionId        String
-  session          LeadSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  startedAt        DateTime        @default(now())
-  finishedAt       DateTime?
-  totalDurationMs  Int             @default(0)
-  status           String          // SUCCESS | FAILED
-  failureReason    String?         @db.Text
-  nodeTraces       String?         @db.Text // JSON string
-  createdAt        DateTime        @default(now())
+  id              String      @id @default(uuid())
+  sessionId       String
+  session         LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt       DateTime    @default(now())
+  finishedAt      DateTime?
+  totalDurationMs Int         @default(0)
+  status          String // SUCCESS | FAILED
+  failureReason   String?     @db.Text
+  nodeTraces      String?     @db.Text // JSON string
+  createdAt       DateTime    @default(now())
 
   @@index([sessionId])
 }
 
 model LeadGraphNodeOutput {
-  id             String          @id @default(uuid())
+  id             String      @id @default(uuid())
   sessionId      String
-  session        LeadSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session        LeadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   nodeName       String
   inputSize      Int
   outputSize     Int
   durationMs     Int
-  attempts       Int             @default(1)
-  payload        String          @db.Text // JSON output
-  reflectionRuns Int             @default(0)
-  createdAt      DateTime        @default(now())
+  attempts       Int         @default(1)
+  payload        String      @db.Text // JSON output
+  reflectionRuns Int         @default(0)
+  createdAt      DateTime    @default(now())
 
   @@index([sessionId])
 }
 
+// ==========================================
+// SALES ENGINE LAYER & REVENUE INTELLIGENCE — SPRINT 10
+// ==========================================
 
+model SalesSession {
+  id                String           @id @default(uuid())
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status            SessionStatus    @default(IN_PROGRESS)
+  contextSnapshotId String?
+  contextSnapshot   ContextSnapshot? @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion    Int              @default(1)
+  promptVersion     String           @default("1.0.0")
+  modelVersion      String           @default("gemini-2.5-pro")
 
+  // Subgraph Outputs (serialized JSON)
+  opportunityAnalysis String? @db.Text
+  dealQualification   String? @db.Text
+  buyingCommittee     String? @db.Text
+  negotiationStrategy String? @db.Text
+  objectionHandling   String? @db.Text
+  proposalStrategy    String? @db.Text
+  dealRisk            String? @db.Text
+  revenueOptimization String? @db.Text
+  salesForecast       String? @db.Text
+  nextBestAction      String? @db.Text
+  executiveScores     String? @db.Text
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  opportunities                SalesOpportunity[]
+  dealHealths                  DealHealth[]
+  forecasts                    SalesForecast[]
+  negotiationPlans             NegotiationPlan[]
+  recommendations              SalesRecommendation[]
+  playbooks                    SalesPlaybook[]
+  feedbacks                    SalesFeedback[]
+  executionPlans               SalesExecutionPlan[]
+  evidences                    SalesEvidence[]
+  histories                    SalesHistory[]
+  executionLogs                SalesGraphExecutionLog[]
+  nodeOutputs                  SalesGraphNodeOutput[]
+  revenueIntelligenceSnapshots RevenueIntelligenceSnapshot[]
+  revenueAssets                RevenueAsset[]
+
+  @@index([businessId])
+}
+
+model SalesOpportunity {
+  id         String       @id @default(uuid())
+  sessionId  String
+  session    SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  opportunityName      String
+  businessValue        String   @db.Text
+  revenuePotential     Float
+  strategicImportance  String // HIGH, MEDIUM, LOW
+  expansionOpportunity String   @db.Text
+  crossSellOpportunity String   @db.Text
+  upsellOpportunity    String   @db.Text
+  competitiveRisk      String   @db.Text
+  confidence           Float
+  evidence             String   @db.Text
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  dealHealths      DealHealth[]
+  negotiationPlans NegotiationPlan[]
+  recommendations  SalesRecommendation[]
+  histories        SalesHistory[]
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model DealHealth {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       SalesSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  opportunityId String
+  opportunity   SalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  needScore            Float
+  authorityScore       Float
+  budgetScore          Float
+  timelineScore        Float
+  urgencyScore         Float
+  competitivePosition  Float
+  relationshipStrength Float
+  buyingSignals        Float
+  riskLevel            Float
+  overallHealthScore   Float
+
+  explainability String   @db.Text // JSON text
+  createdAt      DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([opportunityId])
+}
+
+model SalesForecast {
+  id         String       @id @default(uuid())
+  sessionId  String
+  session    SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  bestCase           Float
+  expectedCase       Float
+  worstCase          Float
+  expectedRevenue    Float
+  pipelineValue      Float
+  closeProbability   Float
+  forecastConfidence Float
+  createdAt          DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model NegotiationPlan {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       SalesSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  opportunityId String
+  opportunity   SalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  negotiationObjectives String   @db.Text // JSON string list
+  pricingFlexibility    String   @db.Text
+  concessions           String   @db.Text // JSON string list
+  walkAwayConditions    String   @db.Text // JSON string list
+  riskAnalysis          String   @db.Text
+  winStrategy           String   @db.Text
+  alternativeApproaches String   @db.Text
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([opportunityId])
+}
+
+model SalesRecommendation {
+  id            String            @id @default(uuid())
+  sessionId     String
+  session       SalesSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  opportunityId String?
+  opportunity   SalesOpportunity? @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  title              String
+  nextBestAction     String @db.Text
+  expectedCloseProb  Float
+  expectedTimeline   String
+  riskFactors        String @db.Text // JSON string list
+  dependencies       String @db.Text // JSON string list
+  alternativeActions String @db.Text // JSON string list
+  status             String @default("PENDING") // PENDING, APPROVED, REJECTED
+
+  feedbacks      SalesFeedback[]
+  executionPlans SalesExecutionPlan[]
+  evidences      SalesEvidence[]
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([opportunityId])
+}
+
+model SalesPlaybook {
+  id         String       @id @default(uuid())
+  sessionId  String
+  session    SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  name                 String
+  playRules            String   @db.Text // JSON rules
+  targetAudience       String
+  triggerCondition     String
+  recommendedSteps     String   @db.Text // JSON steps
+  objectionLibrary     String   @db.Text // JSON objection scripts
+  negotiationFramework String   @db.Text // JSON framework
+  proposalTemplate     String   @db.Text // JSON templates
+  createdAt            DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model SalesMemory {
+  id                 String   @id @default(uuid())
+  businessId         String
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  acceptedStrategies String   @db.Text // JSON list
+  rejectedStrategies String   @db.Text // JSON list
+  performanceLogs    String   @db.Text // JSON performance metrics
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([businessId])
+}
+
+model SalesFeedback {
+  id               String              @id @default(uuid())
+  sessionId        String
+  session          SalesSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   SalesRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  action           String // ACCEPT, REJECT, REGENERATE
+  feedbackText     String?             @db.Text
+  createdAt        DateTime            @default(now())
+
+  @@index([sessionId])
+  @@index([recommendationId])
+  @@index([businessId])
+}
+
+model SalesExecutionPlan {
+  id               String              @id @default(uuid())
+  sessionId        String
+  session          SalesSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   SalesRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  steps            String              @db.Text // JSON tasks list
+  status           String              @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([sessionId])
+  @@index([recommendationId])
+  @@index([businessId])
+}
+
+model SalesEvidence {
+  id               String               @id @default(uuid())
+  sessionId        String
+  session          SalesSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   SalesRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  factPath         String
+  factValue        String
+  confidence       Float
+  createdAt        DateTime             @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model SalesHistory {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       SalesSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  opportunityId String
+  opportunity   SalesOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  oldStage      String
+  newStage      String
+  updatedBy     String // user or engine name
+  updatedAt     DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([opportunityId])
+}
+
+model SalesGraphExecutionLog {
+  id              String       @id @default(uuid())
+  sessionId       String
+  session         SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt       DateTime     @default(now())
+  finishedAt      DateTime?
+  totalDurationMs Int          @default(0)
+  status          String // SUCCESS | FAILED
+  failureReason   String?      @db.Text
+  nodeTraces      String?      @db.Text // JSON string
+  createdAt       DateTime     @default(now())
+
+  // Revenue Intelligence snapshots/lineage trackers
+  revenueSnapshotId   String?
+  revenueAssetVersion Int?
+  pipelineVersion     Int?
+  forecastVersion     Int?
+  dealTwinVersion     Int?
+
+  @@index([sessionId])
+}
+
+model SalesGraphNodeOutput {
+  id             String       @id @default(uuid())
+  sessionId      String
+  session        SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  nodeName       String
+  inputSize      Int
+  outputSize     Int
+  durationMs     Int
+  attempts       Int          @default(1)
+  payload        String       @db.Text // JSON output
+  reflectionRuns Int          @default(0)
+  createdAt      DateTime     @default(now())
+
+  @@index([sessionId])
+}
+
+model RevenueIntelligenceSnapshot {
+  id         String       @id @default(uuid())
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sessionId  String
+  session    SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  pipelineSummary        String @db.Text // JSON
+  dealDistribution       String @db.Text // JSON
+  revenueForecast        String @db.Text // JSON
+  dealHealthDistribution String @db.Text // JSON
+  relationshipHealth     String @db.Text // JSON
+  revenueRisks           String @db.Text // JSON
+  revenueOpportunities   String @db.Text // JSON
+  executiveScores        String @db.Text // JSON
+
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+model RevenueAsset {
+  id         String       @id @default(uuid())
+  sessionId  String
+  session    SalesSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  assetType  String // OPPORTUNITY_LIBRARY | RISK_LIBRARY | WIN_PATTERN_LIBRARY | LOSS_PATTERN_LIBRARY | EXPANSION_LIBRARY | BENCHMARK_LIBRARY | FORECAST_HISTORY | TREND_HISTORY | ASSUMPTION_LIBRARY | DECISION_HISTORY
+  version    Int          @default(1)
+  payload    String       @db.Text // JSON
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+model RevenueMemory {
+  id                 String   @id @default(uuid())
+  businessId         String   @unique
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  acceptedStrategies String   @db.Text // JSON list
+  rejectedStrategies String   @db.Text // JSON list
+  performanceLogs    String   @db.Text // JSON performance logs
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+// ==========================================
+// ANALYTICS ENGINE LAYER & BUSINESS EVOLUTION — SPRINT 11
+// ==========================================
+
+model AnalyticsSession {
+  id                String           @id @default(uuid())
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status            SessionStatus    @default(IN_PROGRESS)
+  contextSnapshotId String?
+  contextSnapshot   ContextSnapshot? @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion    Int              @default(1)
+  promptVersion     String           @default("1.0.0")
+  modelVersion      String           @default("gemini-2.5-pro")
+
+  // Subgraph Outputs (serialized JSON)
+  businessHealth      String? @db.Text
+  growthHealth        String? @db.Text
+  revenueHealth       String? @db.Text
+  kpis                String? @db.Text
+  trendAnalysis       String? @db.Text
+  forecastAnalysis    String? @db.Text
+  businessBenchmark   String? @db.Text
+  competitiveAnalysis String? @db.Text
+  marketReadiness     String? @db.Text
+  riskAnalysis        String? @db.Text
+  opportunityAnalysis String? @db.Text
+  portfolioAnalysis   String? @db.Text
+  executiveInsight    String? @db.Text
+  recommendations     String? @db.Text
+  prediction          String? @db.Text
+  snapshotComparison  String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dashboards           AnalyticsDashboard[]
+  healthScores         BusinessHealthScore[]
+  growthScores         GrowthScore[]
+  revenueHealths       RevenueHealth[]
+  readinesss           MarketReadiness[]
+  competitivePositions CompetitivePosition[]
+  forecastSnapshots    ForecastSnapshot[]
+  forecastHistories    ForecastHistory[]
+  risks                AnalyticsRisk[]
+  opportunities        BusinessOpportunity[]
+  recommendationItems  AnalyticsRecommendation[]
+  feedbacks            AnalyticsFeedback[]
+  executionPlans       AnalyticsExecutionPlan[]
+  evidences            AnalyticsEvidence[]
+  histories            AnalyticsHistory[]
+  executionLogs        AnalyticsGraphExecutionLog[]
+  nodeOutputs          AnalyticsGraphNodeOutput[]
+  assets               AnalyticsAsset[]
+  benchmarks           BusinessBenchmark[]
+  trendAnalyses        TrendAnalysis[]
+  alerts               BusinessAlert[]
+  executiveInsights    ExecutiveInsight[]
+  kpiHistories         KPIHistory[]
+  predictionHistories  PredictionHistory[]
+  evolutionSnapshots   BusinessEvolutionSnapshot[]
+  comparisons          SnapshotComparison[]
+
+  @@index([businessId])
+}
+
+model AnalyticsDashboard {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  configPayload String           @db.Text // JSON config
+  createdAt     DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model BusinessHealthScore {
+  id                     String           @id @default(uuid())
+  sessionId              String
+  session                AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId             String
+  business               Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  operationalHealth      Float
+  salesHealth            Float
+  marketingHealth        Float
+  leadHealth             Float
+  customerHealth         Float
+  innovationHealth       Float
+  overallExecutiveHealth Float
+  confidence             Float
+  evidence               String           @db.Text
+  trendDirection         String // UP, DOWN, STABLE
+  expectedDirection      String // IMPROVING, DECLINING, STABLE
+  createdAt              DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model GrowthScore {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  growthScore   Float
+  velocityIndex Float
+  confidence    Float
+  createdAt     DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model RevenueHealth {
+  id             String           @id @default(uuid())
+  sessionId      String
+  session        AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  pipelineValue  Float
+  leakagePoints  String           @db.Text // JSON list
+  stabilityScore Float
+  createdAt      DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model MarketReadiness {
+  id                     String           @id @default(uuid())
+  sessionId              String
+  session                AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId             String
+  business               Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  productReadiness       Float
+  salesReadiness         Float
+  marketingReadiness     Float
+  expansionReadiness     Float
+  investmentReadiness    Float
+  internationalReadiness Float
+  createdAt              DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model CompetitivePosition {
+  id                    String           @id @default(uuid())
+  sessionId             String
+  session               AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  competitivePosition   String
+  marketPosition        String
+  differentiators       String           @db.Text // JSON
+  weaknesses            String           @db.Text // JSON
+  threats               String           @db.Text // JSON
+  opportunities         String           @db.Text // JSON
+  competitiveConfidence Float
+  createdAt             DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ForecastSnapshot {
+  id                String           @id @default(uuid())
+  sessionId         String
+  session           AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  horizonDays       Int // 30, 90, 180
+  revenueForecast   Float
+  pipelineForecast  Float
+  growthForecast    Float
+  riskForecast      Float
+  expansionForecast Float
+  confidenceMin     Float
+  confidenceMax     Float
+  bestCase          Float
+  expectedCase      Float
+  worstCase         Float
+  createdAt         DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ForecastHistory {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  horizonDays   Int
+  expectedCase  Float
+  actualOutcome Float?
+  createdAt     DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model AnalyticsRisk {
+  id             String           @id @default(uuid())
+  sessionId      String
+  session        AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category       String // REVENUE, MARKETING, SALES, OPERATIONAL, FINANCIAL, COMPETITIVE, TECHNOLOGY, EXECUTION
+  severity       String // HIGH, MEDIUM, LOW
+  probability    Float
+  businessImpact String           @db.Text
+  mitigation     String           @db.Text
+  createdAt      DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model BusinessOpportunity {
+  id             String           @id @default(uuid())
+  sessionId      String
+  session        AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  type           String // QUICK_WIN, HIGH_IMPACT, EXPANSION, COST_OPTIMIZATION, REVENUE_GROWTH, MARKET_EXPANSION, PARTNERSHIP
+  priority       String // HIGH, MEDIUM, LOW
+  expectedImpact String           @db.Text
+  mitigation     String?          @db.Text
+  createdAt      DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model AnalyticsRecommendation {
+  id                 String           @id @default(uuid())
+  sessionId          String
+  session            AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId         String
+  business           Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title              String
+  nextBestAction     String           @db.Text
+  expectedOutcome    String           @db.Text
+  expectedTimeline   String
+  riskFactors        String           @db.Text // JSON
+  dependencies       String           @db.Text // JSON
+  alternativeActions String           @db.Text // JSON
+  status             String           @default("PENDING") // PENDING, APPROVED, REJECTED
+
+  feedbacks      AnalyticsFeedback[]
+  executionPlans AnalyticsExecutionPlan[]
+  evidences      AnalyticsEvidence[]
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model AnalyticsMemory {
+  id                 String   @id @default(uuid())
+  businessId         String
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  acceptedStrategies String   @db.Text // JSON list
+  rejectedStrategies String   @db.Text // JSON list
+  performanceLogs    String   @db.Text // JSON performance logs
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([businessId])
+}
+
+model AnalyticsFeedback {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  session          AnalyticsSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   AnalyticsRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  action           String // ACCEPT, REJECT, REGENERATE
+  feedbackText     String?                 @db.Text
+  createdAt        DateTime                @default(now())
+
+  @@index([sessionId])
+  @@index([recommendationId])
+  @@index([businessId])
+}
+
+model AnalyticsExecutionPlan {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  session          AnalyticsSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   AnalyticsRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  steps            String                  @db.Text // JSON task list
+  status           String                  @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+
+  @@index([sessionId])
+  @@index([recommendationId])
+  @@index([businessId])
+}
+
+model AnalyticsEvidence {
+  id               String                   @id @default(uuid())
+  sessionId        String
+  session          AnalyticsSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   AnalyticsRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  factPath         String
+  factValue        String
+  confidence       Float
+  createdAt        DateTime                 @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model AnalyticsHistory {
+  id           String           @id @default(uuid())
+  sessionId    String
+  session      AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  oldMetricVal String
+  newMetricVal String
+  metricName   String
+  updatedBy    String
+  updatedAt    DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model AnalyticsGraphExecutionLog {
+  id              String           @id @default(uuid())
+  sessionId       String
+  session         AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt       DateTime         @default(now())
+  finishedAt      DateTime?
+  totalDurationMs Int              @default(0)
+  status          String // SUCCESS | FAILED
+  failureReason   String?          @db.Text
+  nodeTraces      String?          @db.Text // JSON string
+  createdAt       DateTime         @default(now())
+
+  // Observability line trackers
+  analyticsSnapshotId   String?
+  analyticsAssetVersion Int?
+
+  @@index([sessionId])
+}
+
+model AnalyticsGraphNodeOutput {
+  id             String           @id @default(uuid())
+  sessionId      String
+  session        AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  nodeName       String
+  inputSize      Int
+  outputSize     Int
+  durationMs     Int
+  attempts       Int              @default(1)
+  payload        String           @db.Text // JSON output
+  reflectionRuns Int              @default(0)
+  createdAt      DateTime         @default(now())
+
+  @@index([sessionId])
+}
+
+model AnalyticsAsset {
+  id         String           @id @default(uuid())
+  sessionId  String
+  session    AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  assetType  String // BENCHMARK_LIBRARY | EXECUTIVE_INSIGHT_LIBRARY | FORECAST_LIBRARY | TREND_LIBRARY | OPPORTUNITY_LIBRARY | RISK_LIBRARY | PREDICTION_LIBRARY | KPI_LIBRARY | DECISION_LIBRARY
+  version    Int              @default(1)
+  payload    String           @db.Text // JSON
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+model BusinessBenchmark {
+  id                String           @id @default(uuid())
+  sessionId         String
+  session           AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  performanceRating String // LEADER, AVERAGE, LAGGARD
+  gapAnalysis       String           @db.Text // JSON
+  priorityImprove   String           @db.Text // JSON
+  createdAt         DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model TrendAnalysis {
+  id             String           @id @default(uuid())
+  sessionId      String
+  session        AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  trendName      String
+  trendDirection String // UP, DOWN, STABLE
+  confidence     Float
+  expectedFuture String           @db.Text
+  createdAt      DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model BusinessAlert {
+  id         String           @id @default(uuid())
+  sessionId  String
+  session    AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  alertType  String // ANOMALY, THRESHOLD, CRITICAL
+  message    String           @db.Text
+  severity   String // CRITICAL, WARNING, INFO
+  createdAt  DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveInsight {
+  id           String           @id @default(uuid())
+  sessionId    String
+  session      AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  ceoSummary   String           @db.Text
+  boardSummary String           @db.Text
+  criticalFind String           @db.Text // JSON list
+  topOpp       String           @db.Text // JSON list
+  topRisk      String           @db.Text // JSON list
+  narrative    String           @db.Text
+  createdAt    DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model KPIHistory {
+  id         String           @id @default(uuid())
+  sessionId  String
+  session    AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  kpiName    String
+  kpiValue   Float
+  trend      String // UP, DOWN, STABLE
+  volatility Float
+  confidence Float
+  createdAt  DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model PredictionHistory {
+  id           String           @id @default(uuid())
+  sessionId    String
+  session      AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  metricName   String
+  predictedVal Float
+  confidence   Float
+  horizonDays  Int
+  horizonDate  DateTime
+  evidence     String           @db.Text
+  createdAt    DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model BusinessEvolutionSnapshot {
+  id         String           @id @default(uuid())
+  sessionId  String
+  session    AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  version    Int              @default(1)
+
+  businessHealth        String @db.Text // JSON
+  growthScore           String @db.Text // JSON
+  revenueHealth         String @db.Text // JSON
+  marketReadiness       String @db.Text // JSON
+  competitivePosition   String @db.Text // JSON
+  executiveScore        String @db.Text // JSON
+  acceptedStrategies    String @db.Text // JSON
+  rejectedStrategies    String @db.Text // JSON
+  majorKpiValues        String @db.Text // JSON
+  revenuePipelineState  String @db.Text // JSON
+  digitalTwinConfidence Float
+  knowledgeHealth       String @db.Text // JSON
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model SnapshotComparison {
+  id               String           @id @default(uuid())
+  sessionId        String
+  session          AnalyticsSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sourceSnapshotId String
+  targetSnapshotId String
+
+  whatChanged      String @db.Text // JSON
+  whyItChanged     String @db.Text // JSON
+  causativeEngine  String @db.Text // JSON
+  positiveImpact   String @db.Text // JSON
+  negativeImpact   String @db.Text // JSON
+  metricsAffected  String @db.Text // JSON
+  forecastDiff     String @db.Text // JSON
+  confidenceDiff   String @db.Text // JSON
+  riskDiff         String @db.Text // JSON
+  opportunityDiff  String @db.Text // JSON
+  executiveSummary String @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model AIImpactAnalysis {
+  id               String   @id @default(uuid())
+  businessId       String
+  business         Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  recommendationId String
+  title            String
+  expectedOutcome  String   @db.Text
+  actualOutcome    String?  @db.Text
+  effectiveness    Float?
+  improvement      Float?
+  createdAt        DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model DecisionIntelligence {
+  id             String   @id @default(uuid())
+  businessId     String
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  decision       String   @db.Text
+  reason         String   @db.Text
+  evidence       String   @db.Text
+  engine         String
+  expectedImpact Float
+  actualImpact   Float?
+  confidence     Float
+  status         String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt      DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model ForecastAccuracy {
+  id            String   @id @default(uuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  forecastError Float
+  predictionAcc Float
+  confidenceAcc Float
+  trendReliab   Float
+  modelReliab   Float
+  createdAt     DateTime @default(now())
+
+  @@index([businessId])
+}
+
+// ==========================================
+// CUSTOMER SUCCESS ENGINE LAYER — SPRINT 12
+// ==========================================
+
+model CustomerSuccessSession {
+  id             String   @id @default(uuid())
+  businessId     String
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status         String   @default("PENDING") // PENDING, SUCCESS, FAILED
+  contextVersion Int      @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  digitalTwins           CustomerDigitalTwin[]
+  healthScores           CustomerHealth[]
+  journeys               CustomerJourney[]
+  lifecycles             CustomerLifecycle[]
+  touchpoints            CustomerTouchpoint[]
+  sentiments             CustomerSentiment[]
+  feedbacks              CustomerFeedback[]
+  supportCases           CustomerSupportCase[]
+  renewalForecasts       RenewalForecast[]
+  renewalPlans           RenewalPlan[]
+  expansionOpportunities ExpansionOpportunity[]
+  crossSellOpportunities CrossSellOpportunity[]
+  upsellOpportunities    UpsellOpportunity[]
+  churnRisks             ChurnRisk[]
+  retentionStrategies    RetentionStrategy[]
+  recommendations        CustomerRecommendation[]
+  benchmarks             CustomerBenchmark[]
+  successScores          CustomerSuccessScore[]
+  executionPlans         CustomerExecutionPlan[]
+  histories              CustomerHistory[]
+  snapshots              CustomerSuccessSnapshot[]
+  logs                   CustomerSuccessGraphExecutionLog[]
+  valueRealizations      CustomerValueRealization[]
+  advocacies             CustomerAdvocacy[]
+  CustomerSuccessAsset   CustomerSuccessAsset[]
+
+  @@index([businessId])
+}
+
+model CustomerDigitalTwin {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadProfileId       String?
+  leadProfile         LeadProfile?           @relation(fields: [leadProfileId], references: [id], onDelete: SetNull)
+  name                String
+  profileData         String                 @db.Text // JSON string
+  productsPurchased   String                 @db.Text // JSON string
+  customerGoals       String                 @db.Text // JSON string
+  businessOutcomes    String                 @db.Text // JSON string
+  usagePatterns       String                 @db.Text // JSON string
+  featureAdoption     String                 @db.Text // JSON string
+  relationHealth      Float
+  satisfactionScore   Float
+  revenueContribution Float
+  executiveSponsor    String
+  riskRegister        String                 @db.Text // JSON string
+  version             Int                    @default(1)
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
+  healths                CustomerHealth[]
+  journeys               CustomerJourney[]
+  lifecycles             CustomerLifecycle[]
+  touchpoints            CustomerTouchpoint[]
+  sentiments             CustomerSentiment[]
+  feedbacks              CustomerFeedback[]
+  supportCases           CustomerSupportCase[]
+  renewalForecasts       RenewalForecast[]
+  renewalPlans           RenewalPlan[]
+  expansionOpportunities ExpansionOpportunity[]
+  crossSellOpportunities CrossSellOpportunity[]
+  upsellOpportunities    UpsellOpportunity[]
+  churnRisks             ChurnRisk[]
+  retentionStrategies    RetentionStrategy[]
+  recommendations        CustomerRecommendation[]
+  histories              CustomerHistory[]
+  successScores          CustomerSuccessScore[]
+  valueRealizations      CustomerValueRealization[]
+  advocacies             CustomerAdvocacy[]
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([leadProfileId])
+}
+
+model CustomerHealth {
+  id                 String                 @id @default(uuid())
+  sessionId          String
+  session            CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId         String
+  business           Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId             String
+  twin               CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  overallHealth      Float
+  relationshipHealth Float
+  productAdoption    Float
+  featureAdoption    Float
+  supportHealth      Float
+  valueRealization   Float
+  execEngagement     Float
+  renewalReadiness   Float
+  expansionReadiness Float
+  riskLevel          Float
+  healthTrend        String // UP, DOWN, STABLE
+  confidence         Float
+  createdAt          DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerJourney {
+  id                 String                 @id @default(uuid())
+  sessionId          String
+  session            CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId         String
+  business           Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId             String
+  twin               CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  currentStage       String // ONBOARDING, ACTIVATION, ADOPTION, VALUE_REALIZATION, EXPANSION, RENEWAL, ADVOCACY
+  stageStatus        String                 @db.Text
+  successCriteria    String                 @db.Text // JSON string
+  risks              String                 @db.Text // JSON string
+  recommendedActions String                 @db.Text // JSON string
+  createdAt          DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerLifecycle {
+  id              String                 @id @default(uuid())
+  sessionId       String
+  session         CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId      String
+  business        Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId          String
+  twin            CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  lifecycleState  String // ACTIVE, DORMANT, CHURNED
+  totalDaysActive Int
+  onboardingDate  DateTime?
+  lastActiveDate  DateTime?
+  version         Int                    @default(1)
+  createdAt       DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerTouchpoint {
+  id             String                 @id @default(uuid())
+  sessionId      String
+  session        CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId         String
+  twin           CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  touchpointType String // EMAIL, CALL, MEETING, CHAT, TICKET
+  title          String
+  summary        String                 @db.Text
+  sender         String
+  recipient      String
+  outcome        String                 @db.Text
+  createdAt      DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerSentiment {
+  id               String                 @id @default(uuid())
+  sessionId        String
+  session          CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId           String
+  twin             CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  sentimentScore   Float
+  sentimentTrend   String // IMPROVING, DECLINING, STABLE
+  confidence       Float
+  businessImpact   String                 @db.Text
+  relationshipRisk String                 @db.Text
+  executiveRisk    String                 @db.Text
+  createdAt        DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerFeedback {
+  id             String                 @id @default(uuid())
+  sessionId      String
+  session        CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId     String
+  business       Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId         String
+  twin           CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  source         String // SURVEY, NPS, INTERVIEW
+  rating         Float
+  verbatimText   String                 @db.Text
+  actionRequired Boolean                @default(false)
+  status         String                 @default("PENDING") // PENDING, RESOLVED
+  createdAt      DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerSupportCase {
+  id                     String                 @id @default(uuid())
+  sessionId              String
+  session                CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId             String
+  business               Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId                 String
+  twin                   CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  ticketNumber           String
+  category               String // BUG, QUESTION, FEATURE_REQUEST, INTEGRATION
+  priority               String // LOW, MEDIUM, HIGH, URGENT
+  status                 String // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+  subject                String
+  description            String                 @db.Text
+  rootCause              String?                @db.Text
+  resolution             String?                @db.Text
+  expectedResolutionTime String?
+  customerImpact         String?                @db.Text
+  isRecurring            Boolean                @default(false)
+  createdAt              DateTime               @default(now())
+
+  conversations SupportConversation[]
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model SupportConversation {
+  id        String              @id @default(uuid())
+  caseId    String
+  case      CustomerSupportCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  sender    String
+  message   String              @db.Text
+  timestamp DateTime            @default(now())
+
+  @@index([caseId])
+}
+
+model SupportKnowledge {
+  id                 String   @id @default(uuid())
+  businessId         String
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category           String
+  keywords           String
+  title              String
+  problemDescription String   @db.Text
+  solutionSteps      String   @db.Text
+  helpfulCount       Int      @default(0)
+  createdAt          DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model RenewalForecast {
+  id                 String                 @id @default(uuid())
+  sessionId          String
+  session            CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId         String
+  business           Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId             String
+  twin               CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  renewalDate        DateTime
+  renewalProbability Float
+  expectedValue      Float
+  confidence         Float
+  createdAt          DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model RenewalPlan {
+  id               String                 @id @default(uuid())
+  sessionId        String
+  session          CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId           String
+  twin             CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  planOwner        String
+  renewalStrategy  String                 @db.Text
+  executiveActions String                 @db.Text // JSON string list
+  keyRisks         String                 @db.Text // JSON string list
+  status           String                 @default("DRAFT") // DRAFT, ACTIVE, EXECUTED
+  createdAt        DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model ExpansionOpportunity {
+  id                    String                 @id @default(uuid())
+  sessionId             String
+  session               CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId                String
+  twin                  CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  title                 String
+  type                  String // CROSS_SELL, UPSELL, NEW_PRODUCT
+  fitScore              Float
+  expectedRevenue       Float
+  businessJustification String                 @db.Text
+  status                String                 @default("IDENTIFIED") // IDENTIFIED, PROPOSED, CLOSED_WON, CLOSED_LOST
+  createdAt             DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CrossSellOpportunity {
+  id           String                 @id @default(uuid())
+  sessionId    String
+  session      CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId       String
+  twin         CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  productName  String
+  fitScore     Float
+  potentialArr Float
+  createdAt    DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model UpsellOpportunity {
+  id          String                 @id @default(uuid())
+  sessionId   String
+  session     CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId  String
+  business    Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId      String
+  twin        CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  currentPlan String
+  targetPlan  String
+  upsellValue Float
+  createdAt   DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model ChurnRisk {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId              String
+  twin                CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  churnProbability    Float
+  confidence          Float
+  primaryRootCause    String                 @db.Text
+  earlyWarningSignals String                 @db.Text // JSON string list
+  severity            String // LOW, MEDIUM, HIGH, CRITICAL
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model RetentionStrategy {
+  id                 String                 @id @default(uuid())
+  sessionId          String
+  session            CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId         String
+  business           Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId             String
+  twin               CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  strategyName       String
+  executionPlan      String                 @db.Text
+  estimatedCost      Float
+  successProbability Float
+  createdAt          DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerRecommendation {
+  id              String                 @id @default(uuid())
+  sessionId       String
+  session         CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId      String
+  business        Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId          String
+  twin            CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  title           String
+  description     String                 @db.Text
+  nextBestAction  String                 @db.Text
+  expectedOutcome String                 @db.Text
+  confidence      Float
+  status          String                 @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt       DateTime               @default(now())
+
+  feedback       CustomerFeedbackItem[]
+  executionPlans CustomerExecutionPlan[]
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerFeedbackItem {
+  id               String                 @id @default(uuid())
+  recommendationId String
+  recommendation   CustomerRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  action           String // ACCEPT, REJECT
+  feedbackText     String?                @db.Text
+  createdAt        DateTime               @default(now())
+
+  @@index([recommendationId])
+}
+
+model CustomerExecutionPlan {
+  id               String                 @id @default(uuid())
+  sessionId        String
+  session          CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   CustomerRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  taskList         String                 @db.Text // JSON string list
+  status           String                 @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
+  progress         Float                  @default(0.0)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([recommendationId])
+}
+
+model CustomerMemory {
+  id                 String   @id @default(uuid())
+  businessId         String
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId             String?
+  acceptedStrategies String   @db.Text // JSON string list
+  rejectedStrategies String   @db.Text // JSON string list
+  performanceLogs    String   @db.Text // JSON string list
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([businessId])
+}
+
+model CustomerEvidence {
+  id         String   @id @default(uuid())
+  sessionId  String?
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId     String?
+  fact       String   @db.Text
+  source     String
+  confidence Float
+  createdAt  DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model CustomerHistory {
+  id           String                 @id @default(uuid())
+  sessionId    String
+  session      CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId       String
+  twin         CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  eventName    String
+  eventDetails String                 @db.Text
+  createdAt    DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerSuccessAsset {
+  id         String                 @id @default(uuid())
+  sessionId  String
+  session    CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  assetType  String // RETENTION_PLAYBOOK, RENEWAL_PLAYBOOK, JOURNEY_LIBRARY, SUPPORT_KNOWLEDGE, EXPANSION_LIBRARY, BENCHMARK_LIBRARY, EXEC_COMMUNICATION, BEST_PRACTICES
+  version    Int                    @default(1)
+  payload    String                 @db.Text // JSON string
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model CustomerBenchmark {
+  id            String                 @id @default(uuid())
+  sessionId     String
+  session       CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  metricName    String
+  cohortValue   Float
+  customerValue Float
+  gap           Float
+  rating        String // UNDERPERFORMING, ON_PAR, OUTPERFORMING
+  createdAt     DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model CustomerSuccessScore {
+  id                    String                 @id @default(uuid())
+  sessionId             String
+  session               CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId                String
+  twin                  CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  healthScore           Float
+  relationshipStrength  Float
+  valueDelivered        Float
+  renewalConfidence     Float
+  expansionPotential    Float
+  executiveSatisfaction Float
+  overallScore          Float
+  createdAt             DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerSuccessGraphExecutionLog {
+  id         String                 @id @default(uuid())
+  sessionId  String
+  session    CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  graphType  String // master, customer_context, etc.
+  status     String // RUNNING, COMPLETED, FAILED
+  error      String?                @db.Text
+  durationMs Int
+  createdAt  DateTime               @default(now())
+
+  @@index([sessionId])
+}
+
+model CustomerSuccessGraphNodeOutput {
+  id             String   @id @default(uuid())
+  sessionId      String
+  nodeName       String
+  inputSize      Int
+  outputSize     Int
+  durationMs     Int
+  attempts       Int
+  payload        String   @db.Text // JSON string
+  reflectionRuns Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model CustomerSuccessSnapshot {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  version             Int                    @default(1)
+  healthSummary       String                 @db.Text // JSON overall health scores
+  adoptionMetrics     String                 @db.Text // JSON product/feature adoption
+  riskSummary         String                 @db.Text // JSON churn risk indicators
+  renewalSummary      String                 @db.Text // JSON renewal forecasts
+  expansionSummary    String                 @db.Text // JSON cross/upsell options
+  supportSummary      String                 @db.Text // JSON support volume/case metrics
+  satisfactionSummary String                 @db.Text // JSON sentiment indices
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model CustomerValueRealization {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId              String
+  twin                CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  goals               String                 @db.Text // JSON goals
+  expectedOutcomes    String                 @db.Text // JSON outcomes
+  actualOutcomes      String                 @db.Text // JSON outcomes
+  goalAchievementRate Float
+  roiDelivered        Float
+  valueDelivered      Float
+  timeToValueDays     Int
+  valueScore          Float
+  valueTrend          String // IMPROVING, DECLINING, STABLE
+  valueRisk           String // LOW, MEDIUM, HIGH
+  recommendedActions  String                 @db.Text // JSON string list
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model CustomerAdvocacy {
+  id                  String                 @id @default(uuid())
+  sessionId           String
+  session             CustomerSuccessSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId          String
+  business            Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  twinId              String
+  twin                CustomerDigitalTwin    @relation(fields: [twinId], references: [id], onDelete: Cascade)
+  advocacyScore       Float
+  referenceLikelihood Float
+  testimonialProb     Float
+  caseStudyProb       Float
+  npsScore            Float
+  advocacyStrategy    String                 @db.Text
+  executiveActions    String                 @db.Text // JSON string list
+  createdAt           DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([twinId])
+}
+
+model ExecutiveBoardSession {
+  id             String                      @id @default(uuid())
+  businessId     String
+  status         String                      // IN_PROGRESS, COMPLETED, FAILED
+  contextVersion Int                         @default(1)
+  createdAt      DateTime                    @default(now())
+  updatedAt      DateTime                    @updatedAt
+
+  @@index([businessId])
+}
+
+model ExecutiveDecision {
+  id                   String                 @id @default(uuid())
+  sessionId            String
+  businessId           String
+  title                String
+  choice               String                 @db.Text
+  logic                String                 @db.Text
+  status               String                 @default("PENDING") // PENDING, APPROVED, REJECTED
+  expectedOutcome      String?                @db.Text
+  confidence           Float
+  evidenceUsed         String                 @db.Text // JSON string
+  assumptions          String                 @db.Text // JSON string
+  constraints          String                 @db.Text // JSON string
+  alternativeDecisions String                 @db.Text // JSON string
+  participatingEngines String                 @db.Text // JSON string list
+  businessFacts        String                 @db.Text // JSON string
+  knowledgeChunks      String                 @db.Text // JSON string
+  historicalContext    String                 @db.Text // JSON string
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveRecommendation {
+  id                 String                 @id @default(uuid())
+  sessionId          String
+  businessId         String
+  title              String
+  description        String                 @db.Text
+  nextBestAction     String                 @db.Text
+  expectedOutcome    String                 @db.Text
+  confidence         Float
+  status             String                 @default("PENDING") // PENDING, APPROVED, REJECTED
+  priority           String // CRITICAL, HIGH, MEDIUM, LOW
+  businessImpact     String                 @db.Text
+  dependencies       String                 @db.Text // JSON string list
+  strategicAlignment String                 @db.Text
+  createdAt          DateTime               @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveConsensus {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  businessId       String
+  recommendationId String
+  supportScore     Float
+  confidence       Float
+  businessImpact   String                  @db.Text
+  dependencies     String                  @db.Text // JSON string list
+  priority         String
+  finalConsensus   String                  @db.Text
+  createdAt        DateTime                @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([recommendationId])
+}
+
+model ExecutiveConflict {
+  id                  String                @id @default(uuid())
+  sessionId           String
+  businessId          String
+  title               String
+  severity            String // LOW, MEDIUM, HIGH, CRITICAL
+  affectedEngines     String                @db.Text // JSON list
+  businessImpact      String                @db.Text
+  resolutionOptions   String                @db.Text // JSON list
+  recommendedResolution String              @db.Text
+  status              String                @default("OPEN") // OPEN, RESOLVED
+  createdAt           DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveVote {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  businessId       String
+  recommendationId String
+  engineName       String
+  voteValue        String // SUPPORT, CHALLENGE
+  reason           String                  @db.Text
+  createdAt        DateTime                @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([recommendationId])
+}
+
+model ExecutiveAgenda {
+  id               String                @id @default(uuid())
+  sessionId        String
+  businessId       String
+  topic            String
+  priority         String
+  discussionPoints String                @db.Text // JSON list
+  status           String                @default("OPEN")
+  createdAt        DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveMeeting {
+  id               String                @id @default(uuid())
+  sessionId        String
+  businessId       String
+  meetingDate      DateTime              @default(now())
+  notes            String                @db.Text
+  decisionSummary  String                @db.Text
+  consensusHistory String                @db.Text // JSON string
+  agenda           String                @db.Text // JSON string
+  participants     String                @db.Text // JSON string
+  votes            String                @db.Text // JSON string
+  conflicts        String                @db.Text // JSON string
+  consensus        Float                 @default(100.0)
+  supportingEvidence String              @db.Text
+  finalDecisions   String                @db.Text
+  assignedOwners   String                @db.Text
+  deadlines        String                @db.Text
+  affectedKPIs     String                @db.Text
+  meetingOutcome   String                @db.Text
+  meetingConfidence Float                @default(90.0)
+  reflectionSummary String               @db.Text
+  createdAt        DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveAction {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  businessId       String
+  recommendationId String
+  title            String
+  description      String                  @db.Text
+  status           String                  @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED
+  timeline         String
+  priority         String
+  kpiImpact        String
+  expectedOutcome  String
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([recommendationId])
+}
+
+model ExecutiveActionOwner {
+  id         String          @id @default(uuid())
+  actionId   String
+  engineName String
+  name       String
+  role       String
+  email      String?
+  status     String          @default("ASSIGNED")
+  createdAt  DateTime        @default(now())
+
+  @@index([actionId])
+}
+
+model ExecutivePriority {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  businessId       String
+  recommendationId String
+  level            String // CRITICAL, HIGH, MEDIUM, LOW
+  businessImpact   String                  @db.Text
+  revenue          Float
+  risk             Float
+  confidence       Float
+  dependencies     String                  @db.Text // JSON list
+  strategicAlignment String                @db.Text
+  createdAt        DateTime                @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+  @@index([recommendationId])
+}
+
+model ExecutiveDecisionHistory {
+  id             String            @id @default(uuid())
+  decisionId     String
+  action         String // CREATE, STATUS_CHANGE, UPDATE
+  previousStatus String?
+  newStatus      String?
+  changedBy      String
+  changeNotes    String?           @db.Text
+  createdAt      DateTime          @default(now())
+
+  @@index([decisionId])
+}
+
+model ExecutiveDecisionMemory {
+  id                 String   @id @default(uuid())
+  businessId         String
+  acceptedDecisions  String   @db.Text // JSON list
+  rejectedDecisions  String   @db.Text // JSON list
+  effectivenessMetrics String @db.Text // JSON
+  feedbackLoopCount  Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([businessId])
+}
+
+model ExecutiveBoardSnapshot {
+  id               String                @id @default(uuid())
+  sessionId        String
+  businessId       String
+  version          Int                   @default(1)
+  healthSummary    String                @db.Text // JSON
+  consensusSummary String                @db.Text // JSON
+  conflictSummary  String                @db.Text // JSON
+  prioritiesSummary String               @db.Text // JSON
+  roadmapSummary   String                @db.Text // JSON
+  briefSummary     String                @db.Text // JSON
+  reportSummary    String                @db.Text // JSON
+  alertsSummary    String                @db.Text // JSON
+  createdAt        DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveReport {
+  id          String                @id @default(uuid())
+  sessionId   String
+  businessId  String
+  reportType  String // DAILY, WEEKLY, MONTHLY, QUARTERLY
+  payload     String                @db.Text // JSON
+  createdAt   DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveBrief {
+  id                 String                @id @default(uuid())
+  sessionId          String
+  businessId         String
+  briefDate          DateTime              @default(now())
+  businessHealth     Float
+  growthScore        Float
+  revenueHealth      Float
+  customerHealth     Float
+  topOpportunities   String                @db.Text // JSON list
+  topRisks           String                @db.Text // JSON list
+  urgentDecisions    String                @db.Text // JSON list
+  forecast           String                @db.Text // JSON
+  kpiSummary         String                @db.Text // JSON
+  trendSummary       String                @db.Text // JSON
+  competitiveSummary String                @db.Text // JSON
+  marketReadiness    String                @db.Text // JSON
+  recommendedActions String                @db.Text // JSON list
+  executiveCalendar  String                @db.Text // JSON list
+  expectedOutcomes   String                @db.Text // JSON list
+  createdAt          DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveAlert {
+  id                String                @id @default(uuid())
+  sessionId         String
+  businessId        String
+  category          String // CRITICAL, REVENUE, GROWTH, CUSTOMER, COMPETITIVE, FORECAST, RISK
+  severity          String // LOW, MEDIUM, HIGH, CRITICAL
+  confidence        Float
+  businessImpact    String                @db.Text
+  recommendedAction String                @db.Text
+  createdAt         DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveBoardAsset {
+  id         String                @id @default(uuid())
+  sessionId  String
+  businessId String
+  assetType  String
+  version    Int                   @default(1)
+  payload    String                @db.Text // JSON string
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveBoardExecutionLog {
+  id         String   @id @default(uuid())
+  sessionId  String
+  graphType  String
+  status     String // RUNNING, COMPLETED, FAILED
+  error      String?  @db.Text
+  durationMs Int
+  createdAt  DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model ExecutiveBoardNodeOutput {
+  id         String   @id @default(uuid())
+  sessionId  String
+  nodeName   String
+  inputSize  Int
+  outputSize Int
+  durationMs Int
+  payload    String   @db.Text // JSON
+  createdAt  DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+model ExecutiveOperatingPlan {
+  id                     String                @id @default(uuid())
+  sessionId              String
+  businessId             String
+  todayPriorities        String                @db.Text // JSON list
+  thisWeek               String                @db.Text // JSON list
+  thisMonth              String                @db.Text // JSON list
+  quarterGoals           String                @db.Text // JSON list
+  strategicInitiatives   String                @db.Text // JSON list
+  operationalInitiatives String                @db.Text // JSON list
+  revenueInitiatives     String                @db.Text // JSON list
+  customerInitiatives    String                @db.Text // JSON list
+  innovationInitiatives  String                @db.Text // JSON list
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+
+  @@index([sessionId])
+  @@index([businessId])
+}
+
+model ExecutiveRoadmap {
+  id                String                @id @default(uuid())
+  sessionId         String
+  businessId        String
+  phase             String // NOW, NEXT, LATER
+  itemText          String
+  businessValue     String                @db.Text
+  risk              String                @db.Text
+  confidence        Float
+  requiredResources String                @db.Text // JSON list
+  dependencies      String                @db.Text // JSON list
+  status            String                @default("PLANNED")
+  createdAt         DateTime              @default(now())
+
+  @@index([sessionId])
+  @@index([businessId])
+}
 

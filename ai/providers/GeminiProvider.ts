@@ -101,8 +101,116 @@ export class GeminiProvider implements LLMProvider {
       const userPrompt = request.userPrompt.toLowerCase();
       const taskPart = userPrompt.includes('task:') ? userPrompt.split('task:')[1] : userPrompt;
 
+      // Executive Board Mocks — Sprint 13
+      if (userPrompt.includes('executiverecommendationsschema') || userPrompt.includes('dependencyanalysisgraphnode') || userPrompt.includes('engine recommendations')) {
+        mockText = JSON.stringify(this.getMockExecutiveRecommendations());
+      } else if (userPrompt.includes('executiveconflictsschema') || userPrompt.includes('conflictdetectiongraphnode')) {
+        mockText = JSON.stringify(this.getMockExecutiveConflicts());
+      } else if (userPrompt.includes('executiveconsensusesschema') || userPrompt.includes('consensusgraphnode')) {
+        mockText = JSON.stringify(this.getMockExecutiveConsensuses());
+      } else if (userPrompt.includes('executivedecisionsimulationschema') || userPrompt.includes('decisionimpactgraphnode') || userPrompt.includes('titanforge executive board simulator')) {
+        mockText = JSON.stringify(this.getMockExecutiveDecisionSimulation());
+      } else if (userPrompt.includes('executiveoperatingplanschema') || userPrompt.includes('operatingplangraphnode')) {
+        mockText = JSON.stringify(this.getMockExecutiveOperatingPlan());
+      } else if (userPrompt.includes('executiveroadmapsschema') || userPrompt.includes('roadmapgraphnode')) {
+        mockText = JSON.stringify(this.getMockExecutiveRoadmaps());
+      } else if (userPrompt.includes('executivebriefschema') || userPrompt.includes('executivereportgraphnode') || userPrompt.includes('ceo morning brief')) {
+        mockText = JSON.stringify(this.getMockExecutiveBrief());
+      } else if (userPrompt.includes('executivealertsschema') || userPrompt.includes('alertsgraphnode')) {
+        mockText = JSON.stringify(this.getMockExecutiveAlerts());
+      }
+      // Customer Success Engine Mocks
+      else if (userPrompt.includes('overallhealth') || userPrompt.includes('relationshiphealth') || userPrompt.includes('productadoption')) {
+        mockText = JSON.stringify(this.getMockCustomerHealth());
+      } else if (userPrompt.includes('currentstage') && userPrompt.includes('successcriteria')) {
+        mockText = JSON.stringify(this.getMockCustomerSuccessJourney());
+      } else if (userPrompt.includes('ticketnumber') || userPrompt.includes('expectedresolutiontime')) {
+        mockText = JSON.stringify(this.getMockSupportIntelligence());
+      } else if (userPrompt.includes('sentimentscore') || userPrompt.includes('sentimenttrend')) {
+        mockText = JSON.stringify(this.getMockCustomerSentiment());
+      } else if (userPrompt.includes('renewaldate') && userPrompt.includes('renewalprobability')) {
+        mockText = JSON.stringify(this.getMockRenewalForecast());
+      } else if (userPrompt.includes('planowner') && userPrompt.includes('renewalstrategy')) {
+        mockText = JSON.stringify(this.getMockRenewalPlan());
+      } else if (userPrompt.includes('fitscore') && userPrompt.includes('expectedrevenue') && userPrompt.includes('businessjustification')) {
+        mockText = JSON.stringify(this.getMockExpansionOpportunity());
+      } else if (userPrompt.includes('churnprobability') && userPrompt.includes('warning')) {
+        mockText = JSON.stringify(this.getMockChurnPrediction());
+      } else if (userPrompt.includes('strategyname') && userPrompt.includes('executionplan')) {
+        mockText = JSON.stringify(this.getMockRetentionStrategy());
+      } else if (userPrompt.includes('goals') && userPrompt.includes('actualoutcomes') && userPrompt.includes('roi')) {
+        mockText = JSON.stringify(this.getMockValueRealization());
+      } else if (userPrompt.includes('referencelikelihood') || userPrompt.includes('testimonialprob')) {
+        mockText = JSON.stringify(this.getMockCustomerAdvocacy());
+      } else if (userPrompt.includes('highestriskaccounts') || userPrompt.includes('overallportfoliohealth')) {
+        mockText = JSON.stringify(this.getMockPortfolioIntelligence());
+      } else if (userPrompt.includes('priorityscore') && userPrompt.includes('roidelivered') && userPrompt.includes('relationshipstrength')) {
+        mockText = JSON.stringify(this.getMockExecutiveAccountSummary());
+      } else if (userPrompt.includes('playbooks') && userPrompt.includes('kpitomonitor')) {
+        mockText = JSON.stringify(this.getMockSuccessPlaybooks());
+      } else if ((userPrompt.includes('nextbestaction') && userPrompt.includes('factsused')) || userPrompt.includes('customerrecommendationsschema') || userPrompt.includes('next-best cco recommendations')) {
+        mockText = JSON.stringify(this.getMockCustomerRecommendations());
+      }
+      // Sales Engine Mocks
+      else if (userPrompt.includes('whatchanged') || userPrompt.includes('causativeengine') || userPrompt.includes('snapshot comparison') || userPrompt.includes('comparative analysis') || userPrompt.includes('comparative')) {
+        mockText = JSON.stringify(this.getMockSnapshotComparison());
+      } else if (userPrompt.includes('predictions') && (userPrompt.includes('predictedval') || userPrompt.includes('horizon'))) {
+        mockText = JSON.stringify(this.getMockPredictionHistories());
+      } else if (userPrompt.includes('forecasts') && userPrompt.includes('horizondays')) {
+        mockText = JSON.stringify(this.getMockForecastSnapshots());
+      } else if (userPrompt.includes('expectedoutcome') && userPrompt.includes('expectedtimeline')) {
+        if (userPrompt.includes('original json zod contract') || userPrompt.includes('improve the recommendation') || userPrompt.includes('original recommendation')) {
+          mockText = JSON.stringify(this.getMockAnalyticsRecommendations().recommendations[0]);
+        } else {
+          mockText = JSON.stringify(this.getMockAnalyticsRecommendations());
+        }
+      } else if (userPrompt.includes('ceosummary') || userPrompt.includes('narrative') || userPrompt.includes('board summary') || userPrompt.includes('quarterly summaries')) {
+        mockText = JSON.stringify(this.getMockExecutiveInsight());
+      } else if (userPrompt.includes('risks') && (userPrompt.includes('mitigation') || userPrompt.includes('businessimpact') || userPrompt.includes('severity'))) {
+        mockText = JSON.stringify(this.getMockBusinessRisks());
+      } else if (userPrompt.includes('opportunities') && (userPrompt.includes('expectedimpact') || userPrompt.includes('quick wins'))) {
+        mockText = JSON.stringify(this.getMockBusinessOpportunities());
+      } else if (userPrompt.includes('competitiveposition') || userPrompt.includes('differentiators')) {
+        mockText = JSON.stringify(this.getMockCompetitivePosition());
+      } else if (userPrompt.includes('productreadiness') || userPrompt.includes('market readiness')) {
+        mockText = JSON.stringify(this.getMockMarketReadiness());
+      } else if (userPrompt.includes('velocityindex') || userPrompt.includes('growth indicators') || userPrompt.includes('growthscore')) {
+        mockText = JSON.stringify(this.getMockGrowthScore());
+      } else if (userPrompt.includes('pipelinevalue') || userPrompt.includes('leakagepoints') || userPrompt.includes('revenue pipeline leakage')) {
+        mockText = JSON.stringify(this.getMockRevenueHealth());
+      } else if (userPrompt.includes('operationalhealth') || userPrompt.includes('composite health scores') || userPrompt.includes('business health')) {
+        mockText = JSON.stringify(this.getMockBusinessHealthScore());
+      } else if (userPrompt.includes('opportunityname') && userPrompt.includes('revenuepotential')) {
+        mockText = JSON.stringify(this.getMockSalesOpportunities());
+      } else if (userPrompt.includes('dealhealths') || (userPrompt.includes('needscore') && userPrompt.includes('overallhealthscore'))) {
+        mockText = JSON.stringify(this.getMockDealQualifications());
+      } else if (userPrompt.includes('stakeholders') && userPrompt.includes('influencelevel')) {
+        mockText = JSON.stringify(this.getMockBuyingCommittee());
+      } else if (userPrompt.includes('negotiationobjectives') || userPrompt.includes('pricingflexibility')) {
+        mockText = JSON.stringify(this.getMockNegotiationStrategy());
+      } else if (userPrompt.includes('objection') && userPrompt.includes('recommendedresponse') && userPrompt.includes('businesscase')) {
+        mockText = JSON.stringify(this.getMockObjections());
+      } else if (userPrompt.includes('roiheight') || userPrompt.includes('proposalstructure') || userPrompt.includes('roistory')) {
+        mockText = JSON.stringify(this.getMockProposalStrategy());
+      } else if (userPrompt.includes('upsellopportunities') || userPrompt.includes('crosssellopportunities')) {
+        mockText = JSON.stringify(this.getMockRevenueOptimization());
+      } else if (userPrompt.includes('worstcase') && userPrompt.includes('closeprobability') && userPrompt.includes('bestcase')) {
+        mockText = JSON.stringify(this.getMockSalesForecast());
+      } else if (userPrompt.includes('actions') && userPrompt.includes('followupaction') && userPrompt.includes('deadline')) {
+        mockText = JSON.stringify(this.getMockNextBestAction());
+      } else if (userPrompt.includes('playbooks') && userPrompt.includes('objectionlibrary')) {
+        mockText = JSON.stringify(this.getMockSalesPlaybooks());
+      } else if (userPrompt.includes('expectedcloseprob') && (userPrompt.includes('opportunityname') || userPrompt.includes('deal'))) {
+        if (userPrompt.includes('original json zod contract') || userPrompt.includes('improve the recommendation') || userPrompt.includes('original recommendation')) {
+          mockText = JSON.stringify(this.getMockSalesRecommendations().recommendations[0]);
+        } else {
+          mockText = JSON.stringify(this.getMockSalesRecommendations());
+        }
+      } else if (userPrompt.includes('pipelinehealth') && userPrompt.includes('forecastreliability') && userPrompt.includes('overallexecutiverevenuescore')) {
+        mockText = JSON.stringify(this.getMockExecutiveScores());
+      }
       // Lead Engine Recommendations Interceptor
-      if (userPrompt.includes('nextbestaction') || userPrompt.includes('closeprob') || userPrompt.includes('closing probabilities')) {
+      else if (userPrompt.includes('nextbestaction') || userPrompt.includes('closeprob') || userPrompt.includes('closing probabilities')) {
         if (userPrompt.includes('original json zod contract') || userPrompt.includes('improve the recommendation')) {
           mockText = JSON.stringify(this.getMockLeadRecommendations().recommendations[0]);
         } else {
@@ -709,5 +817,742 @@ export class GeminiProvider implements LLMProvider {
       ]
     };
   }
+
+  private getMockSalesOpportunities() {
+    return {
+      opportunities: [
+        {
+          opportunityName: 'Global Logistics Expansion',
+          businessValue: 'Enterprise predictive routing contract extension',
+          revenuePotential: 120000.0,
+          strategicImportance: 'HIGH',
+          expansionOpportunity: 'Upsell to tier 2 global dispatch API',
+          crossSellOpportunity: 'Cross-sell telemetry integrations',
+          upsellOpportunity: 'Telemetry advanced package',
+          competitiveRisk: 'Competitor RouteGenie submitting lower bid',
+          confidence: 85.0,
+          evidence: 'Active expansion email inquiry from Director of IT'
+        }
+      ]
+    };
+  }
+
+  private getMockDealQualifications() {
+    return {
+      dealHealths: [
+        {
+          opportunityName: 'Global Logistics Expansion',
+          needScore: 90,
+          authorityScore: 85,
+          budgetScore: 80,
+          timelineScore: 85,
+          urgencyScore: 75,
+          competitivePosition: 80,
+          relationshipStrength: 85,
+          buyingSignals: 90,
+          riskLevel: 25,
+          overallHealthScore: 84,
+          explainability: 'Strong BANT validation'
+        }
+      ]
+    };
+  }
+
+  private getMockBuyingCommittee() {
+    return {
+      stakeholders: [
+        {
+          name: 'Sarah Jenkins',
+          role: 'Director of IT',
+          influenceLevel: 'HIGH',
+          decisionPower: 'DECISION_MAKER',
+          objections: ['Integration downtime risk', 'Pricing fits current CapEx but needs OpEx justification'],
+          motivations: ['System stability', 'Scalability'],
+          preferredCommunicationStyle: 'Direct, analytical',
+          risk: 'Loves current legacy provider',
+          recommendedSalesStrategy: 'Share architectural validation whitepaper'
+        }
+      ]
+    };
+  }
+
+  private getMockNegotiationStrategy() {
+    return {
+      negotiationObjectives: ['Achieve $120k ACV', 'Secure 3-year term commitment'],
+      pricingFlexibility: 'Up to 15% discount for 3-year upfront payment',
+      concessions: ['Waive initial setup fee', 'Add premium 24/7 SLA tier for first year'],
+      walkAwayConditions: ['Deal value below $95k ACV', 'No direct developer support clauses'],
+      riskAnalysis: 'Competitor offering lower setup cost',
+      winStrategy: 'Focus on total cost of ownership (TCO) efficiency',
+      alternativeApproaches: 'Pilot implementation with month-to-month terms'
+    };
+  }
+
+  private getMockObjections() {
+    return {
+      objections: [
+        {
+          category: 'Price',
+          objection: 'The solution is 20% more expensive than competitor routing platforms.',
+          recommendedResponse: 'Highlight that our automated routes reduce fuel overhead by 30%, compensating price diff in 3 months.',
+          supportingEvidence: 'Logistics case study showing 32% fuel cost reduction within 90 days',
+          businessCase: 'Fuel savings represent $45k monthly vs $5k price difference'
+        }
+      ]
+    };
+  }
+
+  private getMockProposalStrategy() {
+    return {
+      proposalStructure: ['Executive Summary', 'Value Realization', 'Scope & Deliverables', 'ROI Analysis', 'Investment & SLA'],
+      valueNarrative: 'Transforming routing logistics into a predictable driver of profit.',
+      roiStory: 'Achieve complete system payback within 98 days of deployment.',
+      caseStudySuggestions: ['DHL Route Efficiency Partner Case Study'],
+      proofPoints: ['Zero downtime routing migrations executed for 15 logistics clients'],
+      successMetrics: ['30% reduction in route planning hours', '15% lower vehicle emissions'],
+      recommendedTimeline: 'Onboarding starting within 14 days, pilot live in 30 days'
+    };
+  }
+
+  private getMockRevenueOptimization() {
+    return {
+      upsellOpportunities: ['Premium support SLA', 'Advanced API analytics dashboard addon'],
+      crossSellOpportunities: ['Supply chain compliance validation suite'],
+      bundleOpportunities: ['Predictive routing + Compliance validation bundle'],
+      renewalOpportunities: ['Global Dispatch core API annual renewal'],
+      expansionAccounts: ['Global Logistics Ltd APAC division'],
+      revenueRisks: ['Churn risk on legacy dispatch modules']
+    };
+  }
+
+  private getMockSalesForecast() {
+    return {
+      bestCase: 150000.0,
+      expectedCase: 120000.0,
+      worstCase: 90000.0,
+      expectedRevenue: 120000.0,
+      pipelineValue: 240000.0,
+      closeProbability: 80.0,
+      forecastConfidence: 85.0
+    };
+  }
+
+  private getMockNextBestAction() {
+    return {
+      actions: [
+        {
+          opportunityName: 'Global Logistics Expansion',
+          immediateAction: 'Send architectural validation whitepaper',
+          followUpAction: 'Schedule technical integration call with dev leads',
+          escalation: 'Request CRO join call if pricing objections persist',
+          requiredResources: ['Principal Architect hours', 'Objection responses script'],
+          expectedOutcome: 'Obtain security sign-off',
+          successKPI: 'Security audit signoff timestamp',
+          deadline: '2026-07-15',
+          priority: 'HIGH'
+        }
+      ]
+    };
+  }
+
+  private getMockSalesPlaybooks() {
+    return {
+      playbooks: [
+        {
+          name: 'Enterprise Logistics Expansion Playbook',
+          playRules: 'Trigger on logistics sector prospects exceeding $100k ARR',
+          targetAudience: 'Logistics directors and IT executives',
+          triggerCondition: 'Prospect requests routing API documentation',
+          recommendedSteps: ['Perform discovery call verifying active fleets', 'Conduct custom ROI calculation workshop'],
+          objectionLibrary: 'Price objections response script, Integration downtime answers',
+          negotiationFramework: 'Value-based concessions matrix',
+          proposalTemplate: 'Premium Enterprise routing proposal layout'
+        }
+      ]
+    };
+  }
+
+  private getMockSalesRecommendations() {
+    return {
+      recommendations: [
+        {
+          opportunityName: 'Global Logistics Expansion',
+          title: 'Execute TCO-driven Negotiation',
+          nextBestAction: 'Deliver fuel-efficiency business case document',
+          expectedCloseProb: 82.0,
+          expectedTimeline: '15 days',
+          riskFactors: ['Competitor price war', 'Slow legal redlining'],
+          dependencies: ['IT director approval of SLA parameters'],
+          alternativeActions: ['Offer a pilot tier at 10% lower cost with limited API volume']
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveScores() {
+    return {
+      pipelineHealth: 84.0,
+      forecastReliability: 88.0,
+      revenueStability: 85.0,
+      expansionPotential: 75.0,
+      revenueRisk: 20.0,
+      growthMomentum: 80.0,
+      overallExecutiveRevenueScore: 82.0
+    };
+  }
+
+  private getMockBusinessHealthScore() {
+    return {
+      operationalHealth: 88.0,
+      salesHealth: 82.0,
+      marketingHealth: 85.0,
+      leadHealth: 79.0,
+      customerHealth: 92.0,
+      innovationHealth: 75.0,
+      overallExecutiveHealth: 86.0,
+      confidence: 90.0,
+      evidence: 'High retention and robust product pipeline offsets slight sales conversion delays',
+      trendDirection: 'UP',
+      expectedDirection: 'IMPROVING'
+    };
+  }
+
+  private getMockGrowthScore() {
+    return {
+      growthScore: 84.0,
+      velocityIndex: 82.0,
+      confidence: 88.0
+    };
+  }
+
+  private getMockRevenueHealth() {
+    return {
+      pipelineValue: 350000.0,
+      leakagePoints: ['Long contract redlining phase', 'MQL-to-SQL drop-offs'],
+      stabilityScore: 87.0
+    };
+  }
+
+  private getMockMarketReadiness() {
+    return {
+      productReadiness: 90.0,
+      salesReadiness: 80.0,
+      marketingReadiness: 85.0,
+      expansionReadiness: 75.0,
+      investmentReadiness: 82.0,
+      internationalReadiness: 65.0
+    };
+  }
+
+  private getMockCompetitivePosition() {
+    return {
+      competitivePosition: 'CHALLENGER',
+      marketPosition: 'MEDIUM',
+      differentiators: ['AI-driven scheduling algorithms', 'Lower TCO compared to legacy systems'],
+      weaknesses: ['Limited custom SLA integrations', 'No direct offline SDK support'],
+      threats: ['Established legacy carriers releasing SaaS wrappers', 'Aggressive venture-backed pricing cuts'],
+      opportunities: ['Enterprise logistics optimization', 'Cold-chain routing expansion'],
+      competitiveConfidence: 85.0
+    };
+  }
+
+  private getMockForecastSnapshots() {
+    return {
+      forecasts: [
+        {
+          horizonDays: 30,
+          revenueForecast: 45000.0,
+          pipelineForecast: 90000.0,
+          growthForecast: 3.5,
+          riskForecast: 2.0,
+          expansionForecast: 5000.0,
+          confidenceMin: 85.0,
+          confidenceMax: 95.0,
+          bestCase: 50000.0,
+          expectedCase: 45000.0,
+          worstCase: 38000.0
+        },
+        {
+          horizonDays: 90,
+          revenueForecast: 135000.0,
+          pipelineForecast: 270000.0,
+          growthForecast: 11.2,
+          riskForecast: 5.5,
+          expansionForecast: 15000.0,
+          confidenceMin: 80.0,
+          confidenceMax: 90.0,
+          bestCase: 150000.0,
+          expectedCase: 135000.0,
+          worstCase: 110000.0
+        },
+        {
+          horizonDays: 180,
+          revenueForecast: 280000.0,
+          pipelineForecast: 560000.0,
+          growthForecast: 24.5,
+          riskForecast: 12.0,
+          expansionForecast: 35000.0,
+          confidenceMin: 75.0,
+          confidenceMax: 88.0,
+          bestCase: 320000.0,
+          expectedCase: 280000.0,
+          worstCase: 220000.0
+        }
+      ]
+    };
+  }
+
+  private getMockBusinessRisks() {
+    return {
+      risks: [
+        {
+          category: 'REVENUE',
+          severity: 'HIGH',
+          probability: 25.0,
+          businessImpact: 'Renewal failure of top 2 enterprise accounts due to SLA disputes',
+          mitigation: 'Implement dedicated customer success account check-ins 90 days prior to renewal'
+        },
+        {
+          category: 'COMPETITIVE',
+          severity: 'MEDIUM',
+          probability: 40.0,
+          businessImpact: 'Competitor matching primary route features at lower price',
+          mitigation: 'Develop TCO comparisons and bundle secondary dispatch layers for enterprise lock-in'
+        }
+      ]
+    };
+  }
+
+  private getMockBusinessOpportunities() {
+    return {
+      opportunities: [
+        {
+          type: 'QUICK_WIN',
+          priority: 'HIGH',
+          expectedImpact: 'Reduce route calculation processing cost by 15% via API caching parameters',
+          mitigation: 'Deploy cache rules to primary staging gateways'
+        },
+        {
+          type: 'EXPANSION',
+          priority: 'MEDIUM',
+          expectedImpact: 'Expand into cold-chain freight routing segment with dedicated temperature integrations',
+          mitigation: 'Integrate IoT sensor data endpoints to B2B proposal libraries'
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveInsight() {
+    return {
+      ceoSummary: 'Performance remains strong with overall executive health index at 86/100. Pipeline values grew 12% quarter-on-quarter.',
+      boardSummary: 'Enterprise outbound operations yield stable expansion. Churn remains within thresholds at 5%. High investment readiness score of 82/100 facilitates Series-A positioning.',
+      criticalFind: ['MQL quality scores are improving', 'Contract redlining represents the primary pipeline leakage bottleneck'],
+      topOpp: ['Cold-chain segment integration', 'Route calculator caching quick win'],
+      topRisk: ['Top 2 account renewal disputes', 'Aggressive competitor feature-matching'],
+      narrative: 'The business demonstrates healthy operational momentum. Outbound expansion projects yield strong conversion indicators.'
+    };
+  }
+
+  private getMockPredictionHistories() {
+    return {
+      predictions: [
+        {
+          metricName: 'LTV Expansion Rate',
+          predictedVal: 22.5,
+          confidence: 85.0,
+          horizonDays: 90,
+          horizonDate: '2026-10-05T00:00:00Z',
+          evidence: 'Historical renewal upsells and new feature adoption metrics'
+        },
+        {
+          metricName: 'Qualified Outbound Leads Count',
+          predictedVal: 145.0,
+          confidence: 90.0,
+          horizonDays: 30,
+          horizonDate: '2026-08-05T00:00:00Z',
+          evidence: 'Active marketing campaigns performance indicators'
+        }
+      ]
+    };
+  }
+
+  private getMockAnalyticsRecommendations() {
+    return {
+      recommendations: [
+        {
+          title: 'Implement API Caching to Reduce COGS',
+          nextBestAction: 'Deploy edge cache rule frameworks for route API calculations',
+          expectedOutcome: '15% reduction in route calculation compute costs within 30 days',
+          expectedTimeline: '30 days',
+          riskFactors: ['Stale API payload delivery', 'Complex header validation logic'],
+          dependencies: ['DevOps infrastructure sign-off on cache duration parameters'],
+          alternativeActions: ['Limit API volume request quotas on low-tier developer keys']
+        }
+      ]
+    };
+  }
+
+  private getMockSnapshotComparison() {
+    return {
+      whatChanged: 'Business health index increased from 82 to 86. Growth score stabilized at 84.',
+      whyItChanged: 'LTV expanded 8% and CAC dropped 5% due to optimized marketing spend.',
+      causativeEngine: 'Marketing Engine optimization',
+      positiveImpact: 'Sales velocity index grew by 4.2 points',
+      negativeImpact: 'Technology SLA risks increased slightly by 3%',
+      metricsAffected: ['cac', 'ltv', 'overallExecutiveHealth'],
+      forecastDiff: '30-day revenue expectation shifted from $42k to $45k',
+      confidenceDiff: 'Confidence delta improved by +2.5%',
+      riskDiff: 'Revenue risks dropped 4%',
+      opportunityDiff: 'Quick win candidates cataloged increased by 2',
+      executiveSummary: 'Outbound sales alignment drove metric optimization.'
+    };
+  }
+
+  private getMockCustomerHealth() {
+    return {
+      overallHealth: 88.0,
+      relationshipHealth: 85.0,
+      productAdoption: 82.0,
+      featureAdoption: 80.0,
+      supportHealth: 92.0,
+      valueRealization: 88.0,
+      execEngagement: 82.0,
+      renewalReadiness: 85.0,
+      expansionReadiness: 78.0,
+      riskLevel: 15.0,
+      healthTrend: 'UP',
+      confidence: 90.0
+    };
+  }
+
+  private getMockCustomerSuccessJourney() {
+    return {
+      currentStage: 'VALUE_REALIZATION',
+      stageStatus: 'Latency objectives delivered. Client expanding usage metrics.',
+      successCriteria: ['Latency drops validated on edge route servers', 'daily routing checks completed'],
+      risks: ['legacy router integrations latency drop-off'],
+      recommendedActions: ['Perform telemetry cross-sell pitch and IoT temperature integration']
+    };
+  }
+
+  private getMockSupportIntelligence() {
+    return {
+      ticketNumber: 'TKT-1025',
+      category: 'BUG',
+      priority: 'MEDIUM',
+      status: 'RESOLVED',
+      subject: 'Latency spikes during peak volume routing',
+      description: 'Customer reports 200ms latency spikes in US East edge cluster.',
+      rootCause: 'API Cache rules parameters mismatch',
+      resolution: 'Modify TTL constraints on telemetry API endpoints',
+      expectedResolutionTime: '2 hours',
+      customerImpact: 'Batch dispatch calculations delayed by 15%',
+      isRecurring: false
+    };
+  }
+
+  private getMockCustomerSentiment() {
+    return {
+      sentimentScore: 85.0,
+      sentimentTrend: 'IMPROVING',
+      confidence: 90.0,
+      businessImpact: 'High likelihood of account expansion and case study reference',
+      relationshipRisk: 'Low',
+      executiveRisk: 'Low'
+    };
+  }
+
+  private getMockRenewalForecast() {
+    return {
+      renewalDate: '2026-12-15T00:00:00Z',
+      renewalProbability: 92.0,
+      expectedValue: 120000.0,
+      confidence: 90.0
+    };
+  }
+
+  private getMockRenewalPlan() {
+    return {
+      planOwner: 'Sarah Jenkins',
+      renewalStrategy: 'Highlight latency reductions and outline cold-chain expansion timeline',
+      executiveActions: ['Present ROI validation summary slide deck', 'Organize C-level review call'],
+      keyRisks: ['legacy systems disputes', 'procurement budget delays'],
+      status: 'DRAFT'
+    };
+  }
+
+  private getMockExpansionOpportunity() {
+    return {
+      title: 'IoT Temperature Sensor Telemetry Module',
+      type: 'CROSS_SELL',
+      fitScore: 88.0,
+      expectedRevenue: 20000.0,
+      businessJustification: 'Customer requires temperature tracking for cold-chain compliance'
+    };
+  }
+
+  private getMockChurnPrediction() {
+    return {
+      churnProbability: 8.0,
+      confidence: 92.0,
+      primaryRootCause: 'Latency issues in staging networks',
+      earlyWarningSignals: ['SLA latency tickets', 'unresolved bug cases count'],
+      severity: 'LOW'
+    };
+  }
+
+  private getMockRetentionStrategy() {
+    return {
+      strategyName: 'API Edge Caching deployment program',
+      executionPlan: 'Deploy caching rule frameworks to edge API clusters',
+      estimatedCost: 500.0,
+      successProbability: 95.0
+    };
+  }
+
+  private getMockValueRealization() {
+    return {
+      goals: ['Reduce latency by 15%', 'Integrate telematics API'],
+      expectedOutcomes: ['Latency dropdowns below 150ms', 'Telematics dashboard activated'],
+      actualOutcomes: ['Staging latency dropped by 12%', 'API telemetry connected'],
+      goalAchievementRate: 85.0,
+      roiDelivered: 35000.0,
+      valueDelivered: 88.0,
+      timeToValueDays: 14,
+      valueScore: 86.0,
+      valueTrend: 'IMPROVING',
+      valueRisk: 'LOW',
+      recommendedActions: ['Show visual metrics during quarterly C-level QBR']
+    };
+  }
+
+  private getMockCustomerAdvocacy() {
+    return {
+      advocacyScore: 86.0,
+      referenceLikelihood: 90.0,
+      testimonialProb: 85.0,
+      caseStudyProb: 75.0,
+      npsScore: 9.0,
+      advocacyStrategy: 'Leverage latency drop milestone to request reference testimonials',
+      executiveActions: ['Email reference program details', 'Include in Q3 case study draft']
+    };
+  }
+
+  private getMockPortfolioIntelligence() {
+    return {
+      highestRiskAccounts: [
+        { customerId: 'biz-risk-1', companyName: 'Legacy Logistics Inc', riskProb: 45.0 }
+      ],
+      highestValueAccounts: [
+        { customerId: 'biz-val-1', companyName: 'Global Logistics Ltd', arr: 120000.0 }
+      ],
+      fastestGrowingAccounts: [
+        { customerId: 'biz-grow-1', companyName: 'ColdChain Express', growthRate: 24.5 }
+      ],
+      accountsRequiringAttention: [
+        { customerId: 'biz-attn-1', companyName: 'Legacy Logistics Inc', reason: 'High unresolved bug ticket ratio' }
+      ],
+      expansionPipelineValue: 35000.0,
+      renewalPipelineValue: 240000.0,
+      overallPortfolioHealth: 86.0
+    };
+  }
+
+  private getMockExecutiveAccountSummary() {
+    return {
+      currentHealth: 88.0,
+      businessGoals: ['Reduce edge API latency', 'Deploy cold-chain telemetry'],
+      roiDelivered: 35000.0,
+      expansionPotential: 20000.0,
+      renewalReadiness: 92.0,
+      relationshipStrength: 85.0,
+      customerRisks: ['SLA latency disputes'],
+      executiveActions: ['Execute cache rules program', 'Verify cold-chain telemetry fit'],
+      priorityScore: 84.0,
+      confidence: 90.0
+    };
+  }
+
+  private getMockSuccessPlaybooks() {
+    return {
+      playbooks: [
+        {
+          name: 'Onboarding & Activation Playbook',
+          triggerCondition: 'Trigger on new account signup completion',
+          steps: ['Conduct setup call verifying fleet scale', 'Integrate developer credentials'],
+          responsibleRole: 'Customer Success Manager',
+          kpiToMonitor: 'Time-to-Value Days active'
+        }
+      ]
+    };
+  }
+
+  private getMockCustomerRecommendations() {
+    return {
+      recommendations: [
+        {
+          title: 'Deploy Telematics Sensor Caching Rules',
+          description: 'Deploy Cloudflare edge cache rules duration policies to telemetry API routing keys.',
+          nextBestAction: 'Deploy edge cache rule duration parameter configs',
+          expectedOutcome: 'Resolve peak SLA API latency issues within 15 days',
+          confidence: 95.0,
+          factsUsed: ['Latency average at 180ms', 'SLA limit is 150ms'],
+          assumptions: ['Peak fleet queries occur during day business hours'],
+          constraints: ['Must keep security checks active on headers'],
+          alternativeActions: ['Limit API query quotas', 'Upgrade server compute scale']
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveRecommendations() {
+    return {
+      recommendations: [
+        {
+          title: 'Pricing Model Optimization',
+          description: 'Transition mid-market clients to tiered usage plans.',
+          nextBestAction: 'Review stripe plan configurations.',
+          expectedOutcome: 'Boost expansion opportunities.',
+          confidence: 88,
+          status: 'PENDING',
+          priority: 'HIGH',
+          businessImpact: 'Increase revenue potential by 15%',
+          dependencies: ['strategy-engine'],
+          strategicAlignment: 'Enterprise monetization optimization'
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveConflicts() {
+    return {
+      conflicts: [
+        {
+          title: 'Ad Spend Allocation Discrepancy',
+          severity: 'MEDIUM',
+          affectedEngines: ['marketing-engine', 'analytics-engine'],
+          businessImpact: 'Potential margin pressure.',
+          resolutionOptions: ['Establish ad spend limit caps', 'Perform bi-weekly audits'],
+          recommendedResolution: 'Establish ad spend limit caps',
+          status: 'OPEN'
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveConsensuses() {
+    return {
+      consensus: [
+        {
+          recommendationId: 'pricing-opt',
+          supportScore: 92.5,
+          confidence: 90.0,
+          businessImpact: 'High potential ROI.',
+          dependencies: ['strategy-engine'],
+          priority: 'HIGH',
+          finalConsensus: 'Approved consensus with ad-hoc review loops.'
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveDecisionSimulation() {
+    return {
+      executiveSummary: 'Simulated command successfully projected.',
+      revenueImpact: 'Estimated ARR boost of $45,000.',
+      leadImpact: 'SQL lead volume expected to grow 14%.',
+      cacImpact: 'CAC index expected to decrease $12.',
+      ltvImpact: 'LTV multiplier projected at 6.8x.',
+      growthScoreImpact: 'Growth score updates by +4.5%.',
+      businessHealthImpact: 'Overall health index improves +2.0%.',
+      risks: ['Short-term customer support overload bottleneck'],
+      departmentsAffected: ['sales-engine', 'marketing-engine'],
+      confidence: 86.0,
+      engineDisagreements: [
+        { engine: 'analytics-engine', challenge: 'Cloud compute cost scaling risks' }
+      ],
+      consensusLevel: 91.5,
+      recommendedExecutionOrder: ['strategy-engine', 'marketing-engine']
+    };
+  }
+
+  private getMockExecutiveOperatingPlan() {
+    return {
+      todayPriorities: ['Verify customer onboarding pipelines'],
+      thisWeek: ['Audit LinkedIn outbound target lists'],
+      thisMonth: ['Finalize usage plan pricing tiers'],
+      quarterGoals: ['Scale Enterprise ARR by 20%'],
+      strategicInitiatives: [
+        { title: 'Outbound sequence automation', outcome: 'Reduce SDR overhead' }
+      ],
+      operationalInitiatives: [
+        { title: 'TTL Cache Policy deployment', outcome: 'Lower compute burn rates' }
+      ],
+      revenueInitiatives: [
+        { title: 'IoT Fleet Expansion Package', outcome: 'Expand contract sizes' }
+      ],
+      customerInitiatives: [
+        { title: 'Executive SLA check loops', outcome: 'Stabilize client retention' }
+      ],
+      innovationInitiatives: [
+        { title: 'AI Assistant modules', outcome: 'Improve product value score' }
+      ]
+    };
+  }
+
+  private getMockExecutiveRoadmaps() {
+    return {
+      roadmaps: [
+        {
+          phase: 'NOW',
+          itemText: 'Hire mid-market Sales Representative',
+          businessValue: 'Accelerate deal pipeline velocity',
+          risk: 'Ramp-up training period delay',
+          confidence: 85.0,
+          requiredResources: ['HR recruitment tools'],
+          dependencies: ['lead-engine'],
+          status: 'PLANNED'
+        }
+      ]
+    };
+  }
+
+  private getMockExecutiveBrief() {
+    return {
+      businessHealth: 86.5,
+      growthScore: 79.5,
+      revenueHealth: 83.0,
+      customerHealth: 88.5,
+      topOpportunities: ['IoT fleet telemetry upsells'],
+      topRisks: ['SLA latency disputes'],
+      urgentDecisions: ['Ad spend cap limits approval'],
+      forecast: { revenue: 154000.0, margin: 76.5 },
+      kpiSummary: [
+        { kpi: 'LTV', value: '$42,000' }
+      ],
+      trendSummary: ['Lead acquisition rate improving.'],
+      competitiveSummary: 'Strong SaaS market positioning.',
+      marketReadiness: 81.0,
+      recommendedActions: ['Conduct onboarding check calls'],
+      executiveCalendar: ['Executive Board sync call Tuesday'],
+      expectedOutcomes: ['Reduce customer churn by 1.5%']
+    };
+  }
+
+  private getMockExecutiveAlerts() {
+    return {
+      alerts: [
+        {
+          category: 'CRITICAL',
+          severity: 'CRITICAL',
+          confidence: 94.0,
+          businessImpact: 'High risk of churn on enterprise accounts due to SLA dispute.',
+          recommendedAction: 'Execute custom check call playbooks immediately.'
+        }
+      ]
+    };
+  }
 }
+
+
 
