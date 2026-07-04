@@ -60,12 +60,12 @@ const navItems: SidebarItem[] = [
     href: '#',
     icon: Target,
     subItems: [
-      { name: '🎯 Strategy Engine', href: '/strategy' },
-      { name: '📣 Marketing Engine', href: '/marketing' },
-      { name: '🎣 Lead Generation', href: '/leads' },
-      { name: '💰 Sales Engine', href: '/sales' },
-      { name: '📊 Analytics Engine', href: '/analytics' },
-      { name: '🤝 Customer Success', href: '/customer-success' },
+      { name: 'Strategy Engine', href: '/strategy' },
+      { name: 'Marketing Engine', href: '/marketing' },
+      { name: 'Lead Generation', href: '/leads' },
+      { name: 'Sales Engine', href: '/sales' },
+      { name: 'Analytics Engine', href: '/analytics' },
+      { name: 'Customer Success', href: '/customer-success' },
     ]
   },
   { name: 'AI Workspace', href: '/ai-workspace', icon: Cpu },
