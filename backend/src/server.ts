@@ -10,6 +10,8 @@ import { logger } from './utils/logger';
 
 const app = express();
 
+import { prisma } from './database/prisma';
+
 // Middlewares
 app.use(correlationMiddleware);
 app.use(cors({
@@ -30,6 +32,12 @@ app.use(errorMiddleware);
 // Start Server
 app.listen(env.PORT, () => {
   logger.info(`Server is running in ${env.NODE_ENV} mode on port ${env.PORT}`);
+  
+  // Eager connection warm-up
+  logger.info('Initializing eager connection to database pool...');
+  prisma.$connect()
+    .then(() => logger.info('Database pool successfully connected and warmed up.'))
+    .catch((err) => logger.error('Database connection pool warm-up failed:', err));
 });
 
 export default app;

@@ -61,34 +61,41 @@ export default function DashboardPage() {
     try {
       // Run board orchestration
       const runRes = await fetch(`/api/executive-board/run/${businessId}`, { method: 'POST' });
-      const runData = await runRes.json();
-
-      if (runData.success) {
-        setBrief(runData.brief);
-        setRecommendations(runData.recommendations || []);
-        setConflicts(runData.conflicts || []);
-        setConsensus(runData.consensus || []);
+      if (runRes.ok) {
+        const runData = await runRes.json();
+        if (runData.success) {
+          setBrief(runData.brief);
+          setRecommendations(runData.recommendations || []);
+          setConflicts(runData.conflicts || []);
+          setConsensus(runData.consensus || []);
+        }
       }
 
       // Fetch KPI Tree
       const treeRes = await fetch(`/api/executive-board/kpi-tree/${businessId}`);
-      const treeData = await treeRes.json();
-      if (treeData.success) {
-        setKpiTree(treeData.tree);
+      if (treeRes.ok) {
+        const treeData = await treeRes.json();
+        if (treeData.success) {
+          setKpiTree(treeData.tree);
+        }
       }
 
       // Fetch Roadmap
       const roadmapRes = await fetch(`/api/executive-board/roadmap/${businessId}`);
-      const roadmapData = await roadmapRes.json();
-      if (roadmapData.success) {
-        setRoadmap(roadmapData.roadmap || []);
+      if (roadmapRes.ok) {
+        const roadmapData = await roadmapRes.json();
+        if (roadmapData.success) {
+          setRoadmap(roadmapData.roadmap || []);
+        }
       }
 
       // Fetch Operating Plan
       const planRes = await fetch(`/api/executive-board/plan/${businessId}`);
-      const planData = await planRes.json();
-      if (planData.success) {
-        setOperatingPlan(planData.plan);
+      if (planRes.ok) {
+        const planData = await planRes.json();
+        if (planData.success) {
+          setOperatingPlan(planData.plan);
+        }
       }
     } catch (err) {
       console.error('Error fetching dashboard board assets:', err);
@@ -107,9 +114,11 @@ export default function DashboardPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ command: simCommand })
       });
-      const data = await res.json();
-      if (data.success) {
-        setSimulationResult(data.simulation);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setSimulationResult(data.simulation);
+        }
       }
     } catch (err) {
       console.error('Error simulating command:', err);
