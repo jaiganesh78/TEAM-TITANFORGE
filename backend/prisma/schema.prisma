@@ -1,0 +1,413 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  MEMBER
+}
+
+model User {
+  id             String         @id @default(uuid())
+  email          String         @unique
+  passwordHash   String
+  name           String
+  role           Role           @default(MEMBER)
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sessions       Session[]
+  auditLogs      AuditLog[]
+  twinAuditLogs  TwinAuditLog[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([email])
+  @@index([organizationId])
+}
+
+model Organization {
+  id         String     @id @default(uuid())
+  name       String
+  users      User[]
+  auditLogs  AuditLog[]
+  businesses Business[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([token])
+}
+
+model AuditLog {
+  id             String        @id @default(uuid())
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  action         String
+  details        String        @db.Text
+  ipAddress      String?
+  correlationId  String?
+  createdAt      DateTime      @default(now())
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([correlationId])
+}
+
+// ==========================================
+// BUSINESS DIGITAL TWIN ENTITIES
+// ==========================================
+
+enum BusinessStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+model Business {
+  id             String         @id @default(uuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  status         BusinessStatus @default(DRAFT)
+  startedAt      DateTime       @default(now())
+  lastUpdated    DateTime       @updatedAt
+  completedAt    DateTime?
+  deleted        Boolean        @default(false)
+
+  // 1-to-1 Relations
+  identity              BusinessIdentity?
+  profile               BusinessProfile?
+  model                 BusinessModel?
+  marketingProfile      MarketingProfile?
+  salesProfile          SalesProfile?
+  operationsProfile     OperationsProfile?
+  technologyProfile     TechnologyProfile?
+  organizationStructure OrganizationStructure?
+  discoveryProgress     DiscoveryProgress?
+
+  // 1-to-many Relations
+  revenueProfiles   RevenueProfile[]
+  products          ProductPortfolio[]
+  services          ServicePortfolio[]
+  customerSegments  CustomerSegment[]
+  customerPersonas  CustomerPersona[]
+  employees         EmployeeProfile[]
+  vendors           VendorProfile[]
+  partners          PartnerProfile[]
+  competitors       CompetitorProfile[]
+  goals             BusinessGoal[]
+  constraints       BusinessConstraint[]
+  risks             BusinessRisk[]
+  kpis              BusinessKPI[]
+  documents         BusinessDocumentReference[]
+  websites          WebsiteReference[]
+  twinAuditLogs     TwinAuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+model BusinessProfile {
+  id         String   @id @default(uuid())
+  businessId String   @unique
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  summary    String?  @db.Text
+  vision     String?  @db.Text
+  mission    String?  @db.Text
+}
+
+model BusinessIdentity {
+  id           String   @id @default(uuid())
+  businessId   String   @unique
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  legalName    String
+  tradeName    String?
+  foundedYear  Int?
+  headquarters String?
+  description  String?  @db.Text
+  industry     String?
+  websiteUrl   String?
+}
+
+model BusinessModel {
+  id               String   @id @default(uuid())
+  businessId       String   @unique
+  business         Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  type             String?
+  valueProposition String?  @db.Text // JSON list in application code
+  keyPartners      String?  @db.Text
+  keyActivities    String?  @db.Text
+  keyResources     String?  @db.Text
+  costStructure    String?  @db.Text
+  revenueStreams   String?  @db.Text
+}
+
+model RevenueProfile {
+  id           String   @id @default(uuid())
+  businessId   String
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  period       String
+  totalRevenue Float
+  mrr          Float?
+  arr          Float?
+  grossMargin  Float?
+  growthRate   Float?
+}
+
+model ProductPortfolio {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  description String?  @db.Text
+  price       Float
+  unitCost    Float?
+  salesVolume Int?
+}
+
+model ServicePortfolio {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  description String?  @db.Text
+  rate        Float
+  capacity    Int?
+}
+
+model CustomerSegment {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  segmentName String
+  cac         Float?
+  ltv         Float?
+  churnRate   Float?
+  description String?  @db.Text
+}
+
+model CustomerPersona {
+  id            String   @id @default(uuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name          String
+  demographics  String?  @db.Text
+  painPoints    String?  @db.Text
+  coreBehaviors String?  @db.Text
+}
+
+model MarketingProfile {
+  id           String   @id @default(uuid())
+  businessId   String   @unique
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  adSpend      Float?
+  roi          Float?
+  channelsUsed String?  @db.Text
+  conversions  String?  @db.Text
+}
+
+model SalesProfile {
+  id             String   @id @default(uuid())
+  businessId     String   @unique
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  leadsCount     Int?
+  conversionRate Float?
+  pipelineValue  Float?
+  salesCycleDays Int?
+}
+
+model OperationsProfile {
+  id                  String   @id @default(uuid())
+  businessId          String   @unique
+  business            Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  infraCost           Float?
+  supportTicketsCount Int?
+  avgResolutionTimeMs Int?
+  bottlenecks         String?  @db.Text
+}
+
+model TechnologyProfile {
+  id                    String   @id @default(uuid())
+  businessId            String   @unique
+  business              Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  infraProvider         String?
+  coreFrameworks        String?  @db.Text
+  databases             String?  @db.Text
+  integrations          String?  @db.Text
+  securityCertification String?
+}
+
+model OrganizationStructure {
+  id           String   @id @default(uuid())
+  businessId   String   @unique
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  headcount    Int?
+  orgChartLink String?
+}
+
+model EmployeeProfile {
+  id             String   @id @default(uuid())
+  businessId     String
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  departmentName String
+  count          Int
+  avgSalary      Float?
+  turnoverRate   Float?
+}
+
+model VendorProfile {
+  id              String    @id @default(uuid())
+  businessId      String
+  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  vendorName      String
+  serviceCategory String?
+  contractCost    Float?
+  contractEnd     DateTime?
+}
+
+model PartnerProfile {
+  id              String   @id @default(uuid())
+  businessId      String
+  business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  partnerName     String
+  partnershipType String?
+  dependencyLevel String?  // LOW, MEDIUM, HIGH
+}
+
+model CompetitorProfile {
+  id             String   @id @default(uuid())
+  businessId     String
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  competitorName String
+  strengths      String?  @db.Text
+  weaknesses     String?  @db.Text
+  marketShare    Float?
+}
+
+model BusinessGoal {
+  id          String    @id @default(uuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title       String
+  description String?   @db.Text
+  targetDate  DateTime?
+  progress    Float?    @default(0.0)
+}
+
+model BusinessConstraint {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  type        String
+  description String?  @db.Text
+  limitValue  String?
+}
+
+model BusinessRisk {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title       String
+  description String?  @db.Text
+  likelihood  String?  // LOW, MEDIUM, HIGH
+  impact      String?  // LOW, MEDIUM, HIGH
+  mitigation  String?  @db.Text
+}
+
+model BusinessKPI {
+  id           String   @id @default(uuid())
+  businessId   String
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name         String
+  currentValue Float
+  targetValue  Float?
+  unit         String?
+}
+
+model BusinessDocumentReference {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fileName   String
+  fileType   String
+  fileUrl    String
+  sizeBytes  Int?
+  uploadedAt DateTime @default(now())
+}
+
+model WebsiteReference {
+  id         String    @id @default(uuid())
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  url        String
+  title      String?
+  description String?  @db.Text
+  crawledAt  DateTime?
+}
+
+model DiscoveryProgress {
+  id              String   @id @default(uuid())
+  businessId      String   @unique
+  business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  overallCoverage Float    @default(0.0)
+
+  // Status for each of the 18 modules: DRAFT, IN_PROGRESS, COMPLETED
+  identityStatus     String @default("DRAFT")
+  modelStatus         String @default("DRAFT")
+  productsStatus      String @default("DRAFT")
+  customersStatus     String @default("DRAFT")
+  marketingStatus     String @default("DRAFT")
+  salesStatus         String @default("DRAFT")
+  operationsStatus    String @default("DRAFT")
+  financeStatus       String @default("DRAFT")
+  technologyStatus    String @default("DRAFT")
+  organizationStatus  String @default("DRAFT")
+  partnersStatus      String @default("DRAFT")
+  competitorsStatus   String @default("DRAFT")
+  goalsStatus         String @default("DRAFT")
+  constraintsStatus   String @default("DRAFT")
+  risksStatus         String @default("DRAFT")
+  kpisStatus          String @default("DRAFT")
+  documentsStatus     String @default("DRAFT")
+  websiteStatus       String @default("DRAFT")
+}
+
+model TwinAuditLog {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  section       String
+  operation     String   // CREATE, UPDATE, DELETE
+  previousValue String?  @db.Text
+  newValue      String?  @db.Text
+  timestamp     DateTime @default(now())
+
+  @@index([businessId])
+  @@index([userId])
+}
