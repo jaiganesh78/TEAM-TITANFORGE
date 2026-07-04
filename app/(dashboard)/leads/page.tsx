@@ -309,7 +309,6 @@ export default function LeadsWorkspacePage() {
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '2.5rem' }}>🎣</span>
               <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, letterSpacing: '-0.02em', background: 'linear-gradient(to right, #fbbf24, #f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 Lead Intelligence Workspace
               </h1>

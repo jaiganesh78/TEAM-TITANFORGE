@@ -1,18 +1,18 @@
-# 🛠️ TitanForge AI Business Growth Operating System
+# TitanForge AI Business Growth Operating System
 
 TitanForge is a premium, production-grade AI-powered business growth governance and operations suite. It serves as an autonomous **AI Executive Board**, orchestrating growth loops, analyzing business performance, resolving multi-agent conflicts, and guiding corporate decision-making.
 
 ---
 
-## 🚀 Key Architectural Modules (Sprints 1–13)
+## Key Architectural Modules (Sprints 1–13)
 
-### 1. 🏛️ Executive AI Board & Governance
+### 1. Executive AI Board & Governance
 - **Autonomous Debates**: Coordinates all growth engines into structured debates to reach consensus.
 - **CEO morning briefings**: Auto-generates high-fidelity summaries highlighting health, growth, and risks.
 - **Decision Simulator**: Projects the financial and operational impact of hypothetical business actions.
 - **Drill-down KPI Tree**: Evaluates organizational health hierarchically (e.g., Growth Performance, Customer Success metrics).
 
-### 2. 👥 Growth & Evolution Engines
+### 2. Growth & Evolution Engines
 - **Strategy Engine**: Identifies market positioning, SWOT matrices, competitor threats, and pricing plans.
 - **Marketing Engine**: Computes target audiences, channel rankings, and content campaigns.
 - **Lead Intelligence Engine**: Scores acquisition lists and defines lead scoring parameters.
@@ -20,13 +20,13 @@ TitanForge is a premium, production-grade AI-powered business growth governance 
 - **Analytics & Evolution Engine**: Captures immutable performance snapshots and manages the historical intelligence timeline.
 - **Customer Success & Value Realization**: Tracks Renewal confidence, Churn risks, Goal outcomes, and ROI Delivery metrics.
 
-### 3. 🧠 Discovery & Knowledge Layers
+### 3. Discovery & Knowledge Layers
 - **Coverage & Missing Information Engine**: Identifies gaps in company information and guides target surveys.
 - **Vector Ingestion (RAG)**: Integrates ChromaDB provider to build vector-embedded knowledge stores for semantic querying.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend**: Next.js 16 (Turbopack, Tailwind CSS, Lucide icons, Recharts UI components)
 - **Backend**: Node.js, Express, TypeScript, LangGraph-style StateGraphs
@@ -35,7 +35,7 @@ TitanForge is a premium, production-grade AI-powered business growth governance 
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 ├── app/                  # Next.js App Router (Client Dashboard & Workspaces)
@@ -55,7 +55,7 @@ TitanForge is a premium, production-grade AI-powered business growth governance 
 
 ---
 
-## ⚙️ Installation & Local Setup
+## Installation & Local Setup
 
 ### 1. Prerequisites
 - **Node.js** (v18+ recommended)
@@ -87,7 +87,7 @@ The Next.js client workspace runs on `http://localhost:3000`. Port `3000` has pr
 
 ---
 
-## 🧪 Running Integration Tests
+## Running Integration Tests
 
 TitanForge includes dedicated validation tests for all agent workflows.
 

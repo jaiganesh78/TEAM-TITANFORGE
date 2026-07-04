@@ -344,7 +344,7 @@ export default function MarketingWorkspacePage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, background: 'linear-gradient(135deg, #a5b4fc, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            🎯 Marketing Strategy HUD
+            Marketing Strategy HUD
           </h1>
           <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.9rem' }}>
             Approved CMO campaigns, budgets, customer journey maps, and content plans
@@ -382,31 +382,31 @@ export default function MarketingWorkspacePage() {
         {/* Navigation Sidebar */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <button onClick={() => setActiveTab('overview')} style={{ padding: '0.75rem 1rem', background: activeTab === 'overview' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'overview' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            📊 Customer Journey Map
+            Customer Journey Map
           </button>
           <button onClick={() => setActiveTab('audience')} style={{ padding: '0.75rem 1rem', background: activeTab === 'audience' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'audience' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            👥 Audience & Personas
+            Audience & Personas
           </button>
           <button onClick={() => setActiveTab('channels')} style={{ padding: '0.75rem 1rem', background: activeTab === 'channels' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'channels' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            🔌 Channel Readiness
+            Channel Readiness
           </button>
           <button onClick={() => setActiveTab('campaigns')} style={{ padding: '0.75rem 1rem', background: activeTab === 'campaigns' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'campaigns' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            📢 Campaign Planner
+            Campaign Planner
           </button>
           <button onClick={() => setActiveTab('budgets')} style={{ padding: '0.75rem 1rem', background: activeTab === 'budgets' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'budgets' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            💰 Budget Optimizer
+            Budget Optimizer
           </button>
           <button onClick={() => setActiveTab('content')} style={{ padding: '0.75rem 1rem', background: activeTab === 'content' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'content' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            ✍️ Content Pillars
+            Content Pillars
           </button>
           <button onClick={() => setActiveTab('calendar')} style={{ padding: '0.75rem 1rem', background: activeTab === 'calendar' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'calendar' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            📅 Marketing Calendar
+            Marketing Calendar
           </button>
           <button onClick={() => setActiveTab('risks')} style={{ padding: '0.75rem 1rem', background: activeTab === 'risks' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'risks' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            ⚠️ Marketing Risks
+            Marketing Risks
           </button>
           <button onClick={() => setActiveTab('recommendations')} style={{ padding: '0.75rem 1rem', background: activeTab === 'recommendations' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'recommendations' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            💡 Recommendations Review
+            Recommendations Review
           </button>
         </div>
 
@@ -415,7 +415,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 1: CUSTOMER JOURNEY */}
           {activeTab === 'overview' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>📊 Seven-Stage Customer Journey Map</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Seven-Stage Customer Journey Map</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {journey && Object.keys(journey).map((stage, i) => {
                   const data = journey[stage];
@@ -440,7 +440,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 2: AUDIENCE & PERSONAS */}
           {activeTab === 'audience' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>👥 Audience Profiles & Persona Library</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Audience Profiles & Persona Library</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.25rem' }}>
                   <h4 style={{ margin: '0 0 0.5rem', color: '#a5b4fc' }}>Primary Audience Segment</h4>
@@ -463,7 +463,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 3: CHANNEL READINESS */}
           {activeTab === 'channels' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>🔌 Channel Evaluation & Asset Readiness</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Channel Evaluation & Asset Readiness</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {(channels?.channels || []).map((c: any, i: number) => (
                   <div key={i} style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem' }}>
@@ -488,7 +488,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 4: CAMPAIGN PLANNER */}
           {activeTab === 'campaigns' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>📢 Campaign Strategy Planner</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Campaign Strategy Planner</h2>
               {campaigns.map((camp: any, idx: number) => (
                 <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.5rem', marginBottom: '1rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -521,7 +521,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 5: BUDGET OPTIMIZER */}
           {activeTab === 'budgets' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>💰 Multi-Tier Budget Optimizer</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Multi-Tier Budget Optimizer</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '1.5rem' }}>
                 {(budgets?.budgets || []).map((b: any, i: number) => (
                   <div key={i} style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem' }}>
@@ -569,7 +569,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 7: CALENDAR */}
           {activeTab === 'calendar' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>📅 Marketing execution calendar</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Marketing execution calendar</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {(calendar?.calendar || []).map((item: any, i: number) => (
                   <div key={i} style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem' }}>
@@ -600,7 +600,7 @@ export default function MarketingWorkspacePage() {
           {/* TAB 9: RECOMMENDATIONS */}
           {activeTab === 'recommendations' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>💡 CMO Strategy Recommendations</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>CMO Strategy Recommendations</h2>
               {recommendations.map((rec: any, i: number) => (
                 <div key={i} style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', marginBottom: '1rem' }}>
                   <h3 style={{ margin: '0 0 0.5rem', color: '#818cf8', fontSize: '1.1rem' }}>{rec.title}</h3>

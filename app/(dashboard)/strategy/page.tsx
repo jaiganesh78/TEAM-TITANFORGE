@@ -252,7 +252,7 @@ export default function StrategyWorkspacePage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, background: 'linear-gradient(135deg, #a5b4fc, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            🎯 AI Strategy Workspace
+            AI Strategy Workspace
           </h1>
           <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.9rem' }}>
             Executive-grade strategic gap analysis and growth recommendations
@@ -272,28 +272,28 @@ export default function StrategyWorkspacePage() {
         {/* Navigation Sidebar */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <button onClick={() => setActiveTab('overview')} style={{ padding: '0.75rem 1rem', background: activeTab === 'overview' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'overview' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            📊 Executive Summary
+            Executive Summary
           </button>
           <button onClick={() => setActiveTab('swot')} style={{ padding: '0.75rem 1rem', background: activeTab === 'swot' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'swot' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            🕸️ SWOT Matrix
+            SWOT Matrix
           </button>
           <button onClick={() => setActiveTab('competitors')} style={{ padding: '0.75rem 1rem', background: activeTab === 'competitors' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'competitors' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            👥 Competitors
+            Competitors
           </button>
           <button onClick={() => setActiveTab('positioning')} style={{ padding: '0.75rem 1rem', background: activeTab === 'positioning' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'positioning' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            📣 Positioning & Brand
+            Positioning & Brand
           </button>
           <button onClick={() => setActiveTab('pricing')} style={{ padding: '0.75rem 1rem', background: activeTab === 'pricing' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'pricing' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            💰 Pricing Strategy
+            Pricing Strategy
           </button>
           <button onClick={() => setActiveTab('opportunities')} style={{ padding: '0.75rem 1rem', background: activeTab === 'opportunities' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'opportunities' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            ⚡ Growth Opportunities
+            Growth Opportunities
           </button>
           <button onClick={() => setActiveTab('recommendations')} style={{ padding: '0.75rem 1rem', background: activeTab === 'recommendations' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'recommendations' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            💡 Recommendations
+            Recommendations
           </button>
           <button onClick={() => setActiveTab('observability')} style={{ padding: '0.75rem 1rem', background: activeTab === 'observability' ? 'rgba(99,102,241,0.15)' : 'transparent', border: 'none', borderRadius: '0.375rem', color: activeTab === 'observability' ? '#a5b4fc' : '#94a3b8', textAlign: 'left', fontWeight: 600, cursor: 'pointer' }}>
-            👁️ Observability & GDT
+            Observability & GDT
           </button>
         </div>
 
@@ -303,7 +303,7 @@ export default function StrategyWorkspacePage() {
           {activeTab === 'overview' && (
             <div>
               <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                📊 Strategic Overview
+                Strategic Overview
               </h2>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
@@ -346,7 +346,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 2: SWOT */}
           {activeTab === 'swot' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>🕸️ Structured SWOT Analysis</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Structured SWOT Analysis</h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 {/* Strengths */}
                 <div style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: '0.75rem', padding: '1.25rem' }}>
@@ -399,7 +399,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 3: COMPETITORS */}
           {activeTab === 'competitors' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>👥 Competitor Analysis Matrix</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Competitor Analysis Matrix</h2>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                   <thead>
@@ -428,7 +428,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 4: POSITIONING */}
           {activeTab === 'positioning' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>📣 Brand Positioning Engine</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Brand Positioning Engine</h2>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.25rem' }}>
                   <h4 style={{ margin: '0 0 0.5rem', color: '#a5b4fc' }}>Current Positioning</h4>
@@ -449,7 +449,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 5: PRICING */}
           {activeTab === 'pricing' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>💰 Pricing Strategy</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Pricing Strategy</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.25rem' }}>
                   <h4 style={{ margin: '0 0 0.5rem', color: '#f59e0b' }}>Pricing Evaluation</h4>
@@ -466,7 +466,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 6: OPPORTUNITIES */}
           {activeTab === 'opportunities' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>⚡ Growth Opportunities</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Growth Opportunities</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {(opportunities?.opportunities || []).map((o: any, i: number) => (
                   <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.25rem' }}>
@@ -491,7 +491,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 7: RECOMMENDATIONS */}
           {activeTab === 'recommendations' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>💡 Strategic Recommendations & Review</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Strategic Recommendations & Review</h2>
               {recommendations.map((rec: any, index: number) => (
                 <div key={index} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.5rem', marginBottom: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -538,7 +538,7 @@ export default function StrategyWorkspacePage() {
           {/* TAB 8: OBSERVABILITY & DETAILS */}
           {activeTab === 'observability' && (
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>👁️ Observability & GDT State</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: 0, marginBottom: '1.5rem' }}>Observability & GDT State</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '0.75rem', padding: '1.25rem' }}>
                   <h4 style={{ margin: '0 0 0.5rem', color: '#a5b4fc' }}>Subgraph Executions</h4>

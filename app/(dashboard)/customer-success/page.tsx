@@ -278,7 +278,6 @@ export default function CustomerSuccessDashboardPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-800/40 pb-6 mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🤝</span>
             <h1 className="text-2xl font-bold tracking-tight text-white bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
               TitanForge AI Chief Customer Officer Engine
             </h1>
@@ -472,7 +471,7 @@ export default function CustomerSuccessDashboardPage() {
               {/* Early Warning Risk signals */}
               <div className="bg-[#120a11]/90 border border-red-500/20 rounded-2xl p-5 shadow-xl">
                 <h3 className="text-sm font-semibold tracking-wider text-red-400 uppercase mb-3 flex items-center gap-2">
-                  <span>🚨</span> Early Warning Churn Prediction Signals
+                  Early Warning Churn Prediction Signals
                 </h3>
                 <div className="space-y-3 text-xs">
                   <div className="flex justify-between">
