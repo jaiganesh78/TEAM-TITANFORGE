@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const businessController_1 = require("../controllers/businessController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const client_1 = require("@prisma/client");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.requireAuth);
+router.post('/', (req, res, next) => businessController_1.businessController.create(req, res, next));
+router.get('/', (req, res, next) => businessController_1.businessController.list(req, res, next));
+router.get('/:id', (req, res, next) => businessController_1.businessController.getSummary(req, res, next));
+router.delete('/:id', (0, authMiddleware_1.requireRole)([client_1.Role.OWNER, client_1.Role.ADMIN]), (req, res, next) => businessController_1.businessController.delete(req, res, next));
+router.get('/:id/section/:section', (req, res, next) => businessController_1.businessController.getSection(req, res, next));
+router.put('/:id/section/:section', (0, authMiddleware_1.requireRole)([client_1.Role.OWNER, client_1.Role.ADMIN, client_1.Role.MANAGER]), (req, res, next) => businessController_1.businessController.updateSection(req, res, next));
+router.get('/:id/audit-history', (req, res, next) => businessController_1.businessController.getAuditHistory(req, res, next));
+exports.default = router;

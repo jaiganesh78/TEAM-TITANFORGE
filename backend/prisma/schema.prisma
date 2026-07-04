@@ -137,6 +137,11 @@ model Business {
   knowledgeVersions     KnowledgeVersion[]
   contextSnapshots      ContextSnapshot[]
 
+  // Growth Digital Twin Layer
+  growthDomainStates    GrowthDomainState[]
+  growthTwinSummary     GrowthTwinSummary?
+  aiOperatingContext    AIOperatingContext?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -695,6 +700,18 @@ model KnowledgeChunk {
   relatedBusinessDomains String[]
   referencedEntities     String[]
 
+  // Growth Twin Tagging (Sprint 6)
+  growthDomain          String?   // GrowthDomain enum value
+  businessEngine        String?   // Engine ID e.g. 'marketing-engine'
+  businessFunction      String?   // e.g. 'marketing-operations'
+  lifecycleStage        String?   // BusinessStage value
+  decisionType          String?   // 'STRATEGIC' | 'TACTICAL' | 'OPERATIONAL'
+  chunkPriority         String?   // 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'
+  businessObjective     String?   // Free-text objective this supports
+  relatedKpiSlugs       String[]  // KPI IDs this chunk informs
+  futureDebateTopic     String?   // Future Debate Engine categorization
+  futureRecommCategory  String?   // Future recommendation bucket
+
   metadata             KnowledgeMetadata[]
   embeddingRefs        EmbeddingReference[]
 
@@ -792,6 +809,154 @@ enum ChunkStatus {
   ACTIVE
   STALE
   ARCHIVED
+}
+
+// ==========================================
+// GROWTH DIGITAL TWIN LAYER — SPRINT 6
+// ==========================================
+
+enum GrowthDomain {
+  BUSINESS_FOUNDATION
+  MARKET_POSITION
+  BRAND_POSITIONING
+  PRODUCT_PORTFOLIO
+  CUSTOMER_SEGMENTS
+  CUSTOMER_PERSONAS
+  MARKETING
+  LEAD_GENERATION
+  SALES
+  CUSTOMER_SUCCESS
+  COMPETITORS
+  PRICING
+  GROWTH_METRICS
+  BUSINESS_GOALS
+  BUSINESS_CONSTRAINTS
+  RISKS
+  GROWTH_OPPORTUNITIES
+}
+
+enum BusinessStage {
+  PRE_LAUNCH
+  EARLY_STAGE
+  GROWTH
+  SCALE
+  ENTERPRISE
+  TURNAROUND
+}
+
+enum BusinessModelType {
+  B2B
+  B2C
+  B2B2C
+  MARKETPLACE
+  SAAS
+  ECOMMERCE
+  SERVICES
+  HYBRID
+}
+
+model GrowthDomainState {
+  id                     String       @id @default(uuid())
+  businessId             String
+  business               Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  domain                 GrowthDomain
+  currentState           String?      @db.Text  // JSON
+  desiredState           String?      @db.Text  // JSON
+  gap                    String?      @db.Text  // JSON computed gap
+  gapSeverity            String       @default("NONE") // NONE | LOW | MEDIUM | HIGH | CRITICAL
+  priority               Int          @default(50)     // 1-100
+  confidence             Float        @default(0.0)    // 0-100
+  evidenceIds            String[]
+  knowledgeSources       String[]
+  dependencies           String[]     // other GrowthDomain slugs
+  futureAIRecommendations String?     @db.Text
+  lastUpdated            DateTime     @default(now())
+  version                Int          @default(1)
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+  history                GrowthDomainHistory[]
+
+  @@unique([businessId, domain])
+  @@index([businessId])
+}
+
+model GrowthDomainHistory {
+  id            String           @id @default(uuid())
+  domainStateId String
+  domainState   GrowthDomainState @relation(fields: [domainStateId], references: [id], onDelete: Cascade)
+  businessId    String
+  domain        GrowthDomain
+  snapshot      String           @db.Text // Full JSON snapshot
+  version       Int
+  changedBy     String           // USER | WEBSITE_SYNC | DOCUMENT_SYNC | AI
+  createdAt     DateTime         @default(now())
+
+  @@index([businessId])
+  @@index([domainStateId])
+}
+
+model GrowthTwinSummary {
+  id                String           @id @default(uuid())
+  businessId        String           @unique
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  overallConfidence Float            @default(0.0)
+  coveredDomains    Int              @default(0)
+  totalDomains      Int              @default(17)
+  highGapDomains    String[]
+  lastSyncedAt      DateTime         @default(now())
+  sectorSlug        String?          // references SectorConfig.slug
+  businessStage     BusinessStage    @default(EARLY_STAGE)
+  businessModelType BusinessModelType @default(B2B)
+  updatedAt         DateTime         @updatedAt
+}
+
+model AIOperatingContext {
+  id                String   @id @default(uuid())
+  businessId        String   @unique
+  business          Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  activeGoals       String?  @db.Text // JSON array
+  currentPriorities String?  @db.Text // JSON array
+  currentChallenges String?  @db.Text // JSON array
+  activeExperiments String?  @db.Text // JSON array
+  strategicFocus    String?  @db.Text // JSON
+  engineOutputs     String?  @db.Text // JSON: {engineId -> lastOutput}
+  pendingDecisions  String?  @db.Text // JSON array
+  contextVersion    Int      @default(1)
+  lastUpdatedBy     String   @default("USER") // USER or engine ID
+  updatedAt         DateTime @updatedAt
+  createdAt         DateTime @default(now())
+}
+
+model SectorConfig {
+  id                        String   @id @default(uuid())
+  slug                      String   @unique
+  displayName               String
+  description               String   @db.Text
+  businessTerminology       String   @db.Text // JSON
+  kpiSlugs                  String[]
+  requiredDiscoveryDomains  String[]
+  marketingChannels         String[]
+  leadGenerationChannels    String[]
+  salesProcessSteps         String[]
+  customerSuccessMetrics    String[]
+  competitiveDimensions     String[]
+  questionPriorities        String   @db.Text // JSON: {questionId -> priority}
+  growthConstraints         String[]
+  businessLifecycle         String   @db.Text // JSON
+  customerJourney           String   @db.Text // JSON
+  marketingFunnel           String   @db.Text // JSON
+  salesFunnel               String   @db.Text // JSON
+  commonPainPoints          String[]
+  buyingBehaviour           String   @db.Text // JSON
+  commonRisks               String[]
+  typicalKpis               String[]
+  typicalCompetitors        String   @db.Text // JSON
+  growthBottlenecks         String[]
+  typicalAIOpportunities    String[]
+  futureAIPromptTemplates   String   @db.Text // JSON: {engineId -> template}
+  isActive                  Boolean  @default(true)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 }
 
 

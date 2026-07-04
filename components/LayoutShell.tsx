@@ -26,7 +26,13 @@ import {
   LogOut,
   ChevronsUpDown,
   Building,
-  Check
+  Check,
+  Target,
+  Megaphone,
+  Zap,
+  ShoppingCart,
+  BarChart2,
+  Heart
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -47,6 +53,19 @@ const navItems: SidebarItem[] = [
       { name: 'Executive Dashboard', href: '/business/executive-dashboard' },
       { name: 'KPI Analytics', href: '/business/analytics' },
       { name: 'Business Timeline', href: '/business/timeline' },
+    ]
+  },
+  {
+    name: 'Growth Engines',
+    href: '#',
+    icon: Target,
+    subItems: [
+      { name: '🎯 Strategy Engine', href: '/strategy' },
+      { name: '📣 Marketing Engine', href: '/marketing' },
+      { name: '🎣 Lead Generation', href: '/leads' },
+      { name: '💰 Sales Engine', href: '/sales' },
+      { name: '📊 Analytics Engine', href: '/analytics' },
+      { name: '🤝 Customer Success', href: '/customer-success' },
     ]
   },
   { name: 'AI Workspace', href: '/ai-workspace', icon: Cpu },

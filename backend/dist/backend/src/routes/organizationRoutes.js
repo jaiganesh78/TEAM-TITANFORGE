@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const organizationController_1 = require("../controllers/organizationController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const client_1 = require("@prisma/client");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.requireAuth);
+router.get('/', (req, res, next) => organizationController_1.organizationController.getDetails(req, res, next));
+router.put('/', (0, authMiddleware_1.requireRole)([client_1.Role.OWNER, client_1.Role.ADMIN]), (req, res, next) => organizationController_1.organizationController.updateDetails(req, res, next));
+router.get('/audit-logs', (0, authMiddleware_1.requireRole)([client_1.Role.OWNER, client_1.Role.ADMIN]), (req, res, next) => organizationController_1.organizationController.getAuditLogs(req, res, next));
+exports.default = router;
