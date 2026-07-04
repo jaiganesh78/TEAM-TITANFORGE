@@ -6,6 +6,8 @@ import discoveryRoutes from './discoveryRoutes';
 import acquisitionRoutes from './acquisitionRoutes';
 import knowledgeRoutes from './knowledgeRoutes';
 import growthRoutes from './growthRoutes';
+import strategyRoutes from './strategyRoutes';
+import marketingRoutes from './marketingRoutes';
 
 const router = Router();
 
@@ -16,6 +18,8 @@ router.use('/discovery', discoveryRoutes);
 router.use('/acquisition', acquisitionRoutes);
 router.use('/knowledge', knowledgeRoutes);
 router.use('/growth', growthRoutes);
+router.use('/strategy', strategyRoutes);
+router.use('/marketing', marketingRoutes);
 
 
 

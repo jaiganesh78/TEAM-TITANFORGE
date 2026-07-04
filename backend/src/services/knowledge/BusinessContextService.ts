@@ -1,5 +1,8 @@
 import { prisma } from '../../database/prisma';
 import { RetrievalService } from './RetrievalService';
+import { SectorManager } from '../../config/sectors';
+import { KPIRegistry } from '../../config/kpis';
+import { ALL_ENGINE_CONTRACTS } from '../../engines/contracts';
 
 export interface ContextPackage {
   businessSummary: {
@@ -14,6 +17,14 @@ export interface ContextPackage {
   sources: string[];
   constraints: string[];
   missingKnowledge: string[];
+
+  // Sprint 7 — Growth & AI Context additions
+  growthTwinSummary?: any;
+  growthDomainStates?: any[];
+  aiOperatingContext?: any;
+  sectorConfig?: any;
+  growthKpis?: any[];
+  engineContracts?: any[];
 }
 
 export class BusinessContextService {
@@ -27,7 +38,11 @@ export class BusinessContextService {
       include: {
         identity: true,
         model: true,
-        constraints: true
+        constraints: true,
+        kpis: true,
+        growthDomainStates: true,
+        growthTwinSummary: true,
+        aiOperatingContext: true
       }
     });
 
@@ -57,6 +72,10 @@ export class BusinessContextService {
     const totalConf = chunks.reduce((acc, c) => acc + c.explainability.confidence, 0.0);
     const avgConfidence = chunks.length > 0 ? totalConf / chunks.length : 85.0;
 
+    // Resolve sector configuration details
+    const sectorSlug = biz?.growthTwinSummary?.sectorSlug || biz?.identity?.industry?.toLowerCase() || 'generic';
+    const sectorConfig = SectorManager.getSector(sectorSlug);
+
     return {
       businessSummary: summary,
       digitalTwinData: {
@@ -68,7 +87,15 @@ export class BusinessContextService {
       confidence: parseFloat(avgConfidence.toFixed(1)),
       sources,
       constraints: constraintsList,
-      missingKnowledge
+      missingKnowledge,
+
+      // Sprint 7 Additions
+      growthTwinSummary: biz?.growthTwinSummary || null,
+      growthDomainStates: biz?.growthDomainStates || [],
+      aiOperatingContext: biz?.aiOperatingContext || null,
+      sectorConfig,
+      growthKpis: biz?.kpis || [],
+      engineContracts: ALL_ENGINE_CONTRACTS
     };
   }
 
@@ -101,12 +128,12 @@ export class BusinessContextService {
   }
 
   /**
-   * Retrieves Context Snapshot logs.
+   * Fetches all snapshots for a business.
    */
   static async getSnapshots(businessId: string): Promise<any[]> {
     return prisma.contextSnapshot.findMany({
       where: { businessId },
-      orderBy: { timestamp: 'desc' }
+      orderBy: { createdAt: 'desc' }
     });
   }
 }

@@ -142,6 +142,27 @@ model Business {
   growthTwinSummary     GrowthTwinSummary?
   aiOperatingContext    AIOperatingContext?
 
+  // Strategy Engine Layer
+  strategySessions        StrategySession[]
+  strategyRecommendations StrategyRecommendation[]
+  strategyEvidence        StrategyEvidence[]
+  strategyFeedback        StrategyFeedback[]
+  strategyHistory         StrategyHistory[]
+  strategyExecutionPlans  StrategyExecutionPlan[]
+
+  // Marketing Engine Layer
+  marketingSessions        MarketingSession[]
+  marketingCampaigns       MarketingCampaign[]
+  marketingRecommendations MarketingRecommendation[]
+  marketingBudgets         MarketingBudget[]
+  marketingCalendars       MarketingCalendar[]
+  marketingContentPlans    MarketingContentPlan[]
+  marketingFeedbacks       MarketingFeedback[]
+  marketingHistories       MarketingHistory[]
+  marketingExecutionPlans  MarketingExecutionPlan[]
+  marketingMemories        MarketingMemory[]
+  campaignEvidences        CampaignEvidence[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -801,6 +822,9 @@ model ContextSnapshot {
   topic              String   // e.g. "Marketing"
   payload            String   @db.Text // Structured JSON snapshot payload
   createdAt          DateTime @default(now())
+  
+  strategySessions   StrategySession[]
+  marketingSessions  MarketingSession[]
 
   @@index([businessId])
 }
@@ -958,5 +982,459 @@ model SectorConfig {
   createdAt                 DateTime @default(now())
   updatedAt                 DateTime @updatedAt
 }
+
+// ==========================================
+// STRATEGY ENGINE LAYER — SPRINT 7
+// ==========================================
+
+enum SessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum RecommendationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REGENERATED
+}
+
+model StrategySession {
+  id                   String                   @id @default(uuid())
+  businessId           String
+  business             Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status               SessionStatus            @default(IN_PROGRESS)
+  contextSnapshotId    String?
+  contextSnapshot      ContextSnapshot?         @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion       Int                      @default(1)
+  promptVersion        String                   @default("1.0.0")
+  modelVersion         String                   @default("gemini-2.5-pro")
+  
+  // Structured Subgraph Outputs
+  marketResearch       String?                  @db.Text // JSON
+  swot                 String?                  @db.Text // JSON
+  competitorAnalysis   String?                  @db.Text // JSON
+  positioning          String?                  @db.Text // JSON
+  pricing              String?                  @db.Text // JSON
+  opportunities        String?                  @db.Text // JSON
+  strategicAssets      String?                  @db.Text // JSON list of assets
+  
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  
+  // Relations
+  recommendations      StrategyRecommendation[]
+  executionLogs        GraphExecutionLog[]
+  nodeOutputs          GraphNodeOutput[]
+  feedback             StrategyFeedback[]
+  history              StrategyHistory[]
+  evidence             StrategyEvidence[]
+  executionPlans       StrategyExecutionPlan[]
+
+  @@index([businessId])
+}
+
+model StrategyRecommendation {
+  id                    String                  @id @default(uuid())
+  sessionId             String
+  session               StrategySession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title                 String
+  problem               String                  @db.Text
+  businessContext       String                  @db.Text
+  reasoning             String                  @db.Text
+  expectedKpiImpact     String                  @db.Text // JSON
+  affectedKpis          String[]
+  requiredData          String[]
+  dependencies          String[]
+  priority              String                  // CRITICAL | HIGH | MEDIUM | LOW
+  confidence            Float
+  estimatedTimeline     String
+  expectedROI           String
+  businessRisks         String                  @db.Text // JSON
+  alternativeStrategies String                  @db.Text // JSON
+  status                RecommendationStatus    @default(PENDING)
+  
+  // Explainability
+  knowledgeSources      String[]
+  businessFactsUsed     String[]
+  growthDomainsUsed     String[]
+  reasoningSummary      String                  @db.Text
+  assumptions           String[]
+  constraints           String[]
+  whySelected           String                  @db.Text
+  whyAlternativesRejected String                @db.Text
+
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  evidence              StrategyEvidence[]
+  feedback              StrategyFeedback[]
+  history               StrategyHistory[]
+  executionPlans        StrategyExecutionPlan[]
+
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+model StrategyEvidence {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  session          StrategySession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   StrategyRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  factPath         String
+  factValue        String                  @db.Text
+  chunkId          String?
+  confidence       Float
+  createdAt        DateTime                @default(now())
+
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+model StrategyFeedback {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  session          StrategySession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   StrategyRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  action           String                  // ACCEPT | REJECT | REGENERATE | FEEDBACK
+  feedbackText     String?                 @db.Text
+  editedGoals      String?                 @db.Text // JSON array
+  createdAt        DateTime                @default(now())
+
+  @@index([businessId])
+}
+
+model StrategyHistory {
+  id               String                  @id @default(uuid())
+  sessionId        String
+  session          StrategySession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   StrategyRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  snapshot         String                  @db.Text // JSON
+  version          Int
+  changedBy        String                  // AI | USER
+  createdAt        DateTime                @default(now())
+
+  @@index([businessId])
+}
+
+model StrategyExecutionPlan {
+  id               String                 @id @default(uuid())
+  sessionId        String
+  session          StrategySession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  recommendationId String
+  recommendation   StrategyRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  phases           String                 @db.Text // JSON
+  owner            String?
+  status           String                 @default("PENDING") // PENDING | IN_PROGRESS | COMPLETED
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  @@index([businessId])
+}
+
+model GraphExecutionLog {
+  id               String          @id @default(uuid())
+  sessionId        String
+  session          StrategySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt        DateTime        @default(now())
+  finishedAt       DateTime?
+  totalDurationMs  Int             @default(0)
+  status           String          // SUCCESS | FAILED
+  failureReason    String?         @db.Text
+  nodeTraces       String?         @db.Text // JSON string
+  createdAt        DateTime        @default(now())
+}
+
+model GraphNodeOutput {
+  id             String          @id @default(uuid())
+  sessionId      String
+  session        StrategySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  nodeName       String          // e.g. "ContextGraph"
+  inputSize      Int
+  outputSize     Int
+  durationMs     Int
+  attempts       Int             @default(1)
+  payload        String          @db.Text // JSON output
+  reflectionRuns Int             @default(0)
+  createdAt      DateTime        @default(now())
+}
+
+// ==========================================
+// MARKETING ENGINE LAYER — SPRINT 8
+// ==========================================
+
+model MarketingSession {
+  id                   String                   @id @default(uuid())
+  businessId           String
+  business             Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  status               SessionStatus            @default(IN_PROGRESS)
+  contextSnapshotId    String?
+  contextSnapshot      ContextSnapshot?         @relation(fields: [contextSnapshotId], references: [id])
+  contextVersion       Int                      @default(1)
+  promptVersion        String                   @default("1.0.0")
+  modelVersion         String                   @default("gemini-2.5-pro")
+
+  // Subgraph Outputs (serialized JSON)
+  audienceAnalysis     String?                  @db.Text
+  customerJourney      String?                  @db.Text
+  funnelAnalysis       String?                  @db.Text
+  creativeStrategy     String?                  @db.Text
+  channelReadiness     String?                  @db.Text
+  budgetOptimizer      String?                  @db.Text
+  experimentPortfolio  String?                  @db.Text
+  contentPlan          String?                  @db.Text
+  calendar             String?                  @db.Text
+  executiveScores      String?                  @db.Text
+
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+
+  campaigns            MarketingCampaign[]
+  recommendations      MarketingRecommendation[]
+  budgets              MarketingBudget[]
+  calendars            MarketingCalendar[]
+  contentPlans         MarketingContentPlan[]
+  feedbacks            MarketingFeedback[]
+  histories            MarketingHistory[]
+  executionPlans       MarketingExecutionPlan[]
+  evidences            CampaignEvidence[]
+  executionLogs        MarketingGraphExecutionLog[]
+  nodeOutputs          MarketingGraphNodeOutput[]
+
+  @@index([businessId])
+}
+
+model MarketingCampaign {
+  id                String            @id @default(uuid())
+  sessionId         String
+  session           MarketingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId        String
+  business          Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name              String
+  objective         String
+  targetAudience    String            @db.Text
+  channel           String
+  coreMessage       String            @db.Text
+  offer             String            @db.Text
+  callToAction      String
+  expectedKpis      String            @db.Text // JSON list or object
+  duration          String
+  estimatedBudget   Float
+  expectedROI       String
+  dependencies      String[]
+  priority          String
+  journeyStage      String
+  funnelStage       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  feedback          MarketingFeedback[]
+  history           MarketingHistory[]
+  executionPlans    MarketingExecutionPlan[]
+  evidence          CampaignEvidence[]
+
+  @@index([businessId])
+}
+
+model MarketingRecommendation {
+  id                    String             @id @default(uuid())
+  sessionId             String
+  session               MarketingSession   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId            String
+  business              Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title                 String
+  problem               String             @db.Text
+  opportunity           String             @db.Text
+  evidence              String             @db.Text
+  affectedKpis          String[]
+  expectedROI           Float
+  expectedLeads         Int
+  budget                Float
+  timeline              String
+  priority              String
+  confidence            Float
+  dependencies          String[]
+  alternativeApproaches String[]
+  status                RecommendationStatus @default(PENDING)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  feedback              MarketingFeedback[]
+  history               MarketingHistory[]
+  executionPlans        MarketingExecutionPlan[]
+  campaignEvidences     CampaignEvidence[]
+
+  @@index([businessId])
+}
+
+model MarketingBudget {
+  id                String            @id @default(uuid())
+  sessionId         String
+  session           MarketingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId        String
+  business          Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category          String
+  minAmount         Float
+  recommendedAmount Float
+  aggressiveAmount  Float
+  reasoning         String            @db.Text
+  createdAt         DateTime          @default(now())
+
+  @@index([businessId])
+}
+
+model MarketingCalendar {
+  id           String           @id @default(uuid())
+  sessionId    String
+  session      MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId   String
+  business     Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  timeFrame    String           // WEEKLY | MONTHLY | QUARTERLY
+  label        String
+  activities   String           @db.Text // JSON string list
+  dependencies String[]
+  createdAt    DateTime         @default(now())
+
+  @@index([businessId])
+}
+
+model MarketingContentPlan {
+  id            String           @id @default(uuid())
+  sessionId     String
+  session       MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  businessId    String
+  business      Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contentPillar String
+  brandTheme    String
+  topics        String[]
+  createdAt     DateTime         @default(now())
+
+  @@index([businessId])
+}
+
+model MarketingFeedback {
+  id               String                   @id @default(uuid())
+  sessionId        String
+  session          MarketingSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  campaignId       String?
+  campaign         MarketingCampaign?       @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   MarketingRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  action           String                   // ACCEPT | REJECT | REGENERATE
+  feedbackText     String?                  @db.Text
+  createdAt        DateTime                 @default(now())
+
+  @@index([businessId])
+}
+
+model MarketingHistory {
+  id               String                   @id @default(uuid())
+  sessionId        String
+  session          MarketingSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  campaignId       String?
+  campaign         MarketingCampaign?       @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   MarketingRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  snapshot         String                   @db.Text // JSON string
+  version          Int
+  changedBy        String                   // AI | USER
+  createdAt        DateTime                 @default(now())
+
+  @@index([businessId])
+}
+
+model MarketingExecutionPlan {
+  id               String                   @id @default(uuid())
+  sessionId        String
+  session          MarketingSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  campaignId       String?
+  campaign         MarketingCampaign?       @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   MarketingRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  steps            String                   @db.Text // JSON string
+  status           String                   @default("PENDING") // PENDING | IN_PROGRESS | COMPLETED
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @updatedAt
+
+  @@index([businessId])
+}
+
+model MarketingMemory {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  key        String   @unique
+  value      String   @db.Text // JSON
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([businessId])
+}
+
+model CampaignEvidence {
+  id               String                   @id @default(uuid())
+  sessionId        String
+  session          MarketingSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  campaignId       String?
+  campaign         MarketingCampaign?       @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  recommendationId String?
+  recommendation   MarketingRecommendation? @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  businessId       String
+  business         Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  factPath         String
+  factValue        String
+  confidence       Float
+  createdAt        DateTime                 @default(now())
+
+  @@index([businessId])
+}
+
+model MarketingGraphExecutionLog {
+  id               String          @id @default(uuid())
+  sessionId        String
+  session          MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  startedAt        DateTime        @default(now())
+  finishedAt       DateTime?
+  totalDurationMs  Int             @default(0)
+  status           String          // SUCCESS | FAILED
+  failureReason    String?         @db.Text
+  nodeTraces       String?         @db.Text // JSON string
+  createdAt        DateTime        @default(now())
+}
+
+model MarketingGraphNodeOutput {
+  id             String          @id @default(uuid())
+  sessionId      String
+  session        MarketingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  nodeName       String          // e.g. "ContextGraph"
+  inputSize      Int
+  outputSize     Int
+  durationMs     Int
+  attempts       Int             @default(1)
+  payload        String          @db.Text // JSON output
+  reflectionRuns Int             @default(0)
+  createdAt      DateTime        @default(now())
+}
+
+
 
 
