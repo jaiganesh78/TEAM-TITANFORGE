@@ -371,7 +371,7 @@ export default function AnalyticsWorkspacePage() {
       </div>
 
       {/* Nav Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 border-b border-slate-800/80">
+      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1.5 border-b border-slate-800/80">
         {[
           { id: 'overview', name: 'Dashboard', icon: BarChart3 },
           { id: 'health', name: 'Business Health', icon: Activity },
