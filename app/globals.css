@@ -171,6 +171,83 @@ body {
   .recharts-tooltip-item {
     color: hsl(var(--foreground)) !important;
   }
+
+  /* Inline style overrides for legacy dashboard pages */
+  div[style*="background"],
+  section[style*="background"],
+  main[style*="background"] {
+    background: hsl(var(--background)) !important;
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Sub-panels and layout cards */
+  div[style*="background: rgba(255,255,255,0.02)"],
+  div[style*="background: rgba(255, 255, 255, 0.02)"],
+  div[style*="background:rgba(255,255,255,0.02)"],
+  div[style*="background: rgba(255,255,255,0.03)"],
+  div[style*="background: rgba(255, 255, 255, 0.03)"],
+  div[style*="background:rgba(255,255,255,0.03)"] {
+    background: hsl(var(--card)) !important;
+    background-color: hsl(var(--card)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Dark text overrides */
+  div[style*="color: #e2e8f0"],
+  div[style*="color: #f1f5f9"],
+  div[style*="color: #f8fafc"],
+  span[style*="color: #e2e8f0"],
+  span[style*="color: #f1f5f9"],
+  span[style*="color: #f8fafc"],
+  h1[style*="color: #e2e8f0"],
+  h2[style*="color: #e2e8f0"],
+  h3[style*="color: #e2e8f0"],
+  p[style*="color: #e2e8f0"],
+  p[style*="color: #94a3b8"],
+  p[style*="color: #64748b"],
+  span[style*="color: #94a3b8"],
+  span[style*="color: #64748b"],
+  button[style*="color: #94a3b8"] {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Muted descriptions and secondary text label alignments */
+  span[style*="color: #64748b"],
+  p[style*="color: #64748b"],
+  div[style*="color: #64748b"],
+  p[style*="color: #94a3b8"],
+  span[style*="color: #94a3b8"] {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Inline borders mapping */
+  div[style*="border"],
+  div[style*="border-color"] {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Layout grids background reset */
+  div[style*="gridTemplateColumns"] {
+    background: transparent !important;
+  }
+
+  /* Header gradient titles text fill correction */
+  h1[style*="transparent"], 
+  h2[style*="transparent"] {
+    background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  /* Selected navigation buttons */
+  button[style*="rgba(99,102,241,0.15)"],
+  button[style*="rgba(99, 102, 241, 0.15)"],
+  button[style*="rgba(99,241,102,0.15)"] {
+    background: hsl(var(--accent)) !important;
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
+  }
 }
 
 /* Hide scrollbar utility */
