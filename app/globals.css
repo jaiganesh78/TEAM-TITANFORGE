@@ -94,23 +94,19 @@ body {
 /* Light Theme Defect Color Overrides & Professional Adjustments */
 .light {
   /* Background overrides */
-  .bg-slate-900,
-  .bg-slate-950,
-  .bg-slate-900\/50,
-  .bg-slate-950\/40,
-  .bg-slate-950\/60,
-  .bg-slate-950\/30,
-  .bg-slate-900\/40,
-  .bg-slate-900\/60,
-  .bg-slate-800\/80 {
+  [class*="bg-slate-90"],
+  [class*="bg-slate-95"],
+  [class*="bg-neutral-90"],
+  [class*="bg-neutral-95"],
+  [class*="bg-zinc-90"],
+  [class*="bg-zinc-95"] {
     background-color: hsl(var(--card)) !important;
     color: hsl(var(--foreground)) !important;
   }
 
-  .bg-slate-950,
-  .bg-slate-950\/40,
-  .bg-slate-950\/60,
-  .bg-slate-950\/30 {
+  [class*="bg-slate-95"],
+  [class*="bg-neutral-95"],
+  [class*="bg-zinc-95"] {
     background-color: hsl(var(--secondary)) !important;
   }
 
@@ -139,13 +135,8 @@ body {
   }
 
   /* Border color overrides */
-  .border-slate-800,
-  .border-slate-700,
-  .border-border\/80,
-  .border-border\/50,
-  .border-border\/40,
-  .border-border\/30,
-  .border-slate-600 {
+  [class*="border-slate-"],
+  [class*="border-border/"] {
     border-color: hsl(var(--border)) !important;
   }
 
