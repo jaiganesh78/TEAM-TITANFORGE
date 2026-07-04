@@ -57,8 +57,9 @@ const navItems: SidebarItem[] = [
     subItems: [
       { name: 'Company Profile', href: '/settings/profile' },
       { name: 'Uploaded Documents', href: '/settings/documents' },
-      { name: 'Knowledge Base', href: '/settings/knowledge-base' },
-      { name: 'Decision Simulator', href: '/settings/simulation' },
+      { name: 'Website Crawler', href: '/settings/website' },
+      { name: 'Knowledge Review', href: '/settings/review' },
+      { name: 'Knowledge Center', href: '/settings/knowledge' }
     ]
   }
 ];

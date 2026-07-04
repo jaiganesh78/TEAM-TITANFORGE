@@ -123,6 +123,19 @@ model Business {
   documents         BusinessDocumentReference[]
   websites          WebsiteReference[]
   twinAuditLogs     TwinAuditLog[]
+  answerMetadata    AnswerMetadata[]
+  websiteAnalyses     Website[]
+  uploadedDocuments   UploadedDocument[]
+  extractedCandidates ExtractedCandidate[]
+  knowledgeEntities   KnowledgeEntity[]
+  businessEvidences   BusinessEvidence[]
+  reviewActions       ReviewAction[]
+  extractionJobs      ExtractionJob[]
+  knowledgeChunks       KnowledgeChunk[]
+  knowledgeCollections  KnowledgeCollection[]
+  knowledgeStatistics   KnowledgeStatistics?
+  knowledgeVersions     KnowledgeVersion[]
+  contextSnapshots      ContextSnapshot[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -411,3 +424,374 @@ model TwinAuditLog {
   @@index([businessId])
   @@index([userId])
 }
+
+model AnswerMetadata {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fieldPath  String   // e.g. "marketingProfile.adSpend"
+  status     String   // KNOWN, ESTIMATED, UNKNOWN
+  source     String   // USER, WEBSITE, DOCUMENT, AI
+  updatedAt  DateTime @updatedAt
+
+  @@unique([businessId, fieldPath])
+  @@index([businessId])
+}
+
+
+model Website {
+  id              String               @id @default(uuid())
+  businessId      String
+  business        Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  url             String
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  analysisRuns    WebsiteAnalysisRun[]
+
+  @@index([businessId])
+}
+
+model WebsiteAnalysisRun {
+  id          String                @id @default(uuid())
+  websiteId   String
+  website     Website               @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  status      WebsiteAnalysisStatus @default(PENDING)
+  errorLogs   String?               @db.Text
+  startedAt   DateTime              @default(now())
+  completedAt DateTime?
+  pages       WebsitePage[]
+}
+
+model WebsitePage {
+  id                String             @id @default(uuid())
+  analysisRunId     String
+  analysisRun       WebsiteAnalysisRun @relation(fields: [analysisRunId], references: [id], onDelete: Cascade)
+  url               String
+  status            JobStatus          @default(QUEUED)
+  content           String?            @db.Text
+  createdAt         DateTime           @default(now())
+  chunkIds          String[]
+  embeddingIds      String[]
+  vectorReferences  String[]
+  knowledgeChunks   KnowledgeChunk[]
+}
+
+model UploadedDocument {
+  id                String               @id @default(uuid())
+  businessId        String
+  business          Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fileName          String
+  filePath          String
+  fileSize          Int
+  mimeType          String
+  category          DocumentCategory     @default(OTHER)
+  version           Int                  @default(1)
+  uploadedBy        String
+  hash              String
+  status            DocumentStatus       @default(PENDING)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  extractions       DocumentExtraction[]
+  knowledgeChunks   KnowledgeChunk[]
+
+  @@index([businessId])
+}
+
+model DocumentExtraction {
+  id                String           @id @default(uuid())
+  documentId        String
+  document          UploadedDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  rawContent        String           @db.Text
+  status            JobStatus        @default(QUEUED)
+  createdAt         DateTime         @default(now())
+  chunkIds          String[]
+  embeddingIds      String[]
+  vectorReferences  String[]
+}
+
+model ExtractedCandidate {
+  id                String           @id @default(uuid())
+  businessId        String
+  business          Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fieldPath         String
+  value             String
+  normalizedValue   String?
+  confidence        Float
+  sourceType        SourceType
+  sourceId          String
+  status            ExtractionStatus @default(PENDING_REVIEW)
+  extractionMethod  String
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  knowledgeChunks   KnowledgeChunk[]
+
+  @@index([businessId])
+  @@index([status])
+}
+
+model KnowledgeEntity {
+  id                String       @id @default(uuid())
+  businessId        String
+  business          Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  entityType        String
+  fieldPath         String
+  value             String
+  normalizedValue   String?
+  confidence        Float
+  sourceType        SourceType
+  sourceId          String
+  evidenceId        String?
+  extractionMethod  String
+  reviewStatus      ReviewStatus @default(PENDING)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  chunkIds          String[]
+  embeddingIds      String[]
+  vectorReferences  String[]
+
+  @@index([businessId])
+}
+
+model BusinessEvidence {
+  id              String     @id @default(uuid())
+  businessId      String
+  business        Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fieldPath       String
+  value           String
+  sourceType      SourceType
+  confidence      Float
+  origin          String
+  exactLocation   String?
+  pageNumber      Int?
+  sectionName     String?
+  reviewer        String?
+  reviewTimestamp DateTime?
+  updatedAt       DateTime   @updatedAt
+
+  @@index([businessId])
+  @@index([fieldPath])
+}
+
+model ReviewAction {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  candidateId String
+  action      String   // ACCEPT, REJECT, MERGE
+  userId      String
+  notes       String?
+  createdAt   DateTime @default(now())
+  knowledgeChunks KnowledgeChunk[]
+
+  @@index([businessId])
+}
+
+model ExtractionJob {
+  id              String    @id @default(uuid())
+  businessId      String
+  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  type            String
+  status          JobStatus @default(QUEUED)
+  progress        Float     @default(0.0)
+  errorLogs       String?   @db.Text
+  executionTimeMs Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([businessId])
+}
+
+enum WebsiteAnalysisStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ExtractionStatus {
+  PENDING_REVIEW
+  ACCEPTED
+  REJECTED
+  MERGED
+}
+
+enum ReviewStatus {
+  PENDING
+  REVIEWED
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  RETRY
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum SourceType {
+  MANUAL
+  WEBSITE
+  DOCUMENT
+  AI
+}
+
+enum DocumentCategory {
+  FINANCIAL_REPORT
+  MARKETING_REPORT
+  SALES_REPORT
+  BUSINESS_PLAN
+  INVESTOR_PITCH_DECK
+  PRODUCT_CATALOGUE
+  CUSTOMER_FEEDBACK
+  HR_DOCUMENTS
+  OTHER
+}
+
+model KnowledgeChunk {
+  id                   String               @id @default(uuid())
+  businessId           String
+  business             Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  source               String               // URL, filename, or "digital_twin"
+  sourceType           SourceType
+  section              String?
+  pageNumber           Int?
+  tokenCount           Int
+  content              String               @db.Text
+  version              Int                  @default(1)
+  status               ChunkStatus          @default(ACTIVE)
+  diffInfo             String?              @db.Text
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+
+  // Immutable Lineage Tracking
+  websitePageId        String?
+  websitePage          WebsitePage?         @relation(fields: [websitePageId], references: [id], onDelete: Cascade)
+  uploadedDocumentId   String?
+  uploadedDocument     UploadedDocument?    @relation(fields: [uploadedDocumentId], references: [id], onDelete: Cascade)
+  extractedCandidateId String?
+  extractedCandidate   ExtractedCandidate?  @relation(fields: [extractedCandidateId], references: [id], onDelete: Cascade)
+  reviewActionId       String?
+  reviewAction         ReviewAction?        @relation(fields: [reviewActionId], references: [id], onDelete: Cascade)
+  fieldPath            String?              // Twin field reference
+  recommendationId     String?              // Future recommendation reference
+
+  // Version tracking & historical retrieval
+  previousChunkId      String?
+  previousChunk        KnowledgeChunk?      @relation("ChunkHistory", fields: [previousChunkId], references: [id], onDelete: SetNull)
+  nextChunks           KnowledgeChunk[]     @relation("ChunkHistory")
+
+  // Knowledge Graph Readiness (Schema support only, no implementation)
+  parentChunkId        String?
+  parentChunk          KnowledgeChunk?      @relation("ChunkHierarchy", fields: [parentChunkId], references: [id], onDelete: SetNull)
+  childChunks          KnowledgeChunk[]     @relation("ChunkHierarchy")
+  relatedBusinessDomains String[]
+  referencedEntities     String[]
+
+  metadata             KnowledgeMetadata[]
+  embeddingRefs        EmbeddingReference[]
+
+  @@index([businessId])
+}
+
+model KnowledgeMetadata {
+  id             String         @id @default(uuid())
+  chunkId        String
+  chunk          KnowledgeChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  key            String
+  value          String
+
+  @@unique([chunkId, key])
+}
+
+model EmbeddingReference {
+  id               String         @id @default(uuid())
+  chunkId          String
+  chunk            KnowledgeChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  chromaCollection String
+  chromaDocumentId String
+  embeddingModel   String
+  embeddingVersion String
+  createdAt        DateTime       @default(now())
+  lastIndexedAt    DateTime       @updatedAt
+
+  @@index([chunkId])
+}
+
+model KnowledgeCollection {
+  id             String     @id @default(uuid())
+  businessId     String
+  business       Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name           String     // Business Core, Website, Financial, Marketing, Sales, Operations, etc.
+  description    String?
+  sourceType     SourceType
+  status         String     // ACTIVE, ARCHIVED
+  createdAt      DateTime   @default(now())
+
+  @@index([businessId])
+}
+
+model KnowledgeStatistics {
+  id                   String   @id @default(uuid())
+  businessId           String   @unique
+  business             Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  indexedDocs          Int      @default(0)
+  indexedPages         Int      @default(0)
+  totalChunks          Int      @default(0)
+  approvedCount        Int      @default(0)
+  pendingCount         Int      @default(0)
+  freshnessScore       Float    @default(100.0)
+  coverageScore        Float    @default(0.0)
+  sourceDiversityScore Float    @default(0.0)
+  versionHealthScore   Float    @default(100.0)
+  reviewHealthScore    Float    @default(100.0)
+  outdatedDocsCount    Int      @default(0)
+  outdatedPagesCount   Int      @default(0)
+  knowledgeGapsCount   Int      @default(0)
+  updatedAt            DateTime @updatedAt
+}
+
+model KnowledgeVersion {
+  id             String   @id @default(uuid())
+  businessId     String
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  entityType     String   // e.g. "DOCUMENT", "WEBSITE"
+  entityId       String   // e.g. Document ID or Website ID
+  versionNumber  Int
+  hash           String
+  createdAt      DateTime @default(now())
+
+  @@index([businessId])
+}
+
+model ContextSnapshot {
+  id                 String   @id @default(uuid())
+  businessId         String
+  business           Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  timestamp          DateTime @default(now())
+  contextVersion     Int
+  digitalTwinVersion Int
+  knowledgeVersion   Int
+  sourcesUsed        String[] // List of source IDs
+  confidenceSummary  Float
+  topic              String   // e.g. "Marketing"
+  payload            String   @db.Text // Structured JSON snapshot payload
+  createdAt          DateTime @default(now())
+
+  @@index([businessId])
+}
+
+enum ChunkStatus {
+  ACTIVE
+  STALE
+  ARCHIVED
+}
+
+
