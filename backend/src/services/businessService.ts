@@ -12,7 +12,12 @@ export class BusinessService {
   }
 
   async listInvestigations(organizationId: string): Promise<Business[]> {
-    return businessRepository.findByOrganization(organizationId);
+    let list = await businessRepository.findByOrganization(organizationId);
+    if (list.length === 0) {
+      const defaultBiz = await businessRepository.create(organizationId, 'Corporate Digital Twin');
+      list = [defaultBiz];
+    }
+    return list;
   }
 
   async getBasicBusiness(id: string): Promise<Business | null> {
