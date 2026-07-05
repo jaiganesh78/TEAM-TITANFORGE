@@ -37,6 +37,7 @@ export default function RootLoginPage() {
         if (typeof window !== 'undefined') {
           localStorage.setItem('accessToken', data.data.accessToken);
           localStorage.setItem('user', JSON.stringify(data.data.user));
+          document.cookie = `accessToken=${data.data.accessToken}; path=/; max-age=900; SameSite=Lax`;
         }
         router.push('/dashboard');
       } else {

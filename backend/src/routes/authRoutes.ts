@@ -13,6 +13,13 @@ router.post('/forgot-password', (req, res, next) => authController.forgotPasswor
 router.post('/reset-password', (req, res, next) => authController.resetPassword(req, res, next));
 router.post('/refresh', (req, res, next) => authController.refresh(req, res, next));
 router.post('/logout', (req, res, next) => authController.logout(req, res, next));
+router.get('/debug-cookies', (req, res) => {
+  res.json({
+    success: true,
+    cookies: req.cookies,
+    authorizationHeader: req.headers.authorization || null
+  });
+});
 
 // Protected routes
 router.get('/me', requireAuth, (req, res, next) => authController.me(req, res, next));
