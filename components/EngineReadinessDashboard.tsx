@@ -39,78 +39,92 @@ function EngineReadinessDashboard({ config }: { config: EnginePageConfig }) {
   const statusColor = canExecute ? '#10b981' : readinessScore >= 40 ? '#f59e0b' : '#ef4444';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e2e8f0', fontFamily: "'Inter', sans-serif", padding: '0' }}>
+    <div className="min-h-screen text-slate-200" style={{ background: '#0a0a0f', fontFamily: "'Inter', sans-serif" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${config.gradient})`, padding: '3rem 2.5rem 2rem', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: `linear-gradient(135deg, ${config.gradient})`, position: 'relative', overflow: 'hidden' }} className="px-5 py-8 md:px-10 md:py-12">
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)' }} />
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <div style={{ fontSize: '2.5rem' }}>{config.icon}</div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <h1 style={{ fontSize: '1.75rem', fontWeight: 800, margin: 0 }}>{config.displayName}</h1>
-                <span style={{ background: statusColor, color: '#fff', padding: '0.2rem 0.8rem', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em' }}>
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <div className="flex items-start gap-4">
+            <div className="text-4xl shrink-0 mt-1">{config.icon}</div>
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white m-0">{config.displayName}</h1>
+                <span
+                  className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full shrink-0"
+                  style={{ background: statusColor, color: '#fff' }}
+                >
                   {statusLabel}
                 </span>
               </div>
-              <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem' }}>{config.description}</p>
+              <p className="text-sm text-white/70 leading-relaxed m-0">{config.description}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 2.5rem' }}>
+      <div className="max-w-6xl mx-auto px-4 py-6 md:px-8 md:py-8">
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem', color: '#64748b' }}>Loading engine contract...</div>
+          <div className="flex justify-center items-center py-20 text-slate-500 text-sm">Loading engine contract...</div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
             {/* Readiness Score Card */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '1rem', padding: '1.5rem' }}>
-              <h3 style={{ margin: '0 0 1.5rem', fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Engine Readiness Score</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                <div style={{ width: 90, height: 90, borderRadius: '50%', background: `conic-gradient(${statusColor} ${readinessScore * 3.6}deg, rgba(255,255,255,0.08) 0deg)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <div style={{ width: 70, height: 70, borderRadius: '50%', background: '#0a0a0f', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 800, color: statusColor }}>
+            <div className="rounded-2xl p-5 md:p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-5" style={{ color: '#94a3b8' }}>Engine Readiness Score</h3>
+              <div className="flex items-center gap-4 mb-4">
+                <div
+                  className="shrink-0 flex items-center justify-center"
+                  style={{ width: 80, height: 80, borderRadius: '50%', background: `conic-gradient(${statusColor} ${readinessScore * 3.6}deg, rgba(255,255,255,0.08) 0deg)` }}
+                >
+                  <div
+                    className="flex items-center justify-center text-xl font-extrabold"
+                    style={{ width: 60, height: 60, borderRadius: '50%', background: '#0a0a0f', color: statusColor }}
+                  >
                     {readinessScore}
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: statusColor, marginBottom: '0.25rem' }}>{statusLabel}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Min required: {contract?.confidenceRequirements?.minimum ?? 40}%</div>
-                  <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Recommended: {contract?.confidenceRequirements?.recommended ?? 65}%</div>
+                  <div className="text-base font-bold mb-1" style={{ color: statusColor }}>{statusLabel}</div>
+                  <div className="text-xs text-slate-500">Min required: {contract?.confidenceRequirements?.minimum ?? 40}%</div>
+                  <div className="text-xs text-slate-500">Recommended: {contract?.confidenceRequirements?.recommended ?? 65}%</div>
                 </div>
               </div>
               {!canExecute && (
-                <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '0.5rem', padding: '0.75rem', fontSize: '0.8rem', color: '#fca5a5' }}>
+                <div className="rounded-lg p-3 text-xs" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#fca5a5' }}>
                   ⚠️ Complete knowledge gaps below to unlock this engine
                 </div>
               )}
             </div>
 
             {/* Required KPIs Card */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '1rem', padding: '1.5rem' }}>
-              <h3 style={{ margin: '0 0 1.25rem', fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Required KPIs</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div className="rounded-2xl p-5 md:p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#94a3b8' }}>Required KPIs</h3>
+              <div className="flex flex-col gap-2">
                 {(contract?.requiredKpis ?? []).map((kpi: string) => {
                   const hasKpi = readiness?.kpiScore > 0;
                   return (
-                    <div key={kpi} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '0.375rem' }}>
-                      <span style={{ fontSize: '0.75rem', color: hasKpi ? '#10b981' : '#ef4444' }}>{hasKpi ? '✓' : '○'}</span>
-                      <span style={{ fontSize: '0.85rem', color: '#e2e8f0', textTransform: 'uppercase', fontWeight: 600 }}>{kpi.toUpperCase()}</span>
+                    <div key={kpi} className="flex items-center gap-3 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                      <span className="text-xs shrink-0" style={{ color: hasKpi ? '#10b981' : '#ef4444' }}>{hasKpi ? '✓' : '○'}</span>
+                      <span className="text-sm font-semibold uppercase tracking-wide text-slate-200">{kpi}</span>
                     </div>
                   );
                 })}
                 {(contract?.requiredKpis ?? []).length === 0 && (
-                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>No specific KPIs required.</div>
+                  <div className="text-sm text-slate-500">No specific KPIs required.</div>
                 )}
               </div>
             </div>
 
             {/* Knowledge Dependencies Card */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '1rem', padding: '1.5rem' }}>
-              <h3 style={{ margin: '0 0 1.25rem', fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Knowledge Domain Dependencies</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div className="rounded-2xl p-5 md:p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#94a3b8' }}>Knowledge Domain Dependencies</h3>
+              <div className="flex flex-wrap gap-2">
                 {(contract?.knowledgeDependencies ?? []).map((domain: string) => (
-                  <span key={domain} style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)', color: '#a5b4fc', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600 }}>
+                  <span
+                    key={domain}
+                    className="text-xs font-semibold px-3 py-1 rounded-full"
+                    style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)', color: '#a5b4fc' }}
+                  >
                     {domain.replace(/_/g, ' ')}
                   </span>
                 ))}
@@ -118,44 +132,49 @@ function EngineReadinessDashboard({ config }: { config: EnginePageConfig }) {
             </div>
 
             {/* Engine Responsibilities Card */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '1rem', padding: '1.5rem' }}>
-              <h3 style={{ margin: '0 0 1.25rem', fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Engine Responsibilities</h3>
-              <ul style={{ margin: 0, padding: '0 0 0 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div className="rounded-2xl p-5 md:p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#94a3b8' }}>Engine Responsibilities</h3>
+              <ul className="m-0 pl-5 flex flex-col gap-1.5">
                 {(contract?.responsibilities ?? []).map((r: string, i: number) => (
-                  <li key={i} style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{r}</li>
+                  <li key={i} className="text-sm text-slate-300 leading-relaxed">{r}</li>
                 ))}
               </ul>
             </div>
 
             {/* Failure Conditions */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '1rem', padding: '1.5rem' }}>
-              <h3 style={{ margin: '0 0 1.25rem', fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Failure Conditions</h3>
-              <ul style={{ margin: 0, padding: '0 0 0 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div className="rounded-2xl p-5 md:p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#94a3b8' }}>Failure Conditions</h3>
+              <ul className="m-0 pl-5 flex flex-col gap-1.5">
                 {(contract?.failureConditions ?? []).map((f: string, i: number) => (
-                  <li key={i} style={{ fontSize: '0.82rem', color: '#fca5a5' }}>{f}</li>
+                  <li key={i} className="text-sm leading-relaxed" style={{ color: '#fca5a5' }}>{f}</li>
                 ))}
               </ul>
             </div>
 
             {/* AI Provider Info */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '1rem', padding: '1.5rem' }}>
-              <h3 style={{ margin: '0 0 1.25rem', fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>AI Configuration</h3>
-              <div style={{ marginBottom: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Future AI Provider</div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#c084fc' }}>{contract?.futureAIProvider ?? '—'}</div>
+            <div className="rounded-2xl p-5 md:p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#94a3b8' }}>AI Configuration</h3>
+              <div className="mb-4">
+                <div className="text-xs text-slate-500 mb-1">Future AI Provider</div>
+                <div className="text-base font-bold" style={{ color: '#c084fc' }}>{contract?.futureAIProvider ?? '—'}</div>
               </div>
-              <div style={{ marginBottom: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '0.25rem' }}>Debate Participants</div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+              <div className="mb-4">
+                <div className="text-xs text-slate-500 mb-2">Debate Participants</div>
+                <div className="flex flex-wrap gap-1.5">
                   {(contract?.futureDebateParticipants ?? []).map((p: string) => (
-                    <span key={p} style={{ background: 'rgba(192,132,252,0.1)', border: '1px solid rgba(192,132,252,0.2)', color: '#c084fc', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.72rem' }}>{p}</span>
+                    <span
+                      key={p}
+                      className="text-[11px] px-2 py-0.5 rounded-full"
+                      style={{ background: 'rgba(192,132,252,0.1)', border: '1px solid rgba(192,132,252,0.2)', color: '#c084fc' }}
+                    >{p}</span>
                   ))}
                 </div>
               </div>
-              <div style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '0.5rem', padding: '0.75rem', fontSize: '0.8rem', color: '#6ee7b7' }}>
+              <div className="rounded-lg p-3 text-xs" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#6ee7b7' }}>
                 🚀 AI engine implementation coming in Sprint 8
               </div>
             </div>
+
           </div>
         )}
       </div>
