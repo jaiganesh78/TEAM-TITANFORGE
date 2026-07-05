@@ -23,8 +23,8 @@ export class GeminiProvider implements AIProvider {
     }
     
     // Dynamic load to prevent missing import compile errors
-    const { GoogleGenAI } = require('@google/generative-ai');
-    const genAI = new GoogleGenAI({ apiKey: this.apiKey });
+    const { GoogleGenerativeAI } = require('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(this.apiKey);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
     const systemMsg = messages.find(m => m.role === 'system');
@@ -49,8 +49,8 @@ export class GeminiProvider implements AIProvider {
     if (!this.apiKey) {
       throw new Error('GEMINI_API_KEY is not defined.');
     }
-    const { GoogleGenAI } = require('@google/generative-ai');
-    const genAI = new GoogleGenAI({ apiKey: this.apiKey });
+    const { GoogleGenerativeAI } = require('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(this.apiKey);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const prompt = `Analyze the following business discovery information and extract a JSON object.
