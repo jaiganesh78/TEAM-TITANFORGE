@@ -266,4 +266,74 @@ nextjs-portal,
   pointer-events: none !important;
 }
 
+/* Mobile Responsive Overrides for Engine Workspace Pages */
+@media (max-width: 1024px) {
+  /* Collapse main sidebar-content grid template column */
+  div[style*="grid-template-columns: 260px 1fr"],
+  div[style*="gridTemplateColumns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Make the sidebar tabs list scroll horizontally on mobile devices */
+  div[style*="grid-template-columns: 260px 1fr"] > div[style*="flex-direction: column"] {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 0.5rem !important;
+    gap: 0.5rem !important;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  div[style*="grid-template-columns: 260px 1fr"] > div[style*="flex-direction: column"]::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Prevent tabs from shrinking in the horizontal container */
+  div[style*="grid-template-columns: 260px 1fr"] > div[style*="flex-direction: column"] > button {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    padding: 0.5rem 0.85rem !important;
+    font-size: 11px !important;
+  }
+
+  /* Force all general inline grids to wrap cleanly */
+  [style*="grid-template-columns"],
+  [style*="gridTemplateColumns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  /* Special case: scorecards HUD can display in a 2-column grid instead of stacking as a single column */
+  div[style*="grid-template-columns: repeat(7, 1fr)"],
+  div[style*="grid-template-columns: repeat(3, 1fr)"],
+  div[style*="grid-template-columns: repeat(4, 1fr)"],
+  div[style*="grid-template-columns: 1fr 1fr 1fr"],
+  div[style*="grid-template-columns: 1fr 1fr"],
+  div[style*="grid-template-columns: 1fr 1.5fr"],
+  div[style*="grid-template-columns: 1.5fr 1fr"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Very small viewports stack even double scorecards */
+  @media (max-width: 480px) {
+    div[style*="grid-template-columns: repeat(7, 1fr)"],
+    div[style*="grid-template-columns: repeat(3, 1fr)"],
+    div[style*="grid-template-columns: repeat(4, 1fr)"],
+    div[style*="grid-template-columns: 1fr 1fr 1fr"],
+    div[style*="grid-template-columns: 1fr 1fr"],
+    div[style*="grid-template-columns: 1fr 1.5fr"],
+    div[style*="grid-template-columns: 1.5fr 1fr"] {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+  }
+}
+
 
