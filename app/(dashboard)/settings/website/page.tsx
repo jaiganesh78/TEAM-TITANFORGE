@@ -153,9 +153,9 @@ export default function WebsiteCrawlerPage() {
                 <div key={site.id} className="p-4 space-y-3 hover:bg-accent/15 transition-all">
                   <div className="flex justify-between items-start">
                     <div className="space-y-0.5">
-                      <p className="font-bold text-white flex items-center gap-1">
+                      <p className="font-bold text-white flex items-center gap-1 break-all">
                         {site.url}
-                        <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                        <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
                       </p>
                       <p className="text-[10px] text-muted-foreground">Crawl targets configuration active</p>
                     </div>

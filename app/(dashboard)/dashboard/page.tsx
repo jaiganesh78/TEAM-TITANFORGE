@@ -165,7 +165,7 @@ export default function DashboardPage() {
         <div 
           onClick={hasChildren ? toggleNode : undefined}
           className={`flex items-center justify-between p-2.5 rounded-lg border bg-white/5 border-white/5 transition-all ${hasChildren ? 'cursor-pointer hover:bg-white/10' : ''}`}
-          style={{ marginLeft: `${depth * 12}px` }}
+          style={{ marginLeft: `${depth * 8}px` }}
         >
           <div className="flex items-center gap-1.5 min-w-0">
             {hasChildren ? (

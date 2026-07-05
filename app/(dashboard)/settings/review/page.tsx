@@ -227,10 +227,10 @@ export default function ReviewPage() {
                     </div>
 
                     {/* Compare Workspace */}
-                    <div className="grid grid-cols-2 gap-4 bg-slate-950/40 p-2.5 rounded border border-border/40 text-[10px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950/40 p-2.5 rounded border border-border/40 text-[10px]">
                       <div>
                         <span className="text-muted-foreground font-medium">Digital Twin Field:</span>
-                        <p className="text-slate-400 truncate mt-0.5 italic">Mapped path parameter</p>
+                        <p className="text-slate-400 break-all mt-0.5 italic">Mapped path parameter</p>
                       </div>
                       <div>
                         <span className="text-muted-foreground font-medium">Suggested Value:</span>
@@ -240,7 +240,7 @@ export default function ReviewPage() {
                               type="text"
                               value={editValue}
                               onChange={(e) => setEditValue(e.target.value)}
-                              className="bg-slate-900 border border-border text-white text-[10px] rounded p-1"
+                              className="bg-slate-900 border border-border text-white text-[10px] rounded p-1 w-full"
                             />
                             <button
                               onClick={() => handleAction(cand.id, 'ACCEPT', editValue)}
@@ -257,7 +257,7 @@ export default function ReviewPage() {
                           </div>
                         ) : (
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <p className="text-emerald-400 font-bold truncate">{cand.value}</p>
+                            <p className="text-emerald-400 font-bold break-words">{cand.value}</p>
                             <button
                               onClick={() => {
                                 setEditingId(cand.id);
@@ -272,9 +272,9 @@ export default function ReviewPage() {
                       </div>
                     </div>
                   </div>
-
+ 
                   {/* Actions buttons */}
-                  <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
+                  <div className="flex items-center gap-2 shrink-0 w-full md:w-auto justify-end mt-2 md:mt-0">
                     {isActing ? (
                       <Loader2 className="h-4.5 w-4.5 animate-spin text-blue-500" />
                     ) : (
