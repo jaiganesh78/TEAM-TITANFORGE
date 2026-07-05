@@ -18,10 +18,20 @@ export class CustomerSuccessService {
         // Resolve lead profile if available to link
         const lead = await prisma.leadProfile.findFirst({ where: { businessId } });
         
+        let session = await prisma.customerSuccessSession.findFirst({ where: { businessId } });
+        if (!session) {
+          session = await prisma.customerSuccessSession.create({
+            data: {
+              businessId,
+              status: 'SUCCESS'
+            }
+          });
+        }
+        
         activeTwin = await prisma.customerDigitalTwin.create({
           data: {
             businessId,
-            sessionId: 'initial-setup-session',
+            sessionId: session.id,
             name: lead ? lead.companyName : 'Global Logistics Ltd',
             leadProfileId: lead ? lead.id : undefined,
             profileData: JSON.stringify({ segment: 'Enterprise SaaS', tier: 'Gold' }),

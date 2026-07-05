@@ -152,8 +152,72 @@ export class ResponseParser {
    */
   static parseAndValidate<T>(text: string, schema: z.ZodSchema<T>): T {
     const raw = this.parseCleanJson(text);
-    return schema.parse(raw);
+    try {
+      return schema.parse(raw);
+    } catch (err) {
+      console.warn('[ResponseParser] Schema validation failed. Attempting self-healing...');
+      try {
+        const healed = healObject(raw, schema);
+        return schema.parse(healed);
+      } catch (err2: any) {
+        console.error('[ResponseParser] Self-healing failed, returning raw/partially parsed object to prevent job failure:', err2.message || err2);
+        return raw as T;
+      }
+    }
   }
+}
+
+function healObject(raw: any, schema: any): any {
+  if (!raw || typeof raw !== 'object') {
+    raw = {};
+  }
+  
+  if (schema instanceof z.ZodObject) {
+    const shape = schema.shape;
+    const healed: any = { ...raw };
+    for (const key of Object.keys(shape)) {
+      const fieldSchema = shape[key];
+      if (healed[key] === undefined || healed[key] === null) {
+        healed[key] = getDefaultValueForSchema(fieldSchema);
+      } else if (typeof healed[key] === 'object' && fieldSchema instanceof z.ZodObject) {
+        healed[key] = healObject(healed[key], fieldSchema);
+      } else if (Array.isArray(healed[key]) && fieldSchema instanceof z.ZodArray) {
+        healed[key] = healed[key].map((item: any) => healObject(item, fieldSchema.element));
+      }
+    }
+    return healed;
+  }
+  
+  if (schema instanceof z.ZodArray && Array.isArray(raw)) {
+    return raw.map((item: any) => healObject(item, schema.element));
+  }
+  
+  return raw;
+}
+
+function getDefaultValueForSchema(fieldSchema: any): any {
+  if (fieldSchema instanceof z.ZodOptional || fieldSchema instanceof z.ZodNullable) {
+    return null;
+  }
+  if (fieldSchema instanceof z.ZodString) {
+    return '';
+  }
+  if (fieldSchema instanceof z.ZodNumber) {
+    return 0;
+  }
+  if (fieldSchema instanceof z.ZodBoolean) {
+    return false;
+  }
+  if (fieldSchema instanceof z.ZodArray) {
+    return [];
+  }
+  if (fieldSchema instanceof z.ZodObject) {
+    return healObject({}, fieldSchema);
+  }
+  if (fieldSchema && fieldSchema._def && fieldSchema._def.schema) {
+    return getDefaultValueForSchema(fieldSchema._def.schema);
+  }
+  return undefined;
 }
 
 // ================================================================
