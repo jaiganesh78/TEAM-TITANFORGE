@@ -10,6 +10,13 @@ const COOKIE_OPTIONS = {
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
+const ACCESS_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  maxAge: 15 * 60 * 1000, // 15 mins
+};
+
 export class AuthController {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
@@ -26,6 +33,7 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', result.refreshToken, COOKIE_OPTIONS);
+      res.cookie('accessToken', result.accessToken, ACCESS_COOKIE_OPTIONS);
       res.status(201).json({
         success: true,
         data: {
@@ -52,6 +60,7 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', result.refreshToken, COOKIE_OPTIONS);
+      res.cookie('accessToken', result.accessToken, ACCESS_COOKIE_OPTIONS);
       res.status(200).json({
         success: true,
         data: {
@@ -74,6 +83,7 @@ export class AuthController {
 
       const result = await authService.loginWithGoogle(credential, req.ip, req.correlationId);
       res.cookie('refreshToken', result.refreshToken, COOKIE_OPTIONS);
+      res.cookie('accessToken', result.accessToken, ACCESS_COOKIE_OPTIONS);
       res.status(200).json({
         success: true,
         data: {
@@ -151,6 +161,7 @@ export class AuthController {
       const result = await authService.refresh(refreshToken, req.ip, req.correlationId);
       // Rotation: set the rotated refresh token back in the HttpOnly cookie
       res.cookie('refreshToken', result.refreshToken, COOKIE_OPTIONS);
+      res.cookie('accessToken', result.accessToken, ACCESS_COOKIE_OPTIONS);
       res.status(200).json({
         success: true,
         data: {
@@ -171,6 +182,7 @@ export class AuthController {
         await authService.logout(refreshToken, req.ip, req.correlationId);
       }
       res.clearCookie('refreshToken');
+      res.clearCookie('accessToken');
       res.status(200).json({
         success: true,
         data: { message: 'Logged out successfully' },
