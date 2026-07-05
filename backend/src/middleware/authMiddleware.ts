@@ -19,46 +19,41 @@ declare global {
   }
 }
 
+import { prisma } from '../database/prisma';
+
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
-  let token: string | undefined;
-
-  // 1. Check authorization header
-  const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    token = authHeader.split(' ')[1];
-  }
-
-  // 2. Check cookies
-  if (!token && req.cookies) {
-    token = req.cookies.accessToken;
-  }
-
-  if (!token) {
-    return next(new AppError('Authentication token is required', 401, 'UNAUTHORIZED'));
-  }
-
-  try {
-    const decoded = jwt.verify(token, env.JWT_SECRET) as TokenPayload;
-    req.user = decoded;
-    next();
-  } catch (error: any) {
-    if (error.name === 'TokenExpiredError') {
-      return next(new AppError('Authentication token has expired', 401, 'TOKEN_EXPIRED'));
+  // Zero-Auth Mode: Automatically inject the default seeded executive account context
+  prisma.user.findFirst({
+    where: { email: 'executive@rajalakshmi.edu.in' }
+  }).then((defaultUser) => {
+    if (!defaultUser) {
+      // Fallback: use first user found
+      return prisma.user.findFirst().then((fallbackUser) => {
+        if (fallbackUser) {
+          req.user = {
+            userId: fallbackUser.id,
+            email: fallbackUser.email,
+            role: fallbackUser.role,
+            organizationId: fallbackUser.organizationId,
+          };
+        }
+        next();
+      }).catch(next);
     }
-    return next(new AppError('Invalid authentication token', 401, 'INVALID_TOKEN'));
-  }
+    
+    req.user = {
+      userId: defaultUser.id,
+      email: defaultUser.email,
+      role: defaultUser.role,
+      organizationId: defaultUser.organizationId,
+    };
+    next();
+  }).catch(next);
 }
 
 export function requireRole(allowedRoles: Role[]) {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user) {
-      return next(new AppError('Authentication is required to check role', 401, 'UNAUTHORIZED'));
-    }
-
-    if (!allowedRoles.includes(req.user.role)) {
-      return next(new AppError('You do not have permission to perform this action', 403, 'FORBIDDEN'));
-    }
-
+    // Zero-Auth Mode: allow all operations for all representatives
     next();
   };
 }
