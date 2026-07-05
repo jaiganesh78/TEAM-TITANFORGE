@@ -54,6 +54,6 @@ export function errorMiddleware(err: Error, req: Request, res: Response, next: N
       code: errorCode,
       details,
     },
-    correlationId: req.correlationId,
+    correlationId: (req as any).correlationId,
   });
 }
