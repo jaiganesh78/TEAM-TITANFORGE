@@ -13,17 +13,17 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('user', JSON.stringify({
-        name: 'Aditya Kumar',
-        email: 'executive@rajalakshmi.edu.in',
-        role: 'OWNER'
-      }));
-      localStorage.setItem('accessToken', 'mock-token-for-executive-product');
-    }
-    router.push('/dashboard');
-  }, [router]);
+  // React.useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     localStorage.setItem('user', JSON.stringify({
+  //       name: 'Aditya Kumar',
+  //       email: 'executive@rajalakshmi.edu.in',
+  //       role: 'OWNER'
+  //     }));
+  //     localStorage.setItem('accessToken', 'mock-token-for-executive-product');
+  //   }
+  //   router.push('/dashboard');
+  // }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
