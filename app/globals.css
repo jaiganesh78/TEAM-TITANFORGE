@@ -269,8 +269,8 @@ nextjs-portal,
 /* Mobile Responsive Overrides for Engine Workspace Pages */
 @media (max-width: 1024px) {
   /* Force top headers (title + trigger button) to stack vertically on mobile */
-  div[style*="justify-content: space-between"][style*="border-bottom"],
-  div[style*="justify-content:space-between"][style*="border-bottom"] {
+  div[style*="justify-content: space-between"]:has(h1),
+  div[style*="justify-content:space-between"]:has(h1) {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
@@ -278,8 +278,8 @@ nextjs-portal,
   }
   
   /* Make the action buttons full width on mobile */
-  div[style*="justify-content: space-between"][style*="border-bottom"] button,
-  div[style*="justify-content:space-between"][style*="border-bottom"] button {
+  div[style*="justify-content: space-between"]:has(h1) button,
+  div[style*="justify-content:space-between"]:has(h1) button {
     width: 100% !important;
     text-align: center !important;
     margin-top: 0.25rem !important;
